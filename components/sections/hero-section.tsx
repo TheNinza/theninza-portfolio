@@ -1,4 +1,6 @@
+import gsap from "gsap";
 import styled from "styled-components";
+import useIsomorphicLayoutEffect from "../../hooks/use-isomorphic-layout-effect";
 
 // styled-components
 
@@ -10,6 +12,7 @@ const HeroSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transform-origin: top;
 
   /* center the container */
   margin: 0 auto;
@@ -50,8 +53,18 @@ const OutlinedBigHeading = styled(BigHeading)`
 `;
 
 const HeroSection = () => {
+  useIsomorphicLayoutEffect(() => {
+    gsap.from(".container", {
+      duration: 1,
+      opacity: 0,
+      y: -100,
+      scaleY: 0.1,
+      ease: "power1.out",
+    });
+  }, []);
+
   return (
-    <HeroSectionContainer>
+    <HeroSectionContainer className="container">
       <BigHeading>Hi, I&apos;m Nikhil.</BigHeading>
       <BigHeading>I&apos;m a full stack developer.</BigHeading>
       <OutlinedBigHeading>&ldquo;That&apos;s it??&rdquo;</OutlinedBigHeading>
