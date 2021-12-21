@@ -15,21 +15,15 @@ const Container = styled.div`
   width: 100%;
   padding-left: ${({ theme }) => theme.space.xxl};
   padding-right: ${({ theme }) => theme.space.xxl};
-  padding-top: ${({ theme }) => theme.space.xl};
-  padding-bottom: ${({ theme }) => theme.space.xl};
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
     padding-left: ${({ theme }) => theme.space.lg};
     padding-right: ${({ theme }) => theme.space.lg};
-    padding-top: ${({ theme }) => theme.space.xl};
-    padding-bottom: ${({ theme }) => theme.space.xl};
   }
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
     padding-left: ${({ theme }) => theme.space.md};
     padding-right: ${({ theme }) => theme.space.md};
-    padding-top: ${({ theme }) => theme.space.xl};
-    padding-bottom: ${({ theme }) => theme.space.xl};
   }
 `;
 
