@@ -17,7 +17,6 @@ export const theme: DefaultTheme = {
     lg: "1.125rem",
     xl: "1.25rem",
     xxl: "1.5rem",
-    hero: "8rem",
   },
 
   fontWeights: {
@@ -28,12 +27,12 @@ export const theme: DefaultTheme = {
   },
 
   lineHeights: {
-    xs: "1.25rem",
-    sm: "1.5rem",
-    md: "1.75rem",
-    lg: "2rem",
-    xl: "2.25rem",
-    xxl: "2.5rem",
+    xs: 1.25,
+    sm: 1.5,
+    md: 1.75,
+    lg: 2,
+    xl: 2.25,
+    xxl: 2.5,
   },
 
   space: {

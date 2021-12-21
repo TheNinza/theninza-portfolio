@@ -18,7 +18,6 @@ declare module "styled-components" {
       lg: string;
       xl: string;
       xxl: string;
-      hero: string;
     };
 
     fontWeights: {
@@ -29,12 +28,12 @@ declare module "styled-components" {
     };
 
     lineHeights: {
-      xs: string;
-      sm: string;
-      md: string;
-      lg: string;
-      xl: string;
-      xxl: string;
+      xs: number;
+      sm: number;
+      md: number;
+      lg: number;
+      xl: number;
+      xxl: number;
     };
 
     space: {

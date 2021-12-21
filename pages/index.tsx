@@ -1,13 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styled from "styled-components";
-
-const BigHeading = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes.hero};
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
-`;
+import HeroSection from "../components/sections/hero-section";
 
 // a responsive container for the page
 const Container = styled.div`
@@ -34,8 +28,7 @@ const Home: NextPage = () => {
         <title>🙋🏻‍♂️ Nikhil Gupta</title>
       </Head>
       <Container>
-        <BigHeading>Hey, I am Nikhil</BigHeading>
-        <BigHeading>I am a Full Stack Developer</BigHeading>
+        <HeroSection />
       </Container>
     </>
   );
