@@ -2,9 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 <!--prettier-ignore-->
 ```js
-  /**********************/
+  /*********************/
  /* Under Development */
-/********************/
+/*********************/
 ```
 
 ## Getting Started
