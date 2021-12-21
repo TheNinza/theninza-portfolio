@@ -1,5 +1,7 @@
 import gsap from "gsap";
+import { useContext } from "react";
 import styled from "styled-components";
+import { WindowLoadingContext } from "../../context/windowLoadingContext";
 import useIsomorphicLayoutEffect from "../../hooks/use-isomorphic-layout-effect";
 
 // styled-components
@@ -14,6 +16,7 @@ const HeroSectionContainer = styled.div`
   justify-content: center;
   transform-origin: top;
 
+  opacity: 0;
   /* center the container */
   margin: 0 auto;
   @media only screen and (max-width: 1560px) {
@@ -53,15 +56,27 @@ const OutlinedBigHeading = styled(BigHeading)`
 `;
 
 const HeroSection = () => {
+  const { isLoading } = useContext(WindowLoadingContext);
+
   useIsomorphicLayoutEffect(() => {
-    gsap.from(".container", {
-      duration: 1,
-      opacity: 0,
-      y: -100,
-      scaleY: 0.1,
-      ease: "power1.out",
-    });
-  }, []);
+    if (!isLoading) {
+      gsap.fromTo(
+        ".container",
+        {
+          duration: 1,
+          opacity: 0,
+          y: -100,
+        },
+        {
+          duration: 1,
+          opacity: 1,
+          y: 0,
+          scaleY: 1,
+          ease: "power1.out",
+        }
+      );
+    }
+  }, [isLoading]);
 
   return (
     <HeroSectionContainer className="container">
