@@ -10,6 +10,59 @@ declare module "styled-components" {
       green: string;
       blue: string;
     };
+
+    fontSizes: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      xxl: string;
+      hero: string;
+    };
+
+    fontWeights: {
+      light: number;
+      regular: number;
+      medium: number;
+      bold: number;
+    };
+
+    lineHeights: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      xxl: string;
+    };
+
+    space: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      xxl: string;
+    };
+
+    radii: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      xxl: string;
+    };
+
+    breakpoints: {
+      xs: number;
+      sm: number;
+      md: number;
+      lg: number;
+      xl: number;
+      xxl: number;
+    };
   }
 }
 
