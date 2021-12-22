@@ -56,8 +56,8 @@ const HeroLoader = () => {
         ease: "power4.out",
       })
       .to(".heroContainer", {
-        display: "none",
-        duration: 0.1,
+        duration: 1,
+        y: "-100vh",
       });
 
     window.addEventListener("load", () => {
