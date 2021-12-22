@@ -1,6 +1,6 @@
 // create a typescript next js functional component named CustomCursor
 
-import { FC, useCallback, useContext, useRef } from "react";
+import { FC, useCallback, useContext } from "react";
 import styled from "styled-components";
 import { CursorContext } from "../context/cursor-context";
 import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
