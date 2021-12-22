@@ -4,7 +4,7 @@ import CustomCursor from "../components/custom-cursor";
 import HeroLoader from "../components/hero-loader";
 
 import { GlobalStyles, theme } from "../config/styled-components";
-import { WindowLoadingProvider } from "../context/windowLoadingContext";
+import { WindowLoadingProvider } from "../context/window-loading-context";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

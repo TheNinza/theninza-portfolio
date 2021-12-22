@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { useContext, useRef } from "react";
 import styled from "styled-components";
-import { WindowLoadingContext } from "../../context/windowLoadingContext";
+import { WindowLoadingContext } from "../../context/window-loading-context";
 import useIsomorphicLayoutEffect from "../../hooks/use-isomorphic-layout-effect";
 
 // styled-components
