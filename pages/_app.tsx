@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "styled-components";
+import CustomCursor from "../components/custom-cursor";
 import HeroLoader from "../components/hero-loader";
 
 import { GlobalStyles, theme } from "../config/styled-components";
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <WindowLoadingProvider>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
+          <CustomCursor />
           <HeroLoader />
           <Component {...pageProps} />
         </ThemeProvider>
