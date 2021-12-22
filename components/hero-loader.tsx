@@ -66,7 +66,7 @@ const HeroLoader = () => {
 
     return () => {
       window.removeEventListener("load", () => {
-        gsapTimeLineRef.current.kill();
+        console.log("removed");
       });
     };
   }, []);
