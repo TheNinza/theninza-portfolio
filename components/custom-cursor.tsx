@@ -40,8 +40,6 @@ const CustomCursor: FC = () => {
       if (window.innerWidth < 768) {
         cursor.style.display = "none";
         return;
-      } else {
-        cursor.style.display = "block";
       }
 
       setCursorElement(cursor);
