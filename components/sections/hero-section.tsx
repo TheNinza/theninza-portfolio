@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { useContext, useRef } from "react";
 import styled from "styled-components";
+import { CursorContext } from "../../context/cursor-context";
 import { WindowLoadingContext } from "../../context/window-loading-context";
 import useIsomorphicLayoutEffect from "../../hooks/use-isomorphic-layout-effect";
 
@@ -82,6 +83,7 @@ const OutlinedBigHeading = styled(BigHeading)`
 
 const HeroSection = () => {
   const { isLoading } = useContext(WindowLoadingContext);
+  const { cursorElement } = useContext(CursorContext);
 
   const gsapTimeLineRef = useRef(gsap.timeline());
 
@@ -114,20 +116,46 @@ const HeroSection = () => {
     }
   }, [isLoading]);
 
+  const handleHover = () => {
+    if (cursorElement) {
+      cursorElement.style.transform = "scale(2) translate(-50%, -50%)";
+    }
+  };
+
+  const handleHoverOut = () => {
+    if (cursorElement) {
+      cursorElement.style.transform = "scale(1) translate(-50%, -50%)";
+    }
+  };
+
   return (
     <HeroSectionContainer>
       <HeadingAnimatedWrapper>
-        <BigHeading className="heroHeading">Hi, I&apos;m Nikhil.</BigHeading>
+        <BigHeading
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHoverOut}
+          className="heroHeading"
+        >
+          Hi, I&apos;m Nikhil.
+        </BigHeading>
         <div className="lightRedBanner banner"></div>
       </HeadingAnimatedWrapper>
       <HeadingAnimatedWrapper>
-        <BigHeading className="heroHeading">
+        <BigHeading
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHoverOut}
+          className="heroHeading"
+        >
           I&apos;m a full stack developer.
         </BigHeading>
         <div className="greenBanner banner"></div>
       </HeadingAnimatedWrapper>
       <HeadingAnimatedWrapper>
-        <OutlinedBigHeading className="heroHeading">
+        <OutlinedBigHeading
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHoverOut}
+          className="heroHeading"
+        >
           &ldquo;That&apos;s it??&rdquo;
         </OutlinedBigHeading>
         <div className="blueBanner banner"></div>

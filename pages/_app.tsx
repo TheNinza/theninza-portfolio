@@ -4,19 +4,19 @@ import CustomCursor from "../components/custom-cursor";
 import HeroLoader from "../components/hero-loader";
 
 import { GlobalStyles, theme } from "../config/styled-components";
-import { WindowLoadingProvider } from "../context/window-loading-context";
+import RootContextProvider from "../context/root-context";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div style={{ position: "relative" }}>
-      <WindowLoadingProvider>
+      <RootContextProvider>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <CustomCursor />
           <HeroLoader />
           <Component {...pageProps} />
         </ThemeProvider>
-      </WindowLoadingProvider>
+      </RootContextProvider>
     </div>
   );
 }
