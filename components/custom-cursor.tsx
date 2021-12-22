@@ -34,6 +34,16 @@ const CustomCursor: FC = () => {
   const cursorRef = useCallback(
     (cursor: HTMLDivElement) => {
       if (cursor == null) return;
+
+      // hide cursor on mobile
+
+      if (window.innerWidth < 768) {
+        cursor.style.display = "none";
+        return;
+      } else {
+        cursor.style.display = "block";
+      }
+
       setCursorElement(cursor);
       window.addEventListener("mousemove", (e) => {
         if (cursor) {
@@ -67,25 +77,6 @@ const CustomCursor: FC = () => {
           cursor.style.background = "#fff";
         }
       });
-
-      window.addEventListener("touchstart", (e) => {
-        if (cursor) {
-          cursor.style.display = "block";
-        }
-      });
-
-      window.addEventListener("touchend", (e) => {
-        if (cursor) {
-          cursor.style.display = "none";
-        }
-      });
-
-      window.addEventListener("touchmove", (e) => {
-        if (cursor) {
-          cursor.style.left = `${e.touches[0].clientX}px`;
-          cursor.style.top = `${e.touches[0].clientY}px`;
-        }
-      });
     },
     [setCursorElement]
   );
@@ -95,9 +86,6 @@ const CustomCursor: FC = () => {
       window.removeEventListener("mousemove", () => {});
       window.removeEventListener("mousedown", () => {});
       window.removeEventListener("mouseup", () => {});
-      window.removeEventListener("touchmove", () => {});
-      window.removeEventListener("touchstart", () => {});
-      window.removeEventListener("touchend", () => {});
     };
   }, []);
 
