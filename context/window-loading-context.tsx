@@ -1,4 +1,4 @@
-import { useEffect, createContext, useState } from "react";
+import { createContext, useState } from "react";
 import type { FC, Dispatch, SetStateAction } from "react";
 
 interface ContextProps {
