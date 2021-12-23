@@ -1,5 +1,6 @@
 import gsap from "gsap";
-import { useContext, useRef } from "react";
+import Image from "next/image";
+import { MouseEventHandler, useContext, useRef } from "react";
 import styled from "styled-components";
 import { CursorContext } from "../../context/cursor-context";
 import { WindowLoadingContext } from "../../context/window-loading-context";
@@ -97,7 +98,7 @@ const OutlinedBigHeading = styled(BigHeading)`
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
-  transition: all 0.3s ease-in;
+  transition: background-position 0.3s ease-in;
 
   &:hover {
     background-position: 200% 0;
@@ -108,11 +109,46 @@ const OutlinedBigHeading = styled(BigHeading)`
   }
 `;
 
+const HiddenCatContainer = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  transition: all 0.3s ease-in;
+  opacity: 0;
+  pointer-events: none;
+  animation: infiniteBounce 1s linear infinite alternate;
+
+  @keyframes infiniteBounce {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(10px);
+    }
+  }
+
+  &::before {
+    content: "Keep Scrolling Please!";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 1.5rem;
+    color: ${({ theme }) => theme.colors.textPrimary};
+    text-transform: uppercase;
+    padding: 0.5rem;
+    border-radius: 5px;
+    background-color: ${({ theme }) => theme.colors.lightRed};
+    z-index: 10;
+  }
+`;
+
 const HeroSection = () => {
   const { isLoading } = useContext(WindowLoadingContext);
   const { cursorElement } = useContext(CursorContext);
 
   const gsapTimeLineRef = useRef(gsap.timeline());
+
+  const heroImageContainerRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
     if (!isLoading) {
@@ -143,15 +179,35 @@ const HeroSection = () => {
     }
   }, [isLoading]);
 
-  const handleHover = () => {
+  const handleHover: MouseEventHandler<HTMLHeadingElement> = (e) => {
     if (cursorElement) {
       cursorElement.style.transform = "scale(2) translate(-50%, -50%)";
     }
+
+    // handling the outlined banner
+    const target = e.target as Element;
+
+    if (
+      target.classList.contains("outlined") &&
+      heroImageContainerRef.current
+    ) {
+      heroImageContainerRef.current.style.opacity = "1";
+    }
   };
 
-  const handleHoverOut = () => {
+  const handleHoverOut: MouseEventHandler<HTMLHeadingElement> = (e) => {
     if (cursorElement) {
       cursorElement.style.transform = "scale(1) translate(-50%, -50%)";
+    }
+
+    // handling the outlined banner
+    const target = e.target as Element;
+
+    if (
+      target.classList.contains("outlined") &&
+      heroImageContainerRef.current
+    ) {
+      heroImageContainerRef.current.style.opacity = "0";
     }
   };
 
@@ -221,12 +277,23 @@ const HeroSection = () => {
         <OutlinedBigHeading
           onMouseEnter={handleHover}
           onMouseLeave={handleHoverOut}
-          className="heroHeading"
+          className="heroHeading outlined"
         >
           &ldquo;That&apos;s it??&rdquo;
         </OutlinedBigHeading>
         <div className="blueBanner banner"></div>
       </HeadingAnimatedWrapper>
+      <HiddenCatContainer ref={heroImageContainerRef}>
+        <Image
+          src="/cat-hero-section.webp"
+          alt="Cat"
+          className="cat"
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHoverOut}
+          width={500}
+          height={375}
+        />
+      </HiddenCatContainer>
     </HeroSectionContainer>
   );
 };
