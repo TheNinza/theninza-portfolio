@@ -33,6 +33,15 @@ const BigHeading = styled.h1`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   opacity: 0;
 
+  & .letterHeading {
+    display: inline-block;
+    transition: all 0.3s ease-out;
+
+    &.letterHeading--hover {
+      transform: scale(1.1) translateY(-10px) rotate(5deg);
+    }
+  }
+
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
     font-size: 6.9vw;
   }
@@ -116,6 +125,17 @@ const HeroSection = () => {
     }
   }, [isLoading]);
 
+  useIsomorphicLayoutEffect(() => {
+    document.querySelectorAll(".letterHeading").forEach((letter) => {
+      letter.addEventListener("mouseenter", () => {
+        letter.classList.add("letterHeading--hover");
+      });
+      letter.addEventListener("mouseleave", () => {
+        letter.classList.remove("letterHeading--hover");
+      });
+    });
+  }, []);
+
   const handleHover = () => {
     if (cursorElement) {
       cursorElement.style.transform = "scale(2) translate(-50%, -50%)";
@@ -136,7 +156,21 @@ const HeroSection = () => {
           onMouseLeave={handleHoverOut}
           className="heroHeading"
         >
-          Hi, I&apos;m Nikhil.
+          <span className="letterHeading">H</span>
+          <span className="letterHeading">i</span>
+          <span className="letterHeading">,</span>
+          <span> </span>
+          <span className="letterHeading">I</span>
+          <span className="letterHeading">&apos;</span>
+          <span className="letterHeading">m</span>
+          <span> </span>
+          <span className="letterHeading">N</span>
+          <span className="letterHeading">i</span>
+          <span className="letterHeading">k</span>
+          <span className="letterHeading">h</span>
+          <span className="letterHeading">i</span>
+          <span className="letterHeading">l</span>
+          <span className="letterHeading">.</span>
         </BigHeading>
         <div className="lightRedBanner banner"></div>
       </HeadingAnimatedWrapper>
@@ -146,7 +180,33 @@ const HeroSection = () => {
           onMouseLeave={handleHoverOut}
           className="heroHeading"
         >
-          I&apos;m a full stack developer.
+          <span className="letterHeading">I</span>
+          <span className="letterHeading">&apos;</span>
+          <span className="letterHeading">m</span>
+          <span> </span>
+          <span className="letterHeading">a</span>
+          <span> </span>
+          <span className="letterHeading">f</span>
+          <span className="letterHeading">u</span>
+          <span className="letterHeading">l</span>
+          <span className="letterHeading">l</span>
+          <span> </span>
+          <span className="letterHeading">s</span>
+          <span className="letterHeading">t</span>
+          <span className="letterHeading">a</span>
+          <span className="letterHeading">c</span>
+          <span className="letterHeading">k</span>
+          <span> </span>
+          <span className="letterHeading">d</span>
+          <span className="letterHeading">e</span>
+          <span className="letterHeading">v</span>
+          <span className="letterHeading">e</span>
+          <span className="letterHeading">l</span>
+          <span className="letterHeading">o</span>
+          <span className="letterHeading">p</span>
+          <span className="letterHeading">e</span>
+          <span className="letterHeading">r</span>
+          <span className="letterHeading">.</span>
         </BigHeading>
         <div className="greenBanner banner"></div>
       </HeadingAnimatedWrapper>
