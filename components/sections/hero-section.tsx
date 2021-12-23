@@ -84,6 +84,24 @@ const OutlinedBigHeading = styled(BigHeading)`
   color: transparent;
   -webkit-text-stroke: 2px ${({ theme }) => theme.colors.textPrimary};
   margin-top: 5rem;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 29%,
+    transparent 67%,
+    white 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  transition: all 0.3s ease-in;
+
+  &:hover {
+    background-position: 200% 0;
+  }
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
     margin-top: 3rem;
