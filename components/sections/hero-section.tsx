@@ -37,7 +37,7 @@ const BigHeading = styled.h1`
     display: inline-block;
     transition: all 0.3s ease-out;
 
-    &.letterHeading--hover {
+    &:hover {
       transform: scale(1.1) translateY(-10px) rotate(5deg);
     }
   }
@@ -124,17 +124,6 @@ const HeroSection = () => {
         );
     }
   }, [isLoading]);
-
-  useIsomorphicLayoutEffect(() => {
-    document.querySelectorAll(".letterHeading").forEach((letter) => {
-      letter.addEventListener("mouseenter", () => {
-        letter.classList.add("letterHeading--hover");
-      });
-      letter.addEventListener("mouseleave", () => {
-        letter.classList.remove("letterHeading--hover");
-      });
-    });
-  }, []);
 
   const handleHover = () => {
     if (cursorElement) {
