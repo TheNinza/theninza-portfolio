@@ -2,7 +2,6 @@ import { FC, useEffect } from "react";
 import styled from "styled-components";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
-import useWindowSize from "../../hooks/useWindowSize";
 
 interface IStack {
   id: string;
@@ -293,12 +292,6 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
 `;
 
 const TechStackSection: FC = () => {
-  const size = useWindowSize();
-
-  useEffect(() => {
-    console.log(size);
-  }, [size]);
-
   return (
     <TechStackSectionContainer>
       <TechSectionTitle>
