@@ -309,7 +309,7 @@ const TechStackSection: FC = () => {
         <Marquee
           gradientColor={[26, 32, 44]}
           direction="left"
-          speed={size.width && size.width < 800 ? 20 : 50}
+          speed={50}
           pauseOnHover
           gradientWidth={50}
         >
@@ -329,7 +329,7 @@ const TechStackSection: FC = () => {
         <Marquee
           gradientColor={[26, 32, 44]}
           direction="right"
-          speed={size.width && size.width < 800 ? 20 : 50}
+          speed={50}
           pauseOnHover
           gradientWidth={50}
         >
