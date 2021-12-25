@@ -1,7 +1,8 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styled from "styled-components";
 import Marquee from "react-fast-marquee";
 import Image from "next/image";
+import useWindowSize from "../../hooks/useWindowSize";
 
 interface IStack {
   id: string;
@@ -240,6 +241,16 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
 
   transition: all 0.3s ease-out;
 
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    height: 16vh;
+    margin: 0 1rem;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    height: 13vh;
+    margin: 0 1rem;
+  }
+
   &::after {
     content: ${({ name }) => `"${name}"`};
     position: absolute;
@@ -282,6 +293,12 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
 `;
 
 const TechStackSection: FC = () => {
+  const size = useWindowSize();
+
+  useEffect(() => {
+    console.log(size);
+  }, [size]);
+
   return (
     <TechStackSectionContainer>
       <TechSectionTitle>
@@ -292,7 +309,7 @@ const TechStackSection: FC = () => {
         <Marquee
           gradientColor={[26, 32, 44]}
           direction="left"
-          speed={50}
+          speed={size.width && size.width < 800 ? 20 : 50}
           pauseOnHover
           gradientWidth={50}
         >
@@ -312,7 +329,7 @@ const TechStackSection: FC = () => {
         <Marquee
           gradientColor={[26, 32, 44]}
           direction="right"
-          speed={50}
+          speed={size.width && size.width < 800 ? 20 : 50}
           pauseOnHover
           gradientWidth={50}
         >
