@@ -37,6 +37,11 @@ const HeroLoader = () => {
       },
 
       onStart: () => {
+        window.scrollTo({
+          behavior: "smooth",
+          top: 0,
+        });
+
         // set overflow to hidden
         document.body.style.overflow = "hidden";
       },
