@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import Image from "next/image";
-import { MouseEventHandler, useContext, useRef } from "react";
+import { FC, MouseEventHandler, useContext, useRef } from "react";
 import styled from "styled-components";
 import { CursorContext } from "../../context/cursor-context";
 import { WindowLoadingContext } from "../../context/window-loading-context";
@@ -9,9 +9,9 @@ import useIsomorphicLayoutEffect from "../../hooks/use-isomorphic-layout-effect"
 // styled-components
 
 const HeroSectionContainer = styled.div`
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
-
+  position: relative;
   /* align items to center of the container */
   display: flex;
   flex-direction: column;
@@ -142,7 +142,7 @@ const HiddenCatContainer = styled.div`
   }
 `;
 
-const HeroSection = () => {
+const HeroSection: FC = () => {
   const { isLoading } = useContext(WindowLoadingContext);
   const { cursorElement } = useContext(CursorContext);
 

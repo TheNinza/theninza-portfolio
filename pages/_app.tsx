@@ -8,7 +8,7 @@ import RootContextProvider from "../context/root-context";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div style={{ position: "relative" }}>
+    <>
       <RootContextProvider>
         <ThemeProvider theme={theme}>
           <GlobalStyles />
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </ThemeProvider>
       </RootContextProvider>
-    </div>
+    </>
   );
 }
 

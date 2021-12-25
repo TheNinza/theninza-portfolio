@@ -30,7 +30,15 @@ const HeroLoader = () => {
     gsap.timeline({
       paused: true,
       onComplete: () => {
+        // set overflow to auto
+        document.body.style.overflow = "auto";
+
         setLoading(false);
+      },
+
+      onStart: () => {
+        // set overflow to hidden
+        document.body.style.overflow = "hidden";
       },
     })
   );
