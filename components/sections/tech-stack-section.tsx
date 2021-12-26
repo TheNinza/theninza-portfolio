@@ -1,7 +1,7 @@
-import { FC, useEffect } from "react";
+import { FC, useCallback } from "react";
 import styled from "styled-components";
-import Marquee from "react-fast-marquee";
 import Image from "next/image";
+import gsap from "gsap";
 
 interface IStack {
   id: string;
@@ -167,9 +167,12 @@ const TechStackSectionContainer = styled.div`
   height: 100vh;
   width: 100%;
 
+  overflow-y: hidden;
+
   /* align items to center of the container */
   display: flex;
   flex-direction: column;
+  gap: ${({ theme }) => theme.space.xxl};
 
   border-top: 1px solid grey;
 
@@ -190,15 +193,8 @@ const TechSectionTitle = styled.h2`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
   margin-left: auto;
   margin-right: auto;
-  /* 
-  & .letterHeading {
-    display: inline-block;
-    transition: all 0.3s ease-out;
 
-    &:hover {
-      transform: scale(1.1) translateY(-10px) rotate(5deg);
-    }
-  } */
+  text-align: center;
 
   .emphasisRedText {
     color: ${({ theme }) => theme.colors.lightRed};
@@ -217,43 +213,63 @@ const TechSectionTitle = styled.h2`
   }
 `;
 
-const MarqueeContainer = styled.div`
-  flex: 1;
+const AllTechContainer = styled.div`
+  width: 100%;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  gap: 2vh;
-  overflow-y: none;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.space.xxl};
+  align-items: flex-start;
+  justify-content: center;
 
-  & .marquee {
-    padding-top: 5vh;
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    gap: ${({ theme }) => theme.space.xl};
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    gap: ${({ theme }) => theme.space.lg};
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    gap: ${({ theme }) => theme.space.md};
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    gap: ${({ theme }) => theme.space.sm};
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xs}px) {
+    gap: ${({ theme }) => theme.space.xs};
   }
 `;
 
 const TechImageContainer = styled.div<IStyledTechImageContainer>`
   position: relative;
-  height: 18vh;
-  min-width: fit-content !important;
-  flex: 1;
-  margin: 0 2rem;
+  height: 12vh;
+  width: fit-content;
+  margin: 1rem 0;
+  opacity: 0;
 
   transition: all 0.3s ease-out;
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
-    height: 16vh;
     margin: 0 1rem;
+    height: 10vh;
   }
 
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
-    height: 13vh;
-    margin: 0 1rem;
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    height: 8vh;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    height: 7vh;
   }
 
   &::after {
     content: ${({ name }) => `"${name}"`};
     position: absolute;
-    bottom: -1rem;
+    bottom: -2rem;
     left: 0;
     padding: 0.5rem 1rem;
     background-color: ${({ theme }) => theme.colors.lightRed};
@@ -264,7 +280,7 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
   }
 
   &:hover {
-    transform: scale(0.9) translateY(-10px) rotate(5deg);
+    transform: scale(0.9) translateY(-10px) rotate(5deg) !important;
 
     &::after {
       opacity: 1;
@@ -292,52 +308,142 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
 `;
 
 const TechStackSection: FC = () => {
+  const techStackSectionRef = useCallback((el: HTMLDivElement) => {
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([section]) => {
+        if (section.isIntersecting) {
+          const techImages = el.querySelectorAll(".techImage");
+
+          gsap.fromTo(
+            ".techSectionTitle",
+            {
+              opacity: 0,
+              y: "4rem",
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+            }
+          );
+
+          techImages.forEach((techImage) => {
+            // generate a random left and top position for the image depending on the el size
+
+            let randomLeft = Math.floor(Math.random() * el.offsetWidth);
+            let randomTop = Math.floor(Math.random() * el.offsetHeight);
+
+            const randomPositiveOrNegative1 = Math.random() < 0.5 ? -1 : 1;
+            randomLeft *= randomPositiveOrNegative1;
+
+            const randomPositiveOrNegative2 = Math.random() < 0.5 ? -1 : 1;
+            randomTop *= randomPositiveOrNegative2;
+
+            const tl = gsap.timeline();
+
+            tl.to(techImage, {
+              duration: 0.1,
+              x: randomLeft,
+              y: randomTop,
+            })
+              .fromTo(
+                techImage,
+                {
+                  opacity: 0,
+                  scale: 0.8,
+                },
+                {
+                  duration: 0.5,
+                  opacity: 1,
+                  scale: 1.2,
+                  ease: "power3.inOut",
+                  delay: Math.random() * 2,
+                }
+              )
+              .to(techImage, {
+                x: 0,
+                y: 0,
+                duration: 0.5,
+                ease: "power3.inOut",
+                delay: Math.random() * 1,
+              })
+              .to(techImage, {
+                scale: 1,
+                duration: 0.5,
+                ease: "power3.inOut",
+                delay: Math.random() * 0.5,
+              });
+          });
+        } else {
+          const techImages = el.querySelectorAll(".techImage");
+
+          gsap.fromTo(
+            ".techSectionTitle",
+            {
+              opacity: 1,
+              y: 0,
+            },
+            {
+              opacity: 0,
+              y: "4rem",
+              duration: 0.5,
+              ease: "power3.out",
+            }
+          );
+
+          techImages.forEach((techImage) => {
+            let randomLeft = Math.floor(Math.random() * el.offsetWidth);
+            let randomTop = Math.floor(Math.random() * el.offsetHeight);
+
+            const randomPositiveOrNegative1 = Math.random() < 0.5 ? -1 : 1;
+            randomLeft *= randomPositiveOrNegative1;
+
+            const randomPositiveOrNegative2 = Math.random() < 0.5 ? -1 : 1;
+            randomTop *= randomPositiveOrNegative2;
+
+            gsap.to(techImage, {
+              duration: 0.5,
+              opacity: 0,
+              scale: 0.8,
+              x: randomLeft,
+              y: randomTop,
+              ease: "power3.inOut",
+            });
+          });
+        }
+      },
+      {
+        threshold: 0.7,
+      }
+    );
+
+    observer.observe(el);
+  }, []);
+
   return (
-    <TechStackSectionContainer>
-      <TechSectionTitle>
+    <TechStackSectionContainer ref={techStackSectionRef}>
+      <TechSectionTitle className="techSectionTitle">
         I know <span className="emphasisRedText">Technologies</span>
       </TechSectionTitle>
-
-      <MarqueeContainer>
-        <Marquee
-          gradientColor={[26, 32, 44]}
-          direction="left"
-          speed={50}
-          pauseOnHover
-          gradientWidth={50}
-        >
-          {stacks
-            .slice(Math.floor(stacks.length / 2), stacks.length)
-            .map((stack) => (
-              <TechImageContainer key={stack.id} name={stack.name}>
-                <Image
-                  src={stack.image.url}
-                  alt={stack.name}
-                  layout="fill"
-                  priority={true}
-                />
-              </TechImageContainer>
-            ))}
-        </Marquee>
-        <Marquee
-          gradientColor={[26, 32, 44]}
-          direction="right"
-          speed={50}
-          pauseOnHover
-          gradientWidth={50}
-        >
-          {stacks.slice(0, Math.floor(stacks.length / 2)).map((stack) => (
-            <TechImageContainer name={stack.name} key={stack.id}>
-              <Image
-                src={stack.image.url}
-                alt={stack.name}
-                layout="fill"
-                priority={true}
-              />
-            </TechImageContainer>
-          ))}
-        </Marquee>
-      </MarqueeContainer>
+      <AllTechContainer>
+        {stacks.map((stack) => (
+          <TechImageContainer
+            className="techImage"
+            key={stack.id}
+            name={stack.name}
+          >
+            <Image
+              src={stack.image.url}
+              alt={stack.name}
+              layout="fill"
+              priority={true}
+            />
+          </TechImageContainer>
+        ))}
+      </AllTechContainer>
     </TechStackSectionContainer>
   );
 };
