@@ -1,4 +1,4 @@
-import { DefaultTheme, createGlobalStyle } from "styled-components";
+import styled, { DefaultTheme, createGlobalStyle } from "styled-components";
 
 export const theme: DefaultTheme = {
   colors: {
@@ -74,5 +74,39 @@ export const GlobalStyles = createGlobalStyle`
   body {
     background: ${(props) => props.theme.colors.background};
     color: ${(props) => props.theme.colors.textPrimary};
+  }
+`;
+
+// common styles
+export const SectionTitle = styled.h2`
+  font-size: 7vw;
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  margin-left: auto;
+  margin-right: auto;
+
+  text-align: center;
+
+  .emphasisRedText {
+    color: ${({ theme }) => theme.colors.lightRed};
+  }
+
+  .emphasisGreenText {
+    color: ${({ theme }) => theme.colors.green};
+  }
+
+  .emphasisBlueText {
+    color: ${({ theme }) => theme.colors.blue};
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    font-size: 6.9vw;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    font-size: 10vw;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    font-size: 12vw;
   }
 `;

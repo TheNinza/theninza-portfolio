@@ -2,6 +2,7 @@ import { FC, useCallback } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import gsap from "gsap";
+import { SectionTitle as TechSectionTitle } from "../../config/styled-components";
 
 interface IStack {
   id: string;
@@ -185,31 +186,6 @@ const TechStackSectionContainer = styled.div`
 
   @media only screen and (max-width: 640px) {
     gap: ${({ theme }) => theme.space.lg};
-  }
-`;
-
-const TechSectionTitle = styled.h2`
-  font-size: 7vw;
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  margin-left: auto;
-  margin-right: auto;
-
-  text-align: center;
-
-  .emphasisRedText {
-    color: ${({ theme }) => theme.colors.lightRed};
-  }
-
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
-    font-size: 6.9vw;
-  }
-
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
-    font-size: 10vw;
-  }
-
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
-    font-size: 12vw;
   }
 `;
 
