@@ -7,6 +7,7 @@ import type {
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import ApplicationsSection from "../components/sections/applications-section";
 import HeroSection from "../components/sections/hero-section";
 import TechStackSection from "../components/sections/tech-stack-section";
 import { client } from "../config/graphql-request";
@@ -81,6 +82,7 @@ const Home: NextPage = ({
       <Container ref={containerRef}>
         <HeroSection />
         <TechStackSection stacks={initialHomePageProps.stacks} />
+        <ApplicationsSection applications={initialHomePageProps.applications} />
       </Container>
     </>
   );

@@ -139,7 +139,7 @@ const TechStackSection: FC<IProps> = ({ stacks }) => {
 
     const observer = new IntersectionObserver(
       ([section]) => {
-        if (section.isIntersecting) {
+        if (section.isIntersecting && section.boundingClientRect.y > 0) {
           const techImages = el.querySelectorAll(".techImage");
 
           gsap.fromTo(
@@ -203,7 +203,10 @@ const TechStackSection: FC<IProps> = ({ stacks }) => {
                 delay: Math.random() * 0.5,
               });
           });
-        } else {
+        } else if (
+          !section.isIntersecting &&
+          section.boundingClientRect.y > 0
+        ) {
           const techImages = el.querySelectorAll(".techImage");
 
           gsap.fromTo(
