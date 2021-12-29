@@ -1,9 +1,22 @@
-import type { NextPage } from "next";
+import { gql } from "graphql-request";
+import type {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from "next";
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import HeroSection from "../components/sections/hero-section";
 import TechStackSection from "../components/sections/tech-stack-section";
+import { client } from "../config/graphql-request";
+import type { IApplication, IStack } from "../config/types/dataTypes";
+
+// types
+type IInitialHomePageProps = {
+  stacks: IStack[];
+  applications: IApplication[];
+};
 
 // a responsive container for the page
 const Container = styled.div`
@@ -23,7 +36,9 @@ const Container = styled.div`
   }
 `;
 
-const Home: NextPage = () => {
+const Home: NextPage = ({
+  initialHomePageProps,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -65,10 +80,55 @@ const Home: NextPage = () => {
       </Head>
       <Container ref={containerRef}>
         <HeroSection />
-        <TechStackSection />
+        <TechStackSection stacks={initialHomePageProps.stacks} />
       </Container>
     </>
   );
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const query = gql`
+    query InitialData {
+      stacks {
+        id
+        name
+        image {
+          url
+          fileName
+        }
+      }
+      applications {
+        id
+        name
+        description
+        image {
+          url
+          fileName
+        }
+        liveUrl
+        sourceCodeUrl
+        stacks {
+          id
+          name
+          image {
+            url
+            fileName
+          }
+        }
+      }
+    }
+  `;
+
+  const data = await client.request(query);
+
+  const initialHomePageProps: IInitialHomePageProps = {
+    stacks: data.stacks,
+    applications: data.applications,
+  };
+
+  return {
+    props: { initialHomePageProps },
+  };
+};

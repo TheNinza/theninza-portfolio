@@ -1,168 +1,18 @@
-import { FC, useCallback } from "react";
+import { FC, ReactNode, useCallback } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import gsap from "gsap";
 import { SectionTitle as TechSectionTitle } from "../../config/styled-components";
+import { IStack } from "../../config/types/dataTypes";
 
-interface IStack {
-  id: string;
-  name: string;
-  image: {
-    url: string;
-    fileName: string;
-  };
+interface IProps {
+  stacks: IStack[];
+  children?: ReactNode;
 }
 
 interface IStyledTechImageContainer {
   readonly name: string;
 }
-
-const stacks: IStack[] = [
-  {
-    id: "ckvtrai140jab0b76jka1wf4w",
-    name: "Gatsby",
-    image: {
-      url: "https://media.graphcms.com/hlt78bGjSbOyzC78c8Gm",
-      fileName: "logo-gatsby.svg",
-    },
-  },
-  {
-    id: "ckvtrbcw80ipe0a32oan9wsp8",
-    name: "Github",
-    image: {
-      url: "https://media.graphcms.com/riA5ZRihTmOAQ3BUEXMb",
-      fileName: "logo-github.svg",
-    },
-  },
-  {
-    id: "ckvtrbogw0glr0b4212tba1k2",
-    name: "Redux",
-    image: {
-      url: "https://media.graphcms.com/zA9gBxOGRpy366vwWTOT",
-      fileName: "logo-redux.svg",
-    },
-  },
-  {
-    id: "ckvtrc1l40gm20a8407hpi0wn",
-    name: "Scss",
-    image: {
-      url: "https://media.graphcms.com/oNlTDn0Ra6P50Pe9kzLt",
-      fileName: "logo-scss.svg",
-    },
-  },
-  {
-    id: "ckvtrcik80go60a841q4ryrlz",
-    name: "Docker",
-    image: {
-      url: "https://media.graphcms.com/ELDgJx2bT6uvFD4QtYKC",
-      fileName: "logo-docker.svg",
-    },
-  },
-  {
-    id: "ckvtrcr1s0iu10a32l6mpvh3u",
-    name: "Next",
-    image: {
-      url: "https://media.graphcms.com/FzVTatbwRL6L1kEBsYB1",
-      fileName: "logo-nextjs.svg",
-    },
-  },
-  {
-    id: "ckvtrczjc0jkf0b76q9iuik56",
-    name: "React",
-    image: {
-      url: "https://media.graphcms.com/22xHBglkRfuWzSqbHuue",
-      fileName: "logo-react.svg",
-    },
-  },
-  {
-    id: "ckvtrdac80gw80a84g8781ou8",
-    name: "MaterialUI",
-    image: {
-      url: "https://media.graphcms.com/r4OpfMxTNek9UmyVPllg",
-      fileName: "logo-materialui.svg",
-    },
-  },
-  {
-    id: "ckvtrdwps0h0g0b420e8sk15t",
-    name: "MongoDB",
-    image: {
-      url: "https://media.graphcms.com/JJAeeKlTTwntDHAnFTwb",
-      fileName: "logo-mongodb.svg",
-    },
-  },
-  {
-    id: "ckvtre5z40j6b0a32kgtk1e7s",
-    name: "GraphQL",
-    image: {
-      url: "https://media.graphcms.com/qdLt6cjqThSzj46Uvz4l",
-      fileName: "logo-graphql.svg",
-    },
-  },
-  {
-    id: "ckvtreohs0h7p0a84qtipco7c",
-    name: "ReduxSaga",
-    image: {
-      url: "https://media.graphcms.com/2iMBPmdR6CVHW1BzQqjF",
-      fileName: "logo-redux-saga.svg",
-    },
-  },
-  {
-    id: "ckvtreyiw0ha90a84j17p6agx",
-    name: "Strapi",
-    image: {
-      url: "https://media.graphcms.com/Lt3228KLShmH4GvySceP",
-      fileName: "logo-strapi.svg",
-    },
-  },
-  {
-    id: "ckvtrf5gw0k2s0b76hxksuyc6",
-    name: "Stripe",
-    image: {
-      url: "https://media.graphcms.com/1s5SxjZQ8WNuBkwT0yVW",
-      fileName: "logo-stripe.svg",
-    },
-  },
-  {
-    id: "ckvtrfsm80hdq0b42k6kt54hv",
-    name: "Firebase",
-    image: {
-      url: "https://media.graphcms.com/eUbgCOIQ1GTV8LZniLcK",
-      fileName: "logo-firebase.svg",
-    },
-  },
-  {
-    id: "ckvtrgp0w0hhv0b42ed0uk3cb",
-    name: "TypeScript",
-    image: {
-      url: "https://media.graphcms.com/sBslm5pIRghDt2NsRRgh",
-      fileName: "logo-typescript.svg",
-    },
-  },
-  {
-    id: "ckvtrgzts0hiw0b42pgvv2fsx",
-    name: "Node",
-    image: {
-      url: "https://media.graphcms.com/Ko8JB2fgQIi07RKwym6A",
-      fileName: "logo-nodejs.svg",
-    },
-  },
-  {
-    id: "ckvtrh7jk0hk00a84ob68nuhh",
-    name: "Git",
-    image: {
-      url: "https://media.graphcms.com/rovJT4yTHWfojYnE9HlQ",
-      fileName: "logo-git.svg",
-    },
-  },
-  {
-    id: "ckvtrhehk0kck0b76ejgopg10",
-    name: "WebRTC",
-    image: {
-      url: "https://media.graphcms.com/30uNILFTnunZIgVCjp2A",
-      fileName: "logo-webrtc.svg",
-    },
-  },
-];
 
 const TechStackSectionContainer = styled.div`
   height: 100vh;
@@ -283,7 +133,7 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
   }
 `;
 
-const TechStackSection: FC = () => {
+const TechStackSection: FC<IProps> = ({ stacks }) => {
   const techStackSectionRef = useCallback((el: HTMLDivElement) => {
     if (!el) return;
 
