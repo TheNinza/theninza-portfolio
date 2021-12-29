@@ -203,45 +203,8 @@ const TechStackSection: FC<IProps> = ({ stacks }) => {
                 delay: Math.random() * 0.5,
               });
           });
-        } else if (
-          !section.isIntersecting &&
-          section.boundingClientRect.y > 0
-        ) {
-          const techImages = el.querySelectorAll(".techImage");
 
-          gsap.fromTo(
-            ".techSectionTitle",
-            {
-              opacity: 1,
-              y: 0,
-            },
-            {
-              opacity: 0,
-              y: "4rem",
-              duration: 0.5,
-              ease: "power3.out",
-            }
-          );
-
-          techImages.forEach((techImage) => {
-            let randomLeft = Math.floor(Math.random() * el.offsetWidth);
-            let randomTop = Math.floor(Math.random() * el.offsetHeight);
-
-            const randomPositiveOrNegative1 = Math.random() < 0.5 ? -1 : 1;
-            randomLeft *= randomPositiveOrNegative1;
-
-            const randomPositiveOrNegative2 = Math.random() < 0.5 ? -1 : 1;
-            randomTop *= randomPositiveOrNegative2;
-
-            gsap.to(techImage, {
-              duration: 0.5,
-              opacity: 0,
-              scale: 0.8,
-              x: randomLeft,
-              y: randomTop,
-              ease: "power3.inOut",
-            });
-          });
+          observer.disconnect();
         }
       },
       {

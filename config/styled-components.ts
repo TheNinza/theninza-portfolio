@@ -86,6 +86,8 @@ export const SectionTitle = styled.h2`
 
   text-align: center;
 
+  opacity: 0;
+
   .emphasisRedText {
     color: ${({ theme }) => theme.colors.lightRed};
   }

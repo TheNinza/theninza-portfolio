@@ -143,23 +143,8 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
               ease: "power3.out",
             }
           );
-        } else if (
-          !section.isIntersecting &&
-          section.boundingClientRect.y > 0
-        ) {
-          gsap.fromTo(
-            ".applicationSectionTitle",
-            {
-              opacity: 1,
-              y: 0,
-            },
-            {
-              opacity: 0,
-              y: "4rem",
-              duration: 0.5,
-              ease: "power3.out",
-            }
-          );
+
+          observer.disconnect();
         }
       },
       {
