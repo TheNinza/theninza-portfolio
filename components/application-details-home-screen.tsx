@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useLayoutEffect, useState } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 import { IApplication } from "../config/types/dataTypes";
 
@@ -83,12 +83,7 @@ const ApplicationDescriptionContainer = styled.div`
 `;
 
 const ApplicationDetailsHomeScreen: FC<IProps> = ({ application }) => {
-  const [paragraphs, setParagraphs] = useState<string[]>([]);
-
-  useLayoutEffect(() => {
-    const paragraphs = application.description.split("\n");
-    setParagraphs(paragraphs);
-  }, [application.description]);
+  const paragraphs = application.description.split("\n");
 
   return (
     <ApplicationDetailsContainer>
