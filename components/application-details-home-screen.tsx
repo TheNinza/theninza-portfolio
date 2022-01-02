@@ -1,10 +1,12 @@
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
-import styled from "styled-components";
+import { FC, useRef } from "react";
+import styled, { useTheme } from "styled-components";
+import { theme } from "../config/styled-components";
 import { IApplication } from "../config/types/dataTypes";
 import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
+import useWindowSize from "../hooks/useWindowSize";
 
 interface IProps {
   application: IApplication;
@@ -22,6 +24,10 @@ const ApplicationDetailsContainer = styled.div`
   & > .appDetailSection {
     opacity: 0;
   }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    gap: ${({ theme }) => theme.space.lg};
+  }
 `;
 
 const ApplicationImageAndLinksContainer = styled.div`
@@ -29,11 +35,22 @@ const ApplicationImageAndLinksContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: ${({ theme }) => theme.space.xl};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    gap: ${({ theme }) => theme.space.lg};
+  }
 `;
 
 const ApplicationImageContainer = styled.div`
   flex: 1;
   box-shadow: 0px 5px 10px 10px rgba(0, 0, 0, 0.1);
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    & * {
+      max-height: 20vh !important;
+      aspect-ratio: 16/9 !important;
+    }
+  }
 `;
 
 const ApplicationLinksContainer = styled.div`
@@ -50,6 +67,15 @@ const ApplicationLinksContainer = styled.div`
     }
     &:active {
       transform: scale(0.9) rotate(0);
+    }
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    gap: ${({ theme }) => theme.space.lg};
+
+    & span {
+      width: ${({ theme }) => theme.space.xl} !important;
+      height: ${({ theme }) => theme.space.xl} !important;
     }
   }
 `;
@@ -78,6 +104,13 @@ const ApplicationTechStackContainer = styled.div`
   &:hover {
     gap: ${({ theme }) => theme.space.lg};
   }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    & span {
+      width: ${({ theme }) => theme.space.xl} !important;
+      height: ${({ theme }) => theme.space.xl} !important;
+    }
+  }
 `;
 
 const ApplicationDescriptionContainer = styled.div`
@@ -97,6 +130,8 @@ const ApplicationDescriptionContainer = styled.div`
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
     width: 100%;
+    font-size: ${({ theme }) => theme.fontSizes.lg};
+    padding: ${({ theme }) => theme.space.lg};
   }
 `;
 
@@ -104,6 +139,10 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
   application,
   isSectionVisible,
 }) => {
+  const { width, height } = useWindowSize();
+  const theme = useTheme();
+  const appDescRef = useRef<HTMLDivElement>(null);
+
   const paragraphs = application.description.split("\n");
 
   useIsomorphicLayoutEffect(() => {
@@ -156,6 +195,30 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
         );
     }
   }, [isSectionVisible, application]);
+
+  // manually handling height of description container
+  useIsomorphicLayoutEffect(() => {
+    if (appDescRef.current && width && height) {
+      if (width < theme.breakpoints.xl) {
+        // set overflow y of appDescRef to scroll
+        appDescRef.current.style.overflowY = "scroll";
+        const appDescHeight =
+          height - appDescRef.current.getBoundingClientRect().top;
+
+        if (appDescHeight < appDescRef.current.getBoundingClientRect().height) {
+          appDescRef.current.style.height = `${appDescHeight - 10}px`;
+          appDescRef.current.style.boxShadow =
+            "inset 0px 0px 10px 10px rgba(0, 0, 0, 0.1)";
+        } else {
+          appDescRef.current.style.height = "auto";
+          appDescRef.current.style.boxShadow = "none";
+        }
+      } else {
+        appDescRef.current.style.height = "auto";
+        appDescRef.current.style.overflowY = "hidden";
+      }
+    }
+  }, [width, height]);
 
   return (
     <ApplicationDetailsContainer className="applicationDetailsHomeScreen">
@@ -217,7 +280,10 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
           </div>
         ))}
       </ApplicationTechStackContainer>
-      <ApplicationDescriptionContainer className="appDetailSection">
+      <ApplicationDescriptionContainer
+        ref={appDescRef}
+        className="appDetailSection"
+      >
         {paragraphs.map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}

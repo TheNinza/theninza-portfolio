@@ -52,6 +52,9 @@ const AllApplicationsContainer = styled.div`
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
     gap: ${({ theme }) => theme.space.lg};
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
   }
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
@@ -75,6 +78,14 @@ const ApplicationNameContainer = styled.div`
   width: 100%;
   height: 100%;
   gap: ${({ theme }) => theme.space.md};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    flex-direction: row;
+    height: fit-content;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+  }
 `;
 
 const ApplicationPreviewContainer = styled.div`
@@ -122,6 +133,17 @@ const ApplicationName = styled.h3<IApplicationName>`
 
   &:active {
     transform: scale(1);
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: ${({ isSelected }) => (isSelected ? "2.5rem" : "2rem")};
+    letter-spacing: ${({ isSelected }) => (isSelected ? "0.2rem" : "0.1rem")};
+    white-space: nowrap;
+    padding: 1rem 0;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    font-size: ${({ isSelected }) => (isSelected ? "2rem" : "1.5rem")};
   }
 `;
 
