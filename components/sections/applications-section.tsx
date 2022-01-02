@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { IApplication } from "../../config/types/dataTypes";
 import { SectionTitle as ApplicationsSectionTitle } from "../../config/styled-components";
 import gsap from "gsap";
+import ApplicationDetailsHomeScreen from "../application-details-home-screen";
 
 interface IProps {
   applications: IApplication[];
@@ -73,6 +74,7 @@ const ApplicationNameContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  gap: ${({ theme }) => theme.space.md};
 `;
 
 const ApplicationPreviewContainer = styled.div`
@@ -94,6 +96,7 @@ const ApplicationName = styled.h3<IApplicationName>`
   -webkit-text-stroke: 1px
     ${({ theme, isSelected }) =>
       !isSelected ? theme.colors.textSecondary : "transparent"};
+
   background-image: linear-gradient(
     to right,
     transparent 0%,
@@ -171,8 +174,12 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
               {application.name}
             </ApplicationName>
           ))}
-        </ApplicationNameContainer>
-        <ApplicationPreviewContainer />
+        </ApplicationNameContainer>{" "}
+        <ApplicationPreviewContainer>
+          <ApplicationDetailsHomeScreen
+            application={applications[selectedApplication]}
+          />
+        </ApplicationPreviewContainer>
       </AllApplicationsContainer>
     </ApplicationsSectionContainer>
   );
