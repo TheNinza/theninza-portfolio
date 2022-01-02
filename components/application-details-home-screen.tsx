@@ -72,6 +72,14 @@ const ApplicationDescriptionContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.space.md};
   font-size: ${({ theme }) => theme.fontSizes.xl};
+
+  & p {
+    color: ${({ theme }) => theme.colors.textSecondary};
+    transition: all 0.3s ease-in;
+    &:hover {
+      color: ${({ theme }) => theme.colors.textPrimary};
+    }
+  }
 `;
 
 const ApplicationDetailsHomeScreen: FC<IProps> = ({ application }) => {
