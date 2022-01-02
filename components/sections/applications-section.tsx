@@ -87,6 +87,7 @@ const ApplicationPreviewContainer = styled.div`
 `;
 
 const ApplicationName = styled.h3<IApplicationName>`
+  opacity: 0;
   color: ${({ isSelected, theme }) =>
     isSelected ? theme.colors.textPrimary : "transparent"};
 
@@ -127,25 +128,45 @@ const ApplicationName = styled.h3<IApplicationName>`
 const ApplicationsSection: FC<IProps> = ({ applications }) => {
   const [selectedApplication, setSelectedApplication] = useState<number>(0);
 
+  const [isSectionVisible, setIsSectionVisible] = useState<boolean>(false);
+
   const applicationsSectionRef = useCallback((el: HTMLDivElement) => {
     if (!el) return;
 
     const observer = new IntersectionObserver(
       ([section]) => {
         if (section.isIntersecting && section.boundingClientRect.y > 0) {
-          gsap.fromTo(
-            ".applicationSectionTitle",
-            {
-              opacity: 0,
-              y: "4rem",
-            },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power3.out",
-            }
-          );
+          setIsSectionVisible(true);
+          gsap
+            .fromTo(
+              ".applicationSectionTitle",
+              {
+                opacity: 0,
+                y: "4rem",
+              },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power3.out",
+              }
+            )
+            .then(() => {
+              gsap.fromTo(
+                ".applicationName",
+                {
+                  opacity: 0,
+                  y: "-100%",
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.5,
+                  stagger: 0.2,
+                  ease: "power3.out",
+                }
+              );
+            });
 
           observer.disconnect();
         }
@@ -158,6 +179,31 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
     observer.observe(el);
   }, []);
 
+  const handleApplicationNameClick = (index: number) => {
+    if (selectedApplication === index) return;
+
+    gsap
+      .to(".tech-icon", {
+        opacity: 0,
+        y: "-2rem",
+        duration: 0.2,
+        ease: "power3.out",
+        stagger: 0.1,
+      })
+      .then(() => {
+        gsap.to(".applicationDetailsHomeScreen > div", {
+          opacity: 0,
+          scale: 0,
+          duration: 0.5,
+          ease: "power3.out",
+          stagger: 0.1,
+          onComplete: () => {
+            setSelectedApplication(index);
+          },
+        });
+      });
+  };
+
   return (
     <ApplicationsSectionContainer ref={applicationsSectionRef}>
       <ApplicationsSectionTitle className="applicationSectionTitle">
@@ -169,15 +215,17 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
             <ApplicationName
               isSelected={selectedApplication === idx}
               key={application.id}
-              onClick={() => setSelectedApplication(idx)}
+              onClick={() => handleApplicationNameClick(idx)}
+              className="applicationName"
             >
               {application.name}
             </ApplicationName>
           ))}
-        </ApplicationNameContainer>{" "}
+        </ApplicationNameContainer>
         <ApplicationPreviewContainer>
           <ApplicationDetailsHomeScreen
             application={applications[selectedApplication]}
+            isSectionVisible={isSectionVisible}
           />
         </ApplicationPreviewContainer>
       </AllApplicationsContainer>
