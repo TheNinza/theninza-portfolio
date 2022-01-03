@@ -7,6 +7,7 @@ import { theme } from "../config/styled-components";
 import { IApplication } from "../config/types/dataTypes";
 import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
 import useWindowSize from "../hooks/useWindowSize";
+import ParticleCanvas from "./particle-canvas";
 
 interface IProps {
   application: IApplication;
@@ -224,12 +225,7 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
     <ApplicationDetailsContainer className="applicationDetailsHomeScreen">
       <ApplicationImageAndLinksContainer className="appDetailSection">
         <ApplicationImageContainer>
-          <Image
-            height={270}
-            width={480}
-            src={application.image.url}
-            alt={application.name}
-          />
+          <ParticleCanvas image={application.image.url} />
         </ApplicationImageContainer>
 
         <ApplicationLinksContainer>
