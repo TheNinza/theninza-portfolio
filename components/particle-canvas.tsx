@@ -174,7 +174,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
 
         const pixels = imageData.data;
 
-        const SIZE_PIXELS = 2;
+        const SIZE_PIXELS = 3;
 
         // implementing particles class for better control over the particles
         class Particle implements IParticle {
