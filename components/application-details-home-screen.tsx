@@ -115,7 +115,7 @@ const ApplicationTechStackContainer = styled.div`
 `;
 
 const ApplicationDescriptionContainer = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.md};
@@ -160,7 +160,7 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
         {
           opacity: 1,
           x: 0,
-          duration: 0.8,
+          duration: 0.5,
           stagger: 0.2,
           ease: "power2.inOut",
         }
@@ -174,7 +174,7 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
           {
             y: 0,
             opacity: 1,
-            duration: 0.8,
+            duration: 0.5,
             stagger: 0.1,
             ease: "power2.inOut",
           }
@@ -188,11 +188,11 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
           {
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: 0.5,
             stagger: 0.5,
             ease: "power3.inOut",
           },
-          "-=1.5"
+          "-=1"
         );
     }
   }, [isSectionVisible, application]);

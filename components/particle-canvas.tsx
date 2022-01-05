@@ -66,6 +66,10 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
 
   const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
 
+  const memoisedSameOriginImageUrlMap = useRef<Map<string, string>>(new Map());
+  const memoisedParticlesMap = useRef<Map<string, IParticle[]>>(new Map());
+  const memoisedPixelsMap = useRef<Map<string, Uint8ClampedArray>>(new Map());
+
   // const [mousePosition, setMousePosition] = useState<{
   //   x: number | null;
   //   y: number | null;
@@ -74,13 +78,21 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // set the same origin image url
-
+  // set the same origin image url to avoid canvas cors error
   useEffect(() => {
     const getSameOriginUrl = async (image: string) => {
-      const data = await fetch(image);
-      const blob = await data.blob();
-      const url = URL.createObjectURL(blob);
+      let url: string;
+      // check if the image is already in the map
+      const memoisedSameOriginImageUrl =
+        memoisedSameOriginImageUrlMap.current.get(image);
+      if (memoisedSameOriginImageUrl) {
+        url = memoisedSameOriginImageUrl;
+      } else {
+        const data = await fetch(image);
+        const blob = await data.blob();
+        url = URL.createObjectURL(blob);
+        memoisedSameOriginImageUrlMap.current.set(image, url);
+      }
       setSameOriginImageUrl(url);
     };
 
@@ -95,7 +107,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
       const mouse = {
         x: 0,
         y: 0,
-        radius: 80,
+        radius: 60,
         show: false,
       };
 
@@ -155,26 +167,41 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
         ctx = canvasRefCurrent.getContext("2d");
         if (!ctx) return;
 
-        // clear the canvas and draw image
-        ctx.clearRect(0, 0, canvasRefCurrent.width, canvasRefCurrent.height);
-        ctx.drawImage(
-          imageObj,
-          0,
-          0,
-          canvasRefCurrent.width,
-          canvasRefCurrent.height
-        );
+        let pixels: Uint8ClampedArray | null = null;
 
-        let imageData = ctx.getImageData(
-          0,
-          0,
-          canvasRefCurrent.width,
-          canvasRefCurrent.height
-        );
+        // get memoise pixels
+        const memoisedPixels =
+          memoisedPixelsMap.current.get(sameOriginImageUrl);
 
-        const pixels = imageData.data;
+        if (memoisedPixels) {
+          pixels = memoisedPixels;
+        } else {
+          // clear the canvas and draw image
+          ctx.clearRect(0, 0, canvasRefCurrent.width, canvasRefCurrent.height);
+          ctx.drawImage(
+            imageObj,
+            0,
+            0,
+            canvasRefCurrent.width,
+            canvasRefCurrent.height
+          );
 
-        const SIZE_PIXELS = 3;
+          let imageData = ctx.getImageData(
+            0,
+            0,
+            canvasRefCurrent.width,
+            canvasRefCurrent.height
+          );
+
+          // getting pixels data
+          pixels = imageData.data;
+
+          // memoise pixels
+          memoisedPixelsMap.current.set(sameOriginImageUrl, pixels);
+        }
+
+        // setting size for particles
+        const SIZE_PIXELS = 5; // in px
 
         // implementing particles class for better control over the particles
         class Particle implements IParticle {
@@ -232,26 +259,35 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
         }
 
         // an array to store particles
-        const particlesArray: IParticle[] = [];
+        let particlesArray: IParticle[] = [];
 
-        // get num of particles based on the canvas size each of them having 5px width and height
-        const numOfParticlesX = canvasRefCurrent.width;
-        const numOfParticlesY = canvasRefCurrent.height;
+        const memoisedParticles =
+          memoisedParticlesMap.current.get(sameOriginImageUrl);
 
-        for (let y = 0; y < numOfParticlesY; y += SIZE_PIXELS) {
-          for (let x = 0; x < numOfParticlesX; x += SIZE_PIXELS) {
-            // pixels have rgba values in a uIntClampedArray.. [r, g, b, a, r, g, b, a, ....]
+        if (memoisedParticles) {
+          particlesArray = memoisedParticles;
+        } else {
+          // get num of particles based on the canvas size each of them having 5px width and height
+          const numOfParticlesX = canvasRefCurrent.width;
+          const numOfParticlesY = canvasRefCurrent.height;
 
-            let color = `rgba(${
-              pixels[(x + y * canvasRefCurrent.width) * 4]
-            }, ${pixels[(x + y * canvasRefCurrent.width) * 4 + 1]}, ${
-              pixels[(x + y * canvasRefCurrent.width) * 4 + 2]
-            }, ${pixels[(x + y * canvasRefCurrent.width) * 4 + 3]})`;
+          for (let y = 0; y < numOfParticlesY; y += SIZE_PIXELS) {
+            for (let x = 0; x < numOfParticlesX; x += SIZE_PIXELS) {
+              // pixels have rgba values in a uIntClampedArray.. [r, g, b, a, r, g, b, a, ....]
 
-            let particle = new Particle(x, y, color);
+              let color = `rgba(${
+                pixels[(x + y * canvasRefCurrent.width) * 4]
+              }, ${pixels[(x + y * canvasRefCurrent.width) * 4 + 1]}, ${
+                pixels[(x + y * canvasRefCurrent.width) * 4 + 2]
+              }, ${pixels[(x + y * canvasRefCurrent.width) * 4 + 3]})`;
 
-            particlesArray.push(particle);
+              let particle = new Particle(x, y, color);
+
+              particlesArray.push(particle);
+            }
           }
+
+          memoisedParticlesMap.current.set(sameOriginImageUrl, particlesArray);
         }
 
         animate = () => {

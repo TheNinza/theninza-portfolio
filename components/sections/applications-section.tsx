@@ -208,7 +208,7 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
       .to(".tech-icon", {
         opacity: 0,
         y: "-2rem",
-        duration: 0.2,
+        duration: 0.1,
         ease: "power3.out",
         stagger: 0.1,
       })
@@ -216,7 +216,7 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
         gsap.to(".applicationDetailsHomeScreen > div", {
           opacity: 0,
           scale: 0,
-          duration: 0.5,
+          duration: 0.3,
           ease: "power3.out",
           stagger: 0.1,
           onComplete: () => {
