@@ -100,9 +100,10 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
   }, [image]);
 
   useEffect(() => {
-    if (containerRef.current && canvasRef.current && shouldAnimate) {
+    const containerRefCurrent = containerRef.current;
+    let canvasRefCurrent = canvasRef.current;
+    if (containerRefCurrent && canvasRefCurrent && shouldAnimate) {
       let ctx: CanvasRenderingContext2D | null = null;
-      let canvasRefCurrent: HTMLCanvasElement = canvasRef.current;
 
       const mouse = {
         x: 0,
@@ -122,17 +123,17 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
 
       // set canvas size to that of the container
       canvasRefCurrent.width =
-        containerRef.current.getBoundingClientRect().width;
+        containerRefCurrent.getBoundingClientRect().width;
       canvasRefCurrent.height =
-        containerRef.current.getBoundingClientRect().height;
+        containerRefCurrent.getBoundingClientRect().height;
 
       // track mouse position
-      containerRef.current.addEventListener("mousemove", (e) => {
+      containerRefCurrent.addEventListener("mousemove", (e) => {
         mouse.x = e.offsetX;
         mouse.y = e.offsetY;
       });
 
-      containerRef.current.addEventListener("mouseenter", (e) => {
+      containerRefCurrent.addEventListener("mouseenter", (e) => {
         mouse.show = true;
         // cancel any existing animation
         animationRequest && cancelAnimationFrame(animationRequest);
@@ -144,7 +145,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
         animate && requestAnimationFrame(animate);
       });
 
-      containerRef.current.addEventListener("mouseleave", (e) => {
+      containerRefCurrent.addEventListener("mouseleave", (e) => {
         mouse.show = false;
         timeout = setTimeout(() => {
           if (animationRequest) {
@@ -225,7 +226,15 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
             if (!ctx) return;
 
             // draw the imageData
-            ctx.putImageData(this.imageDataFragment, this.x, this.y);
+            ctx.putImageData(
+              this.imageDataFragment,
+              this.x,
+              this.y,
+              0,
+              0,
+              SIZE_PIXELS,
+              SIZE_PIXELS
+            );
           }
 
           update() {
@@ -310,14 +319,19 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
       });
 
       return () => {
-        if (ctx) {
+        if (ctx && canvasRefCurrent) {
           ctx.clearRect(0, 0, canvasRefCurrent.width, canvasRefCurrent.height);
+        }
+        if (timeout) {
+          clearTimeout(timeout);
         }
         if (animationRequest) {
           cancelAnimationFrame(animationRequest);
         }
-        if (timeout) {
-          clearTimeout(timeout);
+        if (containerRefCurrent) {
+          containerRefCurrent.removeEventListener("mousemove", () => {});
+          containerRefCurrent.removeEventListener("mouseenter", () => {});
+          containerRefCurrent.removeEventListener("mouseleave", () => {});
         }
       };
     }
@@ -329,8 +343,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setShouldAnimate(true);
-        } else {
-          setShouldAnimate(false);
+          observer.disconnect();
         }
       });
     });
