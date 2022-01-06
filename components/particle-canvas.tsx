@@ -9,7 +9,7 @@ interface IProps {
 interface IParticle {
   x: number;
   y: number;
-  color: string;
+  imageDataFragment: ImageData;
   baseX: number;
   baseY: number;
   density: number;
@@ -107,7 +107,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
       const mouse = {
         x: 0,
         y: 0,
-        radius: 60,
+        radius: 80,
         show: false,
       };
 
@@ -207,15 +207,15 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
         class Particle implements IParticle {
           x: number;
           y: number;
-          color: string;
+          imageDataFragment: ImageData;
           baseX: number;
           baseY: number;
           density: number;
 
-          constructor(x: number, y: number, color: string) {
+          constructor(x: number, y: number, imageDataFragment: ImageData) {
             this.x = x;
             this.y = y;
-            this.color = color;
+            this.imageDataFragment = imageDataFragment;
             this.baseX = this.x;
             this.baseY = this.y;
             this.density = Math.random() * 20 + 10;
@@ -223,9 +223,9 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
 
           draw() {
             if (!ctx) return;
-            ctx.fillStyle = this.color;
-            // create a rectangle for each pixel
-            ctx.fillRect(this.x, this.y, SIZE_PIXELS, SIZE_PIXELS);
+
+            // draw the imageData
+            ctx.putImageData(this.imageDataFragment, this.x, this.y);
           }
 
           update() {
@@ -275,13 +275,18 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
             for (let x = 0; x < numOfParticlesX; x += SIZE_PIXELS) {
               // pixels have rgba values in a uIntClampedArray.. [r, g, b, a, r, g, b, a, ....]
 
-              let color = `rgba(${
-                pixels[(x + y * canvasRefCurrent.width) * 4]
-              }, ${pixels[(x + y * canvasRefCurrent.width) * 4 + 1]}, ${
-                pixels[(x + y * canvasRefCurrent.width) * 4 + 2]
-              }, ${pixels[(x + y * canvasRefCurrent.width) * 4 + 3]})`;
+              let imageDataFragment = ctx.getImageData(
+                x,
+                y,
+                SIZE_PIXELS,
+                SIZE_PIXELS
+              );
 
-              let particle = new Particle(x, y, color);
+              if (!imageDataFragment) {
+                continue;
+              }
+
+              let particle = new Particle(x, y, imageDataFragment);
 
               particlesArray.push(particle);
             }
