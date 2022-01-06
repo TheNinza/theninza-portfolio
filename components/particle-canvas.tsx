@@ -226,6 +226,18 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
             if (!ctx) return;
 
             // draw the imageData
+
+            // check if x and y are within the canvas
+            if (
+              canvasRefCurrent &&
+              (this.x < 0 ||
+                this.x > canvasRefCurrent.width ||
+                this.y < 0 ||
+                this.y > canvasRefCurrent.height)
+            ) {
+              return;
+            }
+
             ctx.putImageData(
               this.imageDataFragment,
               this.x,
