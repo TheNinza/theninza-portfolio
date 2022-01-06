@@ -218,7 +218,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
             this.imageDataFragment = imageDataFragment;
             this.baseX = this.x;
             this.baseY = this.y;
-            this.density = Math.random() * 20 + 10;
+            this.density = Math.random() * 15 + 5;
           }
 
           draw() {
