@@ -19,3 +19,27 @@ export interface IApplication {
   sourceCodeUrl: string;
   stacks: IStack[];
 }
+
+export interface IAchievement {
+  id: string;
+  name: string;
+  description: string;
+  relevantLink: string;
+}
+
+export interface IVolunteer {
+  id: string;
+  name: string;
+  description: string;
+  relevantLink: string;
+}
+
+export interface IResponsibility {
+  id: string;
+  name: string;
+  location: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  isOngoing: boolean;
+}

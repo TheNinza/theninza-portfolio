@@ -10,13 +10,23 @@ import styled from "styled-components";
 import ApplicationsSection from "../components/sections/applications-section";
 import HeroSection from "../components/sections/hero-section";
 import TechStackSection from "../components/sections/tech-stack-section";
+import WorksSection from "../components/sections/works-section";
 import { client } from "../config/graphql-request";
-import type { IApplication, IStack } from "../config/types/dataTypes";
+import type {
+  IAchievement,
+  IApplication,
+  IResponsibility,
+  IStack,
+  IVolunteer,
+} from "../config/types/dataTypes";
 
 // types
 type IInitialHomePageProps = {
   stacks: IStack[];
   applications: IApplication[];
+  achievements: IAchievement[];
+  volunteers: IVolunteer[];
+  responsibilities: IResponsibility[];
 };
 
 // a responsive container for the page
@@ -83,6 +93,11 @@ const Home: NextPage = ({
         <HeroSection />
         <TechStackSection stacks={initialHomePageProps.stacks} />
         <ApplicationsSection applications={initialHomePageProps.applications} />
+        <WorksSection
+          achievements={initialHomePageProps.achievements}
+          responsibilities={initialHomePageProps.responsibilities}
+          volunteers={initialHomePageProps.volunteers}
+        />
       </Container>
     </>
   );
@@ -120,6 +135,27 @@ export const getServerSideProps: GetServerSideProps = async () => {
           }
         }
       }
+      achievements {
+        id
+        name
+        description
+        relevantLink
+      }
+      volunteers {
+        id
+        name
+        description
+        relevantLink
+      }
+      responsibilities {
+        id
+        name
+        location
+        description
+        startDate
+        endDate
+        isOngoing
+      }
     }
   `;
 
@@ -128,6 +164,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const initialHomePageProps: IInitialHomePageProps = {
     stacks: data.stacks,
     applications: data.applications,
+    achievements: data.achievements,
+    volunteers: data.volunteers,
+    responsibilities: data.responsibilities,
   };
 
   return {
