@@ -1,4 +1,6 @@
+import gsap from "gsap";
 import Link from "next/link";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
 import {
@@ -30,10 +32,7 @@ const WorksSectionContainer = styled.div`
   /* center the container */
   margin: 0 auto;
 
-  /* !TODO: remove before production */
-  & * {
-    opacity: 1 !important;
-  }
+  position: relative;
 
   @media only screen and (max-width: 1560px) {
     gap: ${({ theme }) => theme.space.xl};
@@ -50,6 +49,8 @@ const WorksFlexContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 8rem;
+
+  position: relative;
 
   @media only screen and (max-width: ${({ theme }) =>
       theme.breakpoints.xxl}px) {
@@ -97,6 +98,11 @@ const SmallTitle = styled(SectionTitle)`
   margin-left: unset;
   margin-right: unset;
   text-align: unset;
+  opacity: 0;
+  white-space: nowrap;
+  & .smallTitleLetter {
+    opacity: 0;
+  }
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
     font-size: 3.2rem;
@@ -138,6 +144,13 @@ const SubSectionBody = styled.div`
     justify-content: space-between;
     margin: 0.5rem 0;
 
+    @media only screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.lg}px) {
+      &.experience {
+        flex-direction: column;
+      }
+    }
+
     & * {
       width: fit-content;
     }
@@ -150,6 +163,7 @@ const SpacedSubSectionTitle = styled(SectionTitle)`
   margin-left: unset;
   margin-right: unset;
   text-align: unset;
+  opacity: inherit;
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
     font-size: 1.8rem;
@@ -172,6 +186,10 @@ const SubSectionDescription = styled.p`
   &:hover {
     color: ${({ theme }) => theme.colors.textPrimary};
   }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: 1rem;
+  }
 `;
 
 const WorksSection: React.FC<IProps> = ({
@@ -179,15 +197,138 @@ const WorksSection: React.FC<IProps> = ({
   volunteers,
   responsibilities,
 }) => {
+  const [showCarousel, setShowCarousel] = useState<boolean>(false);
+
+  const worksSectionRef = useCallback((el: HTMLDivElement) => {
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([section]) => {
+        if (section.isIntersecting && section.boundingClientRect.y > 0) {
+          const smallTitles = document.querySelectorAll(".smallTitle");
+          smallTitles.forEach((smallTitle) => {
+            const child = smallTitle.childNodes;
+
+            const textOutSideSpan = child[0].nodeValue;
+            const textInsideSpan = child[1].textContent;
+
+            if (!textInsideSpan) return;
+            if (!textOutSideSpan) return;
+
+            const textOutSideSpanArray = textOutSideSpan.split("");
+            const textInsideSpanArray = textInsideSpan.split("");
+
+            const spansOutSide = textOutSideSpanArray.map((letter, index) => {
+              const span = document.createElement("span");
+              span.textContent = letter;
+              span.classList.add("smallTitleletter");
+              return span;
+            });
+
+            const outSideNode = document.createElement("span");
+            // add the spans to the outSideNode
+            spansOutSide.forEach((span) => outSideNode.appendChild(span));
+
+            // remove textOutsideSpan
+            smallTitle.replaceChild(outSideNode, child[0]);
+
+            const spansInside = textInsideSpanArray.map((letter, index) => {
+              const span = document.createElement("span");
+              span.textContent = letter;
+              span.classList.add("smallTitleletter");
+              return span;
+            });
+
+            const insideNode = document.createElement("span");
+            // add the spans to the insideNode
+            spansInside.forEach((span) => insideNode.appendChild(span));
+
+            // add the insideNode to the smallTitle child[1]
+            child[1].replaceChild(insideNode, child[1].childNodes[0]);
+          });
+
+          // set opacity 1 after spans are created
+
+          const smallTitleLetters =
+            document.querySelectorAll(".smallTitleletter");
+
+          smallTitleLetters.forEach((letter) => {
+            const el = letter as HTMLElement;
+            el.style.opacity = "0";
+          });
+
+          smallTitles.forEach((t) => {
+            const el = t as HTMLElement;
+            el.style.opacity = "1";
+          });
+
+          smallTitleLetters.forEach((smallTitleLetter) => {
+            const letter = smallTitleLetter as HTMLElement;
+
+            if (letter.textContent === " ") return;
+            letter.style.display = "inline-block";
+
+            const { left, top } = letter.getBoundingClientRect();
+
+            const leftMargin = -left;
+            const rightMargin = el.scrollWidth - leftMargin;
+
+            const topMargin = top - el.getBoundingClientRect().top;
+            const bottomMargin = el.scrollHeight - topMargin;
+
+            let randomLeft = leftMargin + Math.random() * rightMargin;
+            let randomTop = topMargin + Math.random() * bottomMargin;
+
+            const tl = gsap.timeline({
+              onComplete: () => {
+                setShowCarousel(true);
+              },
+            });
+
+            tl.to(letter, {
+              duration: 0.1,
+              x: randomLeft,
+              y: randomTop,
+            })
+              .fromTo(
+                letter,
+                {
+                  opacity: 0,
+                  rotate: Math.random() * 720,
+                },
+                {
+                  duration: 0.5,
+                  opacity: 1,
+                  delay: Math.random() * 2,
+                }
+              )
+              .to(letter, {
+                x: 0,
+                y: 0,
+                rotate: 0,
+                duration: Math.random() * 1 + 0.5,
+              });
+          });
+
+          observer.disconnect();
+        }
+      },
+      {
+        threshold: window.innerWidth > 800 ? 0.7 : 0.1,
+      }
+    );
+
+    observer.observe(el);
+  }, []);
+
   return (
-    <WorksSectionContainer>
+    <WorksSectionContainer ref={worksSectionRef}>
       <WorksFlexContainer>
         <WorksColumns>
           <SubSection>
-            <SmallTitle>
+            <SmallTitle className="smallTitle">
               My <span className="emphasisRedText">Achievements</span>
             </SmallTitle>
-            <CarouselComponent>
+            <CarouselComponent showCarousel={showCarousel}>
               {achievements.map((achievement) => (
                 <SubSectionBody key={achievement.id}>
                   <div className="flexbox">
@@ -214,10 +355,10 @@ const WorksSection: React.FC<IProps> = ({
             </CarouselComponent>
           </SubSection>
           <SubSection>
-            <SmallTitle>
+            <SmallTitle className="smallTitle">
               I <span className="emphasisGreenText">Volunteer</span>
             </SmallTitle>
-            <CarouselComponent>
+            <CarouselComponent showCarousel={showCarousel}>
               {volunteers.map((volunteer) => (
                 <SubSectionBody key={volunteer.id}>
                   <div className="flexbox">
@@ -246,17 +387,17 @@ const WorksSection: React.FC<IProps> = ({
         </WorksColumns>
         <WorksColumns>
           <SubSection>
-            <SmallTitle>
+            <SmallTitle className="smallTitle">
               My <span className="emphasisBlueText">Experience</span>
             </SmallTitle>
-            <CarouselComponent>
+            <CarouselComponent showCarousel={showCarousel}>
               {responsibilities.map((responsibility) => (
                 <SubSectionBody key={responsibility.id}>
                   <SpacedSubSectionTitle>
                     🧑🏻‍💻{responsibility.name}
                   </SpacedSubSectionTitle>
                   <div>
-                    <div className="flexbox">
+                    <div className="flexbox experience">
                       <SubSectionDescription>
                         🗓{" "}
                         {`${
