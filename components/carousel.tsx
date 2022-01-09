@@ -38,6 +38,7 @@ const CarouselComponent: React.FC<IProps> = ({ children }) => {
         autoPlay={isAdditionalFeaturesRequired}
         interval={5000}
         infiniteLoop={isAdditionalFeaturesRequired}
+        showThumbs={false}
       >
         {children}
       </Carousel>

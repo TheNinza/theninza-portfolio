@@ -49,7 +49,22 @@ const WorksFlexContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 10rem;
+  gap: 8rem;
+
+  @media only screen and (max-width: ${({ theme }) =>
+      theme.breakpoints.xxl}px) {
+    gap: 6rem;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    gap: 4rem;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: start;
+  }
 `;
 
 const WorksColumns = styled.div`
@@ -58,6 +73,10 @@ const WorksColumns = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.xxl};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    gap: ${({ theme }) => theme.space.lg};
+  }
 `;
 
 const SubSection = styled.div`
@@ -66,13 +85,30 @@ const SubSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.xl};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    min-height: 10vh;
+    gap: ${({ theme }) => theme.space.lg};
+  }
 `;
 
 const SmallTitle = styled(SectionTitle)`
-  font-size: 5rem;
+  font-size: 4.5vw;
   margin-left: unset;
   margin-right: unset;
   text-align: unset;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    font-size: 3.2rem;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: 2.5rem;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    text-align: center;
+  }
 `;
 
 const SubSectionBody = styled.div`
@@ -89,6 +125,11 @@ const SubSectionBody = styled.div`
 
     &:hover {
       transform: scale(1.1);
+    }
+
+    @media only screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.lg}px) {
+      font-size: 2.5rem;
     }
   }
 
@@ -109,6 +150,16 @@ const SpacedSubSectionTitle = styled(SectionTitle)`
   margin-left: unset;
   margin-right: unset;
   text-align: unset;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    font-size: 1.8rem;
+    letter-spacing: calc(2.2rem * 0.2);
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: 1.5rem;
+    letter-spacing: calc(1.5rem * 0.3);
+  }
 `;
 
 const SubSectionDescription = styled.p`
