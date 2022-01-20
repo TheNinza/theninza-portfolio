@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import type { AxiosError } from "axios";
 
 interface ISpotifyDataResponse {
   currentlyPlaying: boolean;
@@ -52,27 +53,57 @@ const getRefreshedAccessToken = async () => {
 };
 
 const getCurrentSongDataAndStatus = async (accessToken: string) => {
-  const { data, status } = await axios.get(
-    "https://api.spotify.com/v1/me/player/currently-playing?market=IN&additional_types=track",
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  let data, status;
+
+  try {
+    const { data: axiosData, status: axiosStatus } = await axios.get(
+      "https://api.spotify.com/v1/me/player/currently-playing?market=IN&additional_types=track",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    data = axiosData;
+    status = axiosStatus;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response?.status === 401) {
+      data = undefined;
+      status = axiosError.response.status;
+    } else {
+      throw axiosError;
     }
-  );
+  }
 
   return { data, status };
 };
 
 const getLastPlayingSongAndStatus = async (accessToken: string) => {
-  const { data, status } = await axios.get(
-    `https://api.spotify.com/v1/me/player/recently-played?limit=1&market=IN`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  let data, status;
+
+  try {
+    const { data: axiosData, status: axiosStatus } = await axios.get(
+      `https://api.spotify.com/v1/me/player/recently-played?limit=1&market=IN`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    data = axiosData;
+    status = axiosStatus;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response?.status === 401) {
+      data = undefined;
+      status = axiosError.response.status;
+    } else {
+      throw axiosError;
     }
-  );
+  }
 
   return { data, status };
 };
@@ -118,6 +149,8 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
 
     const { data, status } = await getCurrentSongDataAndStatus(access_token);
 
+    spotifyData = transformData(data?.item);
+
     // if access token is expired, get a new one
 
     if (status === 401) {
@@ -125,7 +158,7 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
       access_token = newAccessToken;
 
       res.setHeader("Set-Cookie", [
-        `access_token=${access_token}; path=/; max-age=${60 * 60 * 24 * 7}`,
+        `access_token=${access_token}; path=/; max-age=${60 * 60}`,
       ]);
 
       console.log("New access token:", access_token);
@@ -138,10 +171,8 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
         throw new Error("Could not get a new access token.");
       }
 
-      spotifyData = transformData(data.item);
+      spotifyData = transformData(data?.item);
     }
-
-    spotifyData = transformData(data.item);
 
     if (spotifyData) {
       return res.status(200).json({
@@ -155,6 +186,8 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
     const { data: data2, status: status2 } = await getLastPlayingSongAndStatus(
       access_token
     );
+
+    spotifyData = transformData(data2?.items[0]?.track);
 
     if (status2 === 401) {
       const { access_token: newAccessToken } = await getRefreshedAccessToken();
@@ -175,10 +208,8 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
         throw new Error("Could not get a new access token.");
       }
 
-      spotifyData = transformData(data2.items[0].track);
+      spotifyData = transformData(data2?.items[0]?.track);
     }
-
-    spotifyData = transformData(data2.items[0].track);
 
     if (!spotifyData) {
       throw new Error("Could not get data from Spotify.");
