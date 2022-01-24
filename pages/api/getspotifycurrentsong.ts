@@ -1,15 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import type { AxiosError } from "axios";
-
-interface ISpotifyDataResponse {
-  currentlyPlaying: boolean;
-  spotifyData: {
-    albumImage: string;
-    songName: string;
-    artistsNames: string[];
-  };
-}
+import { ISpotifyData } from "../../config/types/dataTypes";
 
 interface IErrorResponse {
   error: string;
@@ -18,7 +10,7 @@ interface IErrorResponse {
 interface IGetSpotifyCurrentSong {
   (
     req: NextApiRequest,
-    res: NextApiResponse<ISpotifyDataResponse | IErrorResponse>
+    res: NextApiResponse<ISpotifyData | IErrorResponse>
   ): Promise<void>;
 }
 

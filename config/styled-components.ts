@@ -113,3 +113,22 @@ export const SectionTitle = styled.h2`
     font-size: 12vw;
   }
 `;
+
+export const GlassBox = styled.div`
+  background: rgba(97, 149, 251, 0.07);
+  backdrop-filter: blur(40px);
+  border-radius: 26px;
+  border: 1px solid white;
+`;
+
+export const CardContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+`;
+
+export const Blob = styled.div`
+  position: absolute;
+  border-radius: 50%;
+  z-index: -10;
+`;

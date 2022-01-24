@@ -43,3 +43,12 @@ export interface IResponsibility {
   endDate: string;
   isOngoing: boolean;
 }
+
+export interface ISpotifyData {
+  currentlyPlaying: boolean;
+  spotifyData: {
+    albumImage: string;
+    songName: string;
+    artistsNames: string[];
+  };
+}
