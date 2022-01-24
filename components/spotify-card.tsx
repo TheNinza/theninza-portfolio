@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Blob, CardContainer, GlassBox } from "../config/styled-components";
 import { ISpotifyData } from "../config/types/dataTypes";
-import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
 
 type ISpotifyState = ISpotifyData | null;
 interface IStyledSpotifyCard {
@@ -131,7 +130,7 @@ const SpotifyCardComponent: React.FC = () => {
   }, []);
 
   // set auto horizontal scrolling for song name
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     if (!spotifyState) return;
 
     // get width of description container
