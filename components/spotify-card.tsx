@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Blob, CardContainer, GlassBox } from "../config/styled-components";
 import { ISpotifyData } from "../config/types/dataTypes";
+import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
 
 type ISpotifyState = ISpotifyData | null;
+interface IStyledSpotifyCard {
+  readonly shouldScrollSongName: boolean;
+  readonly shouldScrollArtistsNames: boolean;
+}
 
 const DEFAULT_SPOTIFY_DATA: ISpotifyData = {
   currentlyPlaying: true,
@@ -33,7 +38,7 @@ const SpotifyBlob2 = styled(Blob)`
   background: ${({ theme }) => theme.colors.green};
 `;
 
-const SpotifyCard = styled(GlassBox)`
+const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
   width: 100%;
   aspect-ratio: 346/500;
   padding: ${({ theme }) => theme.space.xl};
@@ -69,15 +74,38 @@ const SpotifyCard = styled(GlassBox)`
       display: flex;
       flex-direction: column;
       gap: ${({ theme }) => theme.space.sm};
+      flex: 1;
+      overflow: hidden;
 
       & > .song-name {
         font-size: ${({ theme }) => theme.fontSizes.xxl};
         font-weight: ${({ theme }) => theme.fontWeights.medium};
+        white-space: nowrap;
+        width: fit-content;
+        animation: ${({ shouldScrollSongName }) =>
+          shouldScrollSongName
+            ? `scrollText 8s linear infinite alternate`
+            : "unset"};
       }
 
       & > .artist-name {
         color: ${({ theme }) => theme.colors.textSecondary};
         font-size: ${({ theme }) => theme.fontSizes.md};
+        white-space: nowrap;
+        width: fit-content;
+        animation: ${({ shouldScrollArtistsNames }) =>
+          shouldScrollArtistsNames
+            ? `scrollText 8s linear infinite alternate`
+            : "unset"};
+      }
+
+      @keyframes scrollText {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
       }
     }
   }
@@ -87,6 +115,9 @@ const SpotifyCardComponent: React.FC = () => {
   const [spotifyState, setSpotifyState] = useState<ISpotifyState>(null);
 
   const [loading, setLoading] = useState(true);
+
+  const [shouldScrollSongName, setShouldScrollSongName] = useState(false);
+  const [shouldScrollArtistName, setShouldScrollArtistName] = useState(false);
 
   useEffect(() => {
     fetchSpotifyData();
@@ -98,6 +129,43 @@ const SpotifyCardComponent: React.FC = () => {
       clearInterval(interval);
     };
   }, []);
+
+  // set auto horizontal scrolling for song name
+  useIsomorphicLayoutEffect(() => {
+    if (!spotifyState) return;
+
+    // get width of description container
+    const descriptionContainer = document.querySelector(
+      ".description-container-box > .description"
+    );
+    const descriptionContainerWidth =
+      descriptionContainer?.getBoundingClientRect().width;
+
+    // get width of song name
+    const songName = document.querySelector(".description > .song-name");
+    const songNameWidth = songName?.getBoundingClientRect().width;
+
+    // get width of artist name
+    const artistName = document.querySelector(".description > .artist-name");
+    const artistNameWidth = artistName?.getBoundingClientRect().width;
+
+    if (!songNameWidth || !artistNameWidth || !descriptionContainerWidth)
+      return;
+
+    // if song name is wider than description container, set horizontal scrolling
+    if (songNameWidth >= descriptionContainerWidth) {
+      setShouldScrollSongName(true);
+    } else {
+      setShouldScrollSongName(false);
+    }
+
+    // if artist name is wider than description container, set horizontal scrolling
+    if (artistNameWidth >= descriptionContainerWidth) {
+      setShouldScrollArtistName(true);
+    } else {
+      setShouldScrollArtistName(false);
+    }
+  }, [spotifyState]);
 
   const fetchSpotifyData = async () => {
     setLoading(true);
@@ -115,7 +183,10 @@ const SpotifyCardComponent: React.FC = () => {
     <CardContainer>
       <SpotifyBlob1 />
       <SpotifyBlob2 />
-      <SpotifyCard>
+      <SpotifyCard
+        shouldScrollArtistsNames={shouldScrollArtistName}
+        shouldScrollSongName={shouldScrollSongName}
+      >
         {loading && !spotifyState ? (
           <div>Loading...</div>
         ) : (
