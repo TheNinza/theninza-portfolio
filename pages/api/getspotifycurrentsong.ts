@@ -108,6 +108,7 @@ const transformData = (data: any) => {
     album: { images },
     name,
     artists,
+    preview_url,
   } = data;
   // get at max 2 artists
   const artistsNames: string[] = artists
@@ -117,6 +118,7 @@ const transformData = (data: any) => {
     albumImage: images[0].url,
     songName: name,
     artistsNames,
+    previewUrl: preview_url,
   };
 };
 

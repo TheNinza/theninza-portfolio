@@ -15,9 +15,11 @@ const DEFAULT_SPOTIFY_DATA: ISpotifyData = {
   currentlyPlaying: true,
   spotifyData: {
     albumImage:
-      "https://i.scdn.co/image/ab67616d0000b2739dab9a51fd620a3d79d53e91",
-    songName: "superstars",
-    artistsNames: ["Christian French"],
+      "https://i.scdn.co/image/ab67616d0000b2733b524e973b13737390949a4f",
+    songName: "tomorrow tonight",
+    artistsNames: ["Loote"],
+    previewUrl:
+      "https://p.scdn.co/mp3-preview/7986df03af9d392bde2e3658dcf9232d359a7a05?cid=4b185668e20a45a7ab223bb96584e003",
   },
 };
 
@@ -225,11 +227,6 @@ const SpotifyCardComponent: React.FC = () => {
       }
     };
 
-    // if track has ended, reset audio
-    audio.addEventListener("ended", () => {
-      audio.currentTime = 0;
-    });
-
     spotifyCard.addEventListener("mouseenter", onMouseEnter);
     spotifyCard.addEventListener("mouseleave", onMouseLeave);
     spotifyCard.addEventListener("click", onClick);
@@ -271,7 +268,8 @@ const SpotifyCardComponent: React.FC = () => {
               <audio
                 className="audio-player"
                 ref={audioRef}
-                src="https://p.scdn.co/mp3-preview/7986df03af9d392bde2e3658dcf9232d359a7a05?cid=4b185668e20a45a7ab223bb96584e003"
+                src={spotifyState.spotifyData.previewUrl}
+                loop
               />
               <div className="title">
                 {spotifyState.currentlyPlaying

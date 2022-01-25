@@ -50,5 +50,6 @@ export interface ISpotifyData {
     albumImage: string;
     songName: string;
     artistsNames: string[];
+    previewUrl: string;
   };
 }
