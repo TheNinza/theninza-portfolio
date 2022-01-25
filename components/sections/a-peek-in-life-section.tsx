@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
 import SpotifyCardComponent from "../spotify-card";
+import TwitchCardComponent from "../twitch-card";
 
 const APeekInLifeSectionContainer = styled.div`
   min-height: 100vh;
@@ -60,6 +61,8 @@ const SectionFlexContainer = styled.div`
   width: 100%;
   display: flex;
   gap: ${({ theme }) => theme.space.xl};
+  flex: 1;
+  padding-bottom: ${({ theme }) => theme.space.md};
 `;
 
 const CoolSection = styled.div`
@@ -102,6 +105,7 @@ const APeekInLifeSection: React.FC = () => {
           <SpotifyCardComponent />
 
           {/* twitch */}
+          <TwitchCardComponent />
         </CoolSection>
         <ProfessionalSection>
           {/* Github */}

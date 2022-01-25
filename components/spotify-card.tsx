@@ -21,6 +21,10 @@ const DEFAULT_SPOTIFY_DATA: ISpotifyData = {
   },
 };
 
+const SpotifyCardContainer = styled(CardContainer)`
+  flex: 0.75;
+`;
+
 const SpotifyBlob1 = styled(Blob)`
   top: -5%;
   left: -5%;
@@ -38,8 +42,8 @@ const SpotifyBlob2 = styled(Blob)`
 `;
 
 const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
+  height: 100%;
   width: 100%;
-  aspect-ratio: 346/500;
   padding: ${({ theme }) => theme.space.xl};
   z-index: 1;
 
@@ -179,7 +183,7 @@ const SpotifyCardComponent: React.FC = () => {
   };
 
   return (
-    <CardContainer>
+    <SpotifyCardContainer>
       <SpotifyBlob1 />
       <SpotifyBlob2 />
       <SpotifyCard
@@ -226,7 +230,7 @@ const SpotifyCardComponent: React.FC = () => {
           )
         )}
       </SpotifyCard>
-    </CardContainer>
+    </SpotifyCardContainer>
   );
 };
 
