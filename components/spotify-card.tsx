@@ -1,6 +1,6 @@
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Blob, CardContainer, GlassBox } from "../config/styled-components";
 import { ISpotifyData } from "../config/types/dataTypes";
@@ -52,6 +52,13 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
   gap: ${({ theme }) => theme.space.lg};
   justify-content: space-between;
   align-items: center;
+
+  & > .audio-player {
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
 
   & > div {
     width: 100%;
@@ -122,6 +129,9 @@ const SpotifyCardComponent: React.FC = () => {
   const [shouldScrollSongName, setShouldScrollSongName] = useState(false);
   const [shouldScrollArtistName, setShouldScrollArtistName] = useState(false);
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const spotifyCardRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     fetchSpotifyData();
     let interval = setInterval(() => {
@@ -170,6 +180,68 @@ const SpotifyCardComponent: React.FC = () => {
     }
   }, [spotifyState]);
 
+  // play audio on hover
+  useEffect(() => {
+    if (!spotifyState) return;
+
+    const audio = audioRef.current;
+    const spotifyCard = spotifyCardRef.current;
+
+    let intervalIncreaseVol: NodeJS.Timeout;
+
+    if (!audio || !spotifyCard) return;
+
+    const playAudio = () => {
+      audio.play();
+    };
+
+    const pauseAudio = () => {
+      audio.pause();
+    };
+
+    const onMouseEnter = () => {
+      if (intervalIncreaseVol) clearInterval(intervalIncreaseVol);
+      audio.volume = 0;
+      intervalIncreaseVol = setInterval(() => {
+        if (audio.volume < 0.9) {
+          audio.volume += 0.01;
+        }
+      }, 100);
+
+      playAudio();
+    };
+
+    const onMouseLeave = () => {
+      if (intervalIncreaseVol) clearInterval(intervalIncreaseVol);
+      audio.volume = 0;
+      pauseAudio();
+    };
+
+    const onClick = () => {
+      if (audio.paused) {
+        playAudio();
+      } else {
+        pauseAudio();
+      }
+    };
+
+    // if track has ended, reset audio
+    audio.addEventListener("ended", () => {
+      audio.currentTime = 0;
+    });
+
+    spotifyCard.addEventListener("mouseenter", onMouseEnter);
+    spotifyCard.addEventListener("mouseleave", onMouseLeave);
+    spotifyCard.addEventListener("click", onClick);
+
+    return () => {
+      spotifyCard.removeEventListener("mouseenter", onMouseEnter);
+      spotifyCard.removeEventListener("mouseleave", onMouseLeave);
+      spotifyCard.removeEventListener("click", onClick);
+      if (intervalIncreaseVol) clearInterval(intervalIncreaseVol);
+    };
+  }, [spotifyState]);
+
   const fetchSpotifyData = async () => {
     setLoading(true);
     try {
@@ -189,12 +261,18 @@ const SpotifyCardComponent: React.FC = () => {
       <SpotifyCard
         shouldScrollArtistsNames={shouldScrollArtistName}
         shouldScrollSongName={shouldScrollSongName}
+        ref={spotifyCardRef}
       >
         {loading && !spotifyState ? (
           <div>Loading...</div>
         ) : (
           spotifyState && (
             <>
+              <audio
+                className="audio-player"
+                ref={audioRef}
+                src="https://p.scdn.co/mp3-preview/7986df03af9d392bde2e3658dcf9232d359a7a05?cid=4b185668e20a45a7ab223bb96584e003"
+              />
               <div className="title">
                 {spotifyState.currentlyPlaying
                   ? "Currently Vibing On"
