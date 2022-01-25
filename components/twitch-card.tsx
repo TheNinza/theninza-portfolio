@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styled from "styled-components";
 import { Blob, CardContainer, GlassBox } from "../config/styled-components";
 
@@ -58,20 +59,24 @@ const TwitchCardComponent: React.FC<{}> = () => {
   return (
     <TwitchCardContainer>
       <TwitchBlob />
-      <TwitchCard>
-        <div className="twitch-logo-absolute-wrapper">
-          <div className="twitch-logo-container">
-            <Image
-              layout="fill"
-              objectFit="contain"
-              src="/twitch-logo.svg"
-              alt="Twitch logo"
-            />
-          </div>
-        </div>
-        <div className="title">I like gaming and streaming</div>
-        <div className="description">Streams Valorant</div>
-      </TwitchCard>
+      <Link href="https://twitch.tv/theninza" passHref>
+        <a target="_blank" rel="noopener noreferrer">
+          <TwitchCard>
+            <div className="twitch-logo-absolute-wrapper">
+              <div className="twitch-logo-container">
+                <Image
+                  layout="fill"
+                  objectFit="contain"
+                  src="/twitch-logo.svg"
+                  alt="Twitch logo"
+                />
+              </div>
+            </div>
+            <div className="title">I like gaming and streaming</div>
+            <div className="description">Streams Valorant</div>
+          </TwitchCard>
+        </a>
+      </Link>
     </TwitchCardContainer>
   );
 };

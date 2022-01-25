@@ -76,6 +76,10 @@ export const GlobalStyles = createGlobalStyle`
     background: ${(props) => props.theme.colors.background};
     color: ${(props) => props.theme.colors.textPrimary};
   }
+
+  a {
+    color: ${(props) => props.theme.colors.textPrimary};
+  }
 `;
 
 // common styles
