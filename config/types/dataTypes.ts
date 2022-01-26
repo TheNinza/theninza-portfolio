@@ -53,3 +53,8 @@ export interface ISpotifyData {
     previewUrl: string;
   };
 }
+
+export interface IGithubData {
+  numEvents: number;
+  date: string;
+}
