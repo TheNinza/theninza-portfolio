@@ -26,7 +26,7 @@ const DEFAULT_SPOTIFY_DATA: ISpotifyData = {
 const SpotifyCardContainer = styled(CardContainer)`
   flex: 0.75;
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
-    flex: unset;
+    flex: 0.7;
   }
 `;
 
@@ -92,12 +92,23 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
     justify-content: space-between;
     gap: ${({ theme }) => theme.space.sm};
 
+    @media only screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.lg}px) {
+      flex-direction: column;
+      align-items: center;
+    }
+
     & > .description {
       display: flex;
       flex-direction: column;
       gap: ${({ theme }) => theme.space.sm};
       flex: 1;
       overflow: hidden;
+
+      @media only screen and (max-width: ${({ theme }) =>
+          theme.breakpoints.lg}px) {
+        align-items: center;
+      }
 
       & > .song-name {
         font-size: ${({ theme }) => theme.fontSizes.xxl};
@@ -112,6 +123,9 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
         @media only screen and (max-width: ${({ theme }) =>
             theme.breakpoints.lg}px) {
           font-size: ${({ theme }) => theme.fontSizes.lg};
+          white-space: unset;
+          animation: unset;
+          text-align: center;
         }
       }
 
