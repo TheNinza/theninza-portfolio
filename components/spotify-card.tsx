@@ -25,6 +25,9 @@ const DEFAULT_SPOTIFY_DATA: ISpotifyData = {
 
 const SpotifyCardContainer = styled(CardContainer)`
   flex: 0.75;
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    flex: unset;
+  }
 `;
 
 const SpotifyBlob1 = styled(Blob)`
@@ -69,6 +72,13 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
   & > .title {
     font-size: ${({ theme }) => theme.fontSizes.xl};
     text-align: center;
+
+    @media only screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.lg}px) {
+      gap: ${({ theme }) => theme.space.sm};
+      width: 35%;
+      font-size: ${({ theme }) => theme.fontSizes.sm};
+    }
   }
 
   & > .album-cover-container {
@@ -98,6 +108,11 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
           shouldScrollSongName
             ? `scrollText 8s linear infinite alternate`
             : "unset"};
+
+        @media only screen and (max-width: ${({ theme }) =>
+            theme.breakpoints.lg}px) {
+          font-size: ${({ theme }) => theme.fontSizes.lg};
+        }
       }
 
       & > .artist-name {
@@ -109,6 +124,11 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
           shouldScrollArtistsNames
             ? `scrollText 8s linear infinite alternate`
             : "unset"};
+
+        @media only screen and (max-width: ${({ theme }) =>
+            theme.breakpoints.lg}px) {
+          font-size: ${({ theme }) => theme.fontSizes.sm};
+        }
       }
 
       @keyframes scrollText {
@@ -118,6 +138,13 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
         100% {
           transform: translateX(-100%);
         }
+      }
+    }
+
+    & > .logo-container {
+      @media only screen and (max-width: ${({ theme }) =>
+          theme.breakpoints.lg}px) {
+        max-width: 20%;
       }
     }
   }

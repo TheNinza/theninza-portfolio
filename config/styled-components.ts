@@ -123,12 +123,25 @@ export const GlassBox = styled.div`
   backdrop-filter: blur(40px);
   border-radius: 26px;
   border: 1px solid white;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    padding: ${({ theme }) => theme.space.md} !important;
+    border-radius: 16px;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    padding: ${({ theme }) => theme.space.sm} !important;
+  }
 `;
 
 export const CardContainer = styled.div`
   position: relative;
   overflow: hidden;
   border-radius: 26px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    border-radius: 16px;
+  }
 `;
 
 export const Blob = styled.div`

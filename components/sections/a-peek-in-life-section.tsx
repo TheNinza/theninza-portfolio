@@ -55,7 +55,7 @@ const APeekInLifeSectionTitle = styled(SectionTitle)`
   }
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
-    text-align: center;
+    font-size: 2rem;
   }
 `;
 
@@ -65,6 +65,10 @@ const SectionFlexContainer = styled.div`
   gap: ${({ theme }) => theme.space.xl};
   flex: 1;
   padding-bottom: ${({ theme }) => theme.space.md};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    gap: ${({ theme }) => theme.space.sm};
+  }
 `;
 
 const CoolSection = styled.div`
@@ -73,6 +77,11 @@ const CoolSection = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: ${({ theme }) => theme.space.xl};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    gap: ${({ theme }) => theme.space.sm};
+    width: 45%;
+  }
 `;
 
 const ProfessionalSection = styled(CoolSection)`
@@ -82,6 +91,10 @@ const ProfessionalSection = styled(CoolSection)`
   flex-direction: column;
   justify-content: space-between;
   gap: ${({ theme }) => theme.space.xl};
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    gap: ${({ theme }) => theme.space.sm};
+  }
 `;
 
 const APeekInLifeSection: React.FC = () => {
