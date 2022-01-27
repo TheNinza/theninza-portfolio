@@ -84,7 +84,7 @@ const transFormData = (data: IGitHubEvent[]): ResponseData => {
 
   const today = new Date();
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 1; i < 11; i++) {
     // set date to today - i days
     const date = new Date(today.getTime() - i * 24 * 60 * 60 * 1000);
 
