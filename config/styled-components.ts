@@ -76,6 +76,10 @@ export const GlobalStyles = createGlobalStyle`
     background: ${(props) => props.theme.colors.background};
     color: ${(props) => props.theme.colors.textPrimary};
   }
+
+  a {
+    color: ${(props) => props.theme.colors.textPrimary};
+  }
 `;
 
 // common styles
@@ -112,4 +116,36 @@ export const SectionTitle = styled.h2`
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
     font-size: 12vw;
   }
+`;
+
+export const GlassBox = styled.div`
+  background: rgba(97, 149, 251, 0.07);
+  backdrop-filter: blur(40px);
+  border-radius: 26px;
+  border: 1px solid white;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    padding: ${({ theme }) => theme.space.md} !important;
+    border-radius: 16px;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.sm}px) {
+    padding: ${({ theme }) => theme.space.sm} !important;
+  }
+`;
+
+export const CardContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    border-radius: 16px;
+  }
+`;
+
+export const Blob = styled.div`
+  position: absolute;
+  border-radius: 50%;
+  z-index: -10;
 `;

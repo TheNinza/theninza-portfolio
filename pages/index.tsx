@@ -7,6 +7,7 @@ import type {
 import Head from "next/head";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
+import APeekInLifeSection from "../components/sections/a-peek-in-life-section";
 import ApplicationsSection from "../components/sections/applications-section";
 import HeroSection from "../components/sections/hero-section";
 import TechStackSection from "../components/sections/tech-stack-section";
@@ -98,6 +99,7 @@ const Home: NextPage = ({
           responsibilities={initialHomePageProps.responsibilities}
           volunteers={initialHomePageProps.volunteers}
         />
+        <APeekInLifeSection />
       </Container>
     </>
   );
