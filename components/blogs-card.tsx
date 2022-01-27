@@ -48,6 +48,12 @@ const BlogCard = styled(GlassBox)`
     letter-spacing: 1rem;
     text-align: center;
     color: ${({ theme }) => theme.colors.textSecondary};
+
+    @media only screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.sm}px) {
+      fontsize: ${({ theme }) => theme.fontSizes.xl};
+      letter-spacing: 0.5rem;
+    }
   }
 `;
 
