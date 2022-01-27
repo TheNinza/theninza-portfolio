@@ -137,7 +137,7 @@ const GithubCardComponent: React.FC = () => {
       let delayed: boolean = false;
 
       Chart.defaults.font.size = 16;
-      Chart.defaults.plugins.legend.display = false;
+      Chart.defaults.plugins.legend;
 
       const config = {
         type: "line" as ChartType,
@@ -188,8 +188,6 @@ const GithubCardComponent: React.FC = () => {
 
       const myChart = new Chart(chartEl, config);
       chartJSChartRef.current = myChart;
-
-      console.log(myChart);
     },
     [githubData]
   );
