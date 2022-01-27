@@ -174,6 +174,7 @@ const GithubCardComponent: React.FC = () => {
         data,
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           radius: 5,
           hitRadius: 100,
           hoverRadius: 10,
