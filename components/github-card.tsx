@@ -6,6 +6,7 @@ import { CardContainer, GlassBox } from "../config/styled-components";
 import { IGithubData } from "../config/types/dataTypes";
 import Chart, { ChartType } from "chart.js/auto";
 import Link from "next/link";
+import useWindowSize from "../hooks/useWindowSize";
 
 type IGithubState = IGithubData[] | null;
 
@@ -50,6 +51,11 @@ const GithubCard = styled(GlassBox)`
       z-index: -1;
       opacity: 0.83;
 
+      @media only screen and (max-width: ${({ theme }) =>
+          theme.breakpoints.lg}px) {
+        opacity: 0.1;
+      }
+
       & > .github-logo-container {
         height: 100%;
         aspect-ratio: 1;
@@ -67,6 +73,23 @@ const GithubCard = styled(GlassBox)`
         max-height: 100%;
       }
     }
+
+    & > .secondaryContainer {
+      & > div {
+        font-size: ${({ theme }) => theme.fontSizes.lg};
+
+        &.text {
+          font-weight: ${({ theme }) => theme.fontWeights.medium};
+          font-size: ${({ theme }) => theme.fontSizes.xl};
+
+          margin-top: ${({ theme }) => theme.space.lg};
+
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -74,6 +97,9 @@ const GithubCardComponent: React.FC = () => {
   const [githubData, setGithubData] = useState<IGithubState>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
+  const { width } = useWindowSize();
+
+  const isSmallScreen = width && width < 992;
 
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
@@ -210,6 +236,28 @@ const GithubCardComponent: React.FC = () => {
     fetchGithubData();
   }, []);
 
+  // get longest streak
+  const getLongestStreak = (data: IGithubState) => {
+    if (!data) return 0;
+
+    let longestStreak = 0;
+    let currentStreak = 0;
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[data.length - 1 - i].numEvents > 0) {
+        currentStreak++;
+      } else {
+        currentStreak = 0;
+      }
+
+      if (currentStreak > longestStreak) {
+        longestStreak = currentStreak;
+      }
+    }
+
+    return longestStreak;
+  };
+
   return (
     <GithubCardContainer>
       <Link href="https://github.com/theninza" passHref>
@@ -232,9 +280,24 @@ const GithubCardComponent: React.FC = () => {
                       />
                     </div>
                   </div>
-                  <div className="chart">
-                    <canvas ref={chartRef} id="git-chart"></canvas>
-                  </div>
+                  {!isSmallScreen ? (
+                    <div className="chart">
+                      <canvas ref={chartRef} id="git-chart"></canvas>
+                    </div>
+                  ) : (
+                    <div className="secondaryContainer">
+                      <div className="text">In Last 10 Days:</div>
+                      <div className="text">Github Events:</div>
+                      <div>
+                        {githubData?.reduce(
+                          (acc, curr) => acc + curr.numEvents,
+                          0
+                        )}
+                      </div>
+                      <div className="text">Longest Streak:</div>
+                      <div>{getLongestStreak(githubData)} days</div>
+                    </div>
+                  )}
                 </>
               )}
             </div>
