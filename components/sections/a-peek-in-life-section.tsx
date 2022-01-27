@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
+import GithubCardComponent from "../github-card";
 import SpotifyCardComponent from "../spotify-card";
 import TwitchCardComponent from "../twitch-card";
 
@@ -76,6 +77,10 @@ const CoolSection = styled.div`
 const ProfessionalSection = styled(CoolSection)`
   width: unset;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.space.xl};
 `;
 
 const APeekInLifeSection: React.FC = () => {
@@ -109,6 +114,8 @@ const APeekInLifeSection: React.FC = () => {
         </CoolSection>
         <ProfessionalSection>
           {/* Github */}
+          <GithubCardComponent />
+
           {/* Blogs */}
         </ProfessionalSection>
       </SectionFlexContainer>
