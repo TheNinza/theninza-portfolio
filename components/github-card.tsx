@@ -260,10 +260,10 @@ const GithubCardComponent: React.FC = () => {
   };
 
   return (
-    <GithubCardContainer>
+    <GithubCardContainer className="glassContainer">
       <Link href="https://github.com/theninza" passHref>
         <a target="_blank" rel="noopener noreferrer">
-          <GithubCard>
+          <GithubCard className="glassCard">
             <div className="title">My Github Stats</div>
             {/* chart */}
             <div ref={chartContainerRef} className="chart-container">

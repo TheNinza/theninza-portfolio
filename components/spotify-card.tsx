@@ -293,10 +293,11 @@ const SpotifyCardComponent: React.FC = () => {
   };
 
   return (
-    <SpotifyCardContainer>
+    <SpotifyCardContainer className="glassContainer">
       <SpotifyBlob1 />
       <SpotifyBlob2 />
       <SpotifyCard
+        className="glassCard"
         shouldScrollArtistsNames={shouldScrollArtistName}
         shouldScrollSongName={shouldScrollSongName}
         ref={spotifyCardRef}

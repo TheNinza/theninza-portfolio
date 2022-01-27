@@ -59,10 +59,10 @@ const BlogCard = styled(GlassBox)`
 
 const BlogCardComponent: React.FC<{}> = () => {
   return (
-    <BlogCardContainer>
+    <BlogCardContainer className="glassContainer">
       <BlogBlob1 />
       <BlogBlob2 />
-      <BlogCard>
+      <BlogCard className="glassCard">
         <div className="title">My Recent Blogs</div>
         <div className="description">Coming Soon</div>
       </BlogCard>

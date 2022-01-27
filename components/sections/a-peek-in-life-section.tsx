@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { useState } from "react";
+import gsap from "gsap";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
 import BlogCardComponent from "../blogs-card";
@@ -10,8 +10,6 @@ import TwitchCardComponent from "../twitch-card";
 const APeekInLifeSectionContainer = styled.div`
   min-height: 100vh;
   width: 100%;
-
-  overflow-y: hidden;
 
   /* align items to center of the container */
   display: flex;
@@ -42,9 +40,7 @@ const APeekInLifeSectionTitle = styled(SectionTitle)`
   opacity: 1;
   white-space: nowrap;
   letter-spacing: 0.2rem;
-  /* & .smallTitleLetter {
-    opacity: 0;
-  } */
+  opacity: 0;
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
     font-size: 3.2rem;
@@ -68,6 +64,10 @@ const SectionFlexContainer = styled.div`
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
     gap: ${({ theme }) => theme.space.sm};
+  }
+
+  & .glassContainer {
+    opacity: 0;
   }
 `;
 
@@ -98,42 +98,96 @@ const ProfessionalSection = styled(CoolSection)`
 `;
 
 const APeekInLifeSection: React.FC = () => {
-  const [spotifyState, setSpotifyState] = useState({
-    loading: true,
-    error: null,
-    data: {
-      currentlyPlaying: true,
-      spotifyData: {
-        albumImage:
-          "https://i.scdn.co/image/ab67616d0000b2739dab9a51fd620a3d79d53e91",
-        songName: "superstars",
-        artistsNames: ["Christian French"],
+  const [isSectionVisible, setIsSectionVisible] = useState(false);
+
+  const aPeekInLifeSectionRef = useCallback((el: HTMLDivElement) => {
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([section]) => {
+        if (section.isIntersecting && section.boundingClientRect.y > 0) {
+          setIsSectionVisible(true);
+          observer.disconnect();
+
+          gsap.fromTo(
+            ".aPeekInLifeSectionTitle",
+            {
+              opacity: 0,
+              y: "4rem",
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.easeIn",
+            }
+          );
+
+          const glassContainers = document.querySelectorAll(".glassContainer");
+
+          // set intersection observer for each glass container
+          glassContainers.forEach((glassContainer) => {
+            const glassContainerObserver = new IntersectionObserver(
+              ([glass]) => {
+                if (glass.isIntersecting) {
+                  glassContainerObserver.disconnect();
+                  gsap.fromTo(
+                    glass.target,
+                    {
+                      opacity: 0,
+                      y: "4rem",
+                    },
+                    {
+                      opacity: 1,
+                      y: 0,
+                      duration: 0.5,
+                      ease: "power3.easeIn",
+                      delay: Math.random() * 1.5,
+                    }
+                  );
+                }
+              },
+              {
+                threshold: 0.7,
+              }
+            );
+
+            glassContainerObserver.observe(glassContainer);
+          });
+        }
       },
-    },
-  });
+      {
+        threshold: 0.5,
+      }
+    );
+
+    observer.observe(el);
+  }, []);
 
   return (
-    <APeekInLifeSectionContainer>
-      <APeekInLifeSectionTitle>
+    <APeekInLifeSectionContainer ref={aPeekInLifeSectionRef}>
+      <APeekInLifeSectionTitle className="aPeekInLifeSectionTitle">
         A <span className="emphasisGreenText">peek</span> in my{" "}
         <span className="emphasisRedText">Life</span>{" "}
       </APeekInLifeSectionTitle>
-      <SectionFlexContainer>
-        <CoolSection>
-          {/* spotify */}
-          <SpotifyCardComponent />
+      {isSectionVisible && (
+        <SectionFlexContainer>
+          <CoolSection>
+            {/* spotify */}
+            <SpotifyCardComponent />
 
-          {/* twitch */}
-          <TwitchCardComponent />
-        </CoolSection>
-        <ProfessionalSection>
-          {/* Github */}
-          <GithubCardComponent />
+            {/* twitch */}
+            <TwitchCardComponent />
+          </CoolSection>
+          <ProfessionalSection>
+            {/* Github */}
+            <GithubCardComponent />
 
-          {/* Blogs */}
-          <BlogCardComponent />
-        </ProfessionalSection>
-      </SectionFlexContainer>
+            {/* Blogs */}
+            <BlogCardComponent />
+          </ProfessionalSection>
+        </SectionFlexContainer>
+      )}
     </APeekInLifeSectionContainer>
   );
 };
