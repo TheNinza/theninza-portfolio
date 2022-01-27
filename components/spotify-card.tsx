@@ -158,7 +158,7 @@ const SpotifyCard = styled(GlassBox)<IStyledSpotifyCard>`
     & > .logo-container {
       @media only screen and (max-width: ${({ theme }) =>
           theme.breakpoints.lg}px) {
-        max-width: 20%;
+        max-width: 35%;
       }
     }
   }
