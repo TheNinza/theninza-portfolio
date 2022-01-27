@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
+import BlogCardComponent from "../blogs-card";
 import GithubCardComponent from "../github-card";
 import SpotifyCardComponent from "../spotify-card";
 import TwitchCardComponent from "../twitch-card";
@@ -117,6 +118,7 @@ const APeekInLifeSection: React.FC = () => {
           <GithubCardComponent />
 
           {/* Blogs */}
+          <BlogCardComponent />
         </ProfessionalSection>
       </SectionFlexContainer>
     </APeekInLifeSectionContainer>
