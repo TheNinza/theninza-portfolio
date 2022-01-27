@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { CardContainer, GlassBox } from "../config/styled-components";
 import { IGithubData } from "../config/types/dataTypes";
 import Chart, { ChartType } from "chart.js/auto";
+import Link from "next/link";
 
 type IGithubState = IGithubData[] | null;
 
@@ -25,7 +26,9 @@ const GithubCard = styled(GlassBox)`
   align-items: center;
 
   & > .title {
-    font-size: ${({ theme }) => theme.fontSizes.xl};
+    font-size: ${({ theme }) => theme.fontSizes.xxl};
+    font-weight: ${({ theme }) => theme.fontWeights.medium};
+    letter-spacing: 0.15rem;
     text-align: center;
   }
 
@@ -209,31 +212,35 @@ const GithubCardComponent: React.FC = () => {
 
   return (
     <GithubCardContainer>
-      <GithubCard>
-        <div className="title">My Github Stats</div>
-        {/* chart */}
-        <div ref={chartContainerRef} className="chart-container">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              <div className="github-logo-absolute-wrapper">
-                <div className="github-logo-container">
-                  <Image
-                    src="/github-icon.svg"
-                    alt="Github logo"
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </div>
-              </div>
-              <div className="chart">
-                <canvas ref={chartRef} id="git-chart"></canvas>
-              </div>
-            </>
-          )}
-        </div>
-      </GithubCard>
+      <Link href="https://github.com/theninza" passHref>
+        <a target="_blank" rel="noopener noreferrer">
+          <GithubCard>
+            <div className="title">My Github Stats</div>
+            {/* chart */}
+            <div ref={chartContainerRef} className="chart-container">
+              {loading ? (
+                <div>Loading...</div>
+              ) : (
+                <>
+                  <div className="github-logo-absolute-wrapper">
+                    <div className="github-logo-container">
+                      <Image
+                        src="/github-icon.svg"
+                        alt="Github logo"
+                        layout="fill"
+                        objectFit="contain"
+                      />
+                    </div>
+                  </div>
+                  <div className="chart">
+                    <canvas ref={chartRef} id="git-chart"></canvas>
+                  </div>
+                </>
+              )}
+            </div>
+          </GithubCard>
+        </a>
+      </Link>
     </GithubCardContainer>
   );
 };
