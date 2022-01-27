@@ -206,7 +206,7 @@ const SpotifyCardComponent: React.FC = () => {
       audio.volume = 0;
       intervalIncreaseVol = setInterval(() => {
         if (audio.volume < 0.9) {
-          audio.volume += 0.01;
+          audio.volume += 0.005;
         }
       }, 100);
 
