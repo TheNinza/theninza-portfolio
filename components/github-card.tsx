@@ -136,8 +136,9 @@ const GithubCardComponent: React.FC = () => {
 
       let delayed: boolean = false;
 
+      // setting defaults for chartjs
       Chart.defaults.font.size = 16;
-      Chart.defaults.plugins.legend;
+      Chart.defaults.plugins.legend.display = false;
 
       const config = {
         type: "line" as ChartType,
