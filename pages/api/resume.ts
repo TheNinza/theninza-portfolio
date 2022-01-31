@@ -7,7 +7,7 @@ interface IGetResume {
 }
 
 const NEXT_PUBLIC_GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
-const GRAPH_AUTH_TOKEN = process.env.GRAPH_AUTH_TOKEN;
+const GRAPHCMS_AUTH_TOKEN = process.env.GRAPHCMS_AUTH_TOKEN;
 
 const getresume: IGetResume = async (req, res) => {
   if (!NEXT_PUBLIC_GRAPHQL_ENDPOINT) {
@@ -19,7 +19,7 @@ const getresume: IGetResume = async (req, res) => {
 
   const client = new GraphQLClient(NEXT_PUBLIC_GRAPHQL_ENDPOINT, {
     headers: {
-      Authorization: `Bearer ${GRAPH_AUTH_TOKEN}`,
+      Authorization: `Bearer ${GRAPHCMS_AUTH_TOKEN}`,
     },
   });
 
