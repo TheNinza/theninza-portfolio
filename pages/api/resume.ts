@@ -37,54 +37,48 @@ const updateDownloadsQuery = gql`
 `;
 
 const getresume: IGetResume = async (_, res) => {
-  if (!NEXT_PUBLIC_GRAPHQL_ENDPOINT) {
-    res.status(500).json({
-      error: "No GraphQL Endpoint",
+  try {
+    if (!NEXT_PUBLIC_GRAPHQL_ENDPOINT || !GRAPHCMS_AUTH_TOKEN) {
+      throw new Error("Missing environment variables");
+    }
+
+    const client = new GraphQLClient(NEXT_PUBLIC_GRAPHQL_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${GRAPHCMS_AUTH_TOKEN}`,
+      },
     });
-    return;
-  }
 
-  const client = new GraphQLClient(NEXT_PUBLIC_GRAPHQL_ENDPOINT, {
-    headers: {
-      Authorization: `Bearer ${GRAPHCMS_AUTH_TOKEN}`,
-    },
-  });
+    const {
+      resumes: [resume],
+    } = await client.request(getResumeQuery);
 
-  const {
-    resumes: [resume],
-  } = await client.request(getResumeQuery);
+    if (!resume) {
+      throw new Error("Resume not found");
+    }
 
-  if (!resume) {
-    res.status(500).json({
-      error: "No resume found",
+    const {
+      id,
+      resumeFile: { url: pdfUrl },
+      downloads,
+    } = resume;
+
+    await client.request(updateDownloadsQuery, {
+      id,
+      downloads: downloads + 1,
     });
-    return;
+
+    const urlContent = await axios.get(pdfUrl, {
+      responseType: "stream",
+    });
+
+    res.setHeader("Content-Type", "application/pdf");
+
+    urlContent.data.pipe(res);
+  } catch (error) {
+    res.status(500).json({
+      error: (error as Error).message,
+    });
   }
-
-  const {
-    id,
-    resumeFile: { url: pdfUrl },
-    downloads,
-  } = resume;
-
-  console.log("earlier downloads", downloads);
-
-  const updateMutationData = await client.request(updateDownloadsQuery, {
-    id,
-    downloads: downloads + 1,
-  });
-
-  console.log(updateMutationData);
-
-  const urlContent = await axios.get(pdfUrl, {
-    responseType: "stream",
-  });
-
-  res.setHeader("Content-Type", "application/pdf");
-
-  urlContent.data.pipe(res);
-
-  return;
 };
 
 export default getresume;
