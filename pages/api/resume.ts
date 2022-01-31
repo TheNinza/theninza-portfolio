@@ -9,7 +9,34 @@ interface IGetResume {
 const NEXT_PUBLIC_GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT;
 const GRAPHCMS_AUTH_TOKEN = process.env.GRAPHCMS_AUTH_TOKEN;
 
-const getresume: IGetResume = async (req, res) => {
+// get resume data query
+const getResumeQuery = gql`
+  query GetResume {
+    resumes {
+      id
+      resumeFile {
+        id
+        url
+      }
+      downloads
+    }
+  }
+`;
+
+// increase download count query and publish
+const updateDownloadsQuery = gql`
+  mutation UpdateDownloads($id: ID!, $downloads: Int!) {
+    updateResume(where: { id: $id }, data: { downloads: $downloads }) {
+      id
+      downloads
+    }
+    publishResume(where: { id: $id }) {
+      id
+    }
+  }
+`;
+
+const getresume: IGetResume = async (_, res) => {
   if (!NEXT_PUBLIC_GRAPHQL_ENDPOINT) {
     res.status(500).json({
       error: "No GraphQL Endpoint",
@@ -23,22 +50,31 @@ const getresume: IGetResume = async (req, res) => {
     },
   });
 
-  const getResumeQuery = gql`
-    query GetResume {
-      resumes {
-        id
-        resumeFile {
-          id
-          url
-        }
-        downloads
-      }
-    }
-  `;
+  const {
+    resumes: [resume],
+  } = await client.request(getResumeQuery);
 
-  const data = await client.request(getResumeQuery);
+  if (!resume) {
+    res.status(500).json({
+      error: "No resume found",
+    });
+    return;
+  }
 
-  const pdfUrl = data.resumes[0].resumeFile.url;
+  const {
+    id,
+    resumeFile: { url: pdfUrl },
+    downloads,
+  } = resume;
+
+  console.log("earlier downloads", downloads);
+
+  const updateMutationData = await client.request(updateDownloadsQuery, {
+    id,
+    downloads: downloads + 1,
+  });
+
+  console.log(updateMutationData);
 
   const urlContent = await axios.get(pdfUrl, {
     responseType: "stream",
