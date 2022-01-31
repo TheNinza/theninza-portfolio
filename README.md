@@ -9,6 +9,20 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+<!-- env setup -->
+
+### Setup Environment Variables
+
+Make a `.env.local` file in the root of your project.
+
+```bash
+NEXT_PUBLIC_GRAPHQL_ENDPOINT = <Value>
+GRAPHCMS_AUTH_TOKEN = <Value>
+SPOTIFY_REFRESH_TOKEN = <Value>
+SPOTIFY_CLIENT_ID = <Value>
+SPOTIFY_CLIENT_SECRET = <Value>
+```
+
 First, run the development server:
 
 ```bash
