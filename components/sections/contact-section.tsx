@@ -31,8 +31,12 @@ const ContactSectionContainer = styled.div`
 
 const ThankyouText = styled.div`
   font-size: 4rem;
-  margin: auto;
-  line-height: calc(100vh - 4rem);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
   letter-spacing: ${({ theme }) => theme.space.sm};
   opacity: 0;
   pointer-events: none;
