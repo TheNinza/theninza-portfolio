@@ -1,6 +1,7 @@
 import gsap from "gsap";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import styled from "styled-components";
+import { SectionTitle } from "../../config/styled-components";
 
 const ContactSectionContainer = styled.div`
   height: 100vh;
@@ -12,6 +13,8 @@ const ContactSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  align-items: center;
+  justify-content: center;
 
   border-top: 1px solid grey;
 
@@ -40,6 +43,7 @@ const ThankyouText = styled.div`
   letter-spacing: ${({ theme }) => theme.space.sm};
   opacity: 0;
   pointer-events: none;
+  white-space: nowrap;
 
   span {
     opacity: 0;
@@ -53,6 +57,58 @@ const ThankyouText = styled.div`
   }
 `;
 
+const ContactSectionTitle = styled(SectionTitle)`
+  opacity: 1;
+  position: relative;
+  width: fit-content;
+  overflow: hidden;
+  letter-spacing: ${({ theme }) => theme.space.md};
+
+  span.textFragment {
+    span {
+      opacity: 0;
+      transform: translateY(75px);
+      display: inline-block;
+      transition: all 0.5s ease;
+
+      &.space {
+        display: unset;
+      }
+    }
+  }
+
+  & > span.underline {
+    position: relative;
+
+    & > span.line {
+      position: absolute;
+      top: calc(50% - 5px);
+      left: 0;
+      width: 0;
+      height: 5px;
+      opacity: 1 !important;
+    }
+
+    &.lightred > span.line {
+      background: ${({ theme }) => theme.colors.lightRed};
+    }
+
+    &.green > span.line {
+      background: ${({ theme }) => theme.colors.green};
+    }
+    &.blue > span.line {
+      background: ${({ theme }) => theme.colors.blue};
+    }
+  }
+`;
+
+const FlexContainer = styled.div`
+  width: 100%;
+  display: flex;
+  gap: ${({ theme }) => theme.space.md};
+  justify-content: space-between;
+`;
+
 const ContactSection: React.FC = () => {
   const gsapTimelineRef = useRef<gsap.core.Timeline>(
     gsap.timeline({
@@ -60,59 +116,102 @@ const ContactSection: React.FC = () => {
     })
   );
 
-  const thankyouTextRef = useCallback((el: HTMLDivElement) => {
-    if (!el) return;
-
-    const tl = gsapTimelineRef.current;
-    if (!tl) return;
-
-    const textContent = el.textContent;
-    if (!textContent) return;
-
-    el.style.opacity = "1";
-
-    const textContentArray = textContent.split("");
-
-    el.textContent = "";
-
-    textContentArray.forEach((letter) => {
-      const span = document.createElement("span");
-      span.textContent = letter;
-
-      if (letter === " ") {
-        span.classList.add("space");
-      }
-      tl.add(
-        gsap.to(span, {
-          duration: 0.1,
-          opacity: 1,
-          y: 0,
-          ease: "power2.easeIn",
-        })
-      );
-      el.appendChild(span);
-    });
-
-    tl.add(
-      gsap.fromTo(
-        el,
-        {
-          opacity: 1,
-        },
-        {
-          opacity: 0,
-          letterSpacing: "50px",
-          delay: 0.5,
-        }
-      )
-    );
-  }, []);
-
+  const thankyouTextRef = useRef<HTMLDivElement>(null);
+  const contactSectionTitleRef = useRef<HTMLDivElement>(null);
   const contactSectionSectionRef = useCallback((el: HTMLDivElement) => {
     if (!el) return;
 
     const tl = gsapTimelineRef.current;
     if (!tl) return;
+
+    const thankyouTextEl = thankyouTextRef.current;
+    if (!thankyouTextEl) return;
+
+    const contactSectionTitleEl = contactSectionTitleRef.current;
+    if (!contactSectionTitleEl) return;
+
+    // animate thank you text
+    tl.fromTo(
+      thankyouTextEl,
+      {
+        opacity: 0,
+        y: 75,
+      },
+      {
+        y: 0,
+        duration: 1,
+        opacity: 1,
+        ease: "power2.easeIn",
+      }
+    ).to(thankyouTextEl, {
+      duration: 1.5,
+      opacity: 0,
+      letterSpacing: "1.2rem",
+      ease: "power2.easeOut",
+      delay: 0.4,
+    });
+
+    const textFragments =
+      contactSectionTitleEl.querySelectorAll("span.textFragment");
+    if (!textFragments) return;
+
+    // animate texts
+
+    textFragments.forEach((span) => {
+      const fragment = span as HTMLSpanElement;
+
+      const textContent = fragment.textContent;
+      if (!textContent) return;
+
+      fragment.style.opacity = "1";
+
+      const textContentArray = textContent.split("");
+
+      fragment.textContent = "";
+
+      textContentArray.forEach((letter) => {
+        const span = document.createElement("span");
+        span.textContent = letter;
+
+        if (letter === " ") {
+          span.classList.add("space");
+        }
+        tl.add(
+          gsap.to(span, {
+            duration: 0.1,
+            opacity: 1,
+            y: 0,
+            ease: "power2.easeIn",
+          })
+        );
+        fragment.appendChild(span);
+      });
+
+      // create the line span
+      const lineSpan = document.createElement("span");
+      lineSpan.classList.add("line");
+      fragment.appendChild(lineSpan);
+    });
+
+    // animate underline
+
+    const underlines = contactSectionTitleEl.querySelectorAll(
+      "span.underline > span.line"
+    );
+    if (!underlines) return;
+
+    tl.fromTo(
+      underlines,
+      {
+        width: 0,
+      },
+      {
+        duration: 0.5,
+        width: "100%",
+        ease: "power2.easeIn",
+        stagger: 0.4,
+      }
+    );
 
     const observer = new IntersectionObserver(
       ([section]) => {
@@ -135,6 +234,20 @@ const ContactSection: React.FC = () => {
       <ThankyouText ref={thankyouTextRef}>
         Thank you for making it this far!
       </ThankyouText>
+
+      {/* main content */}
+      <ContactSectionTitle ref={contactSectionTitleRef}>
+        <span className="textFragment">Let&apos;s</span>{" "}
+        <span className="textFragment underline lightred">Get</span>{" "}
+        <span className="textFragment underline green">In</span>{" "}
+        <span className="textFragment underline blue">Touch</span>
+      </ContactSectionTitle>
+
+      {/* FlexContainer */}
+      <FlexContainer>
+        {/* form */}
+        {/* socials */}
+      </FlexContainer>
     </ContactSectionContainer>
   );
 };
