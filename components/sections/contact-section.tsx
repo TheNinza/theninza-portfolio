@@ -37,24 +37,12 @@ const ThankyouText = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   width: 100%;
   text-align: center;
   letter-spacing: ${({ theme }) => theme.space.sm};
   opacity: 0;
   pointer-events: none;
   white-space: nowrap;
-
-  span {
-    opacity: 0;
-    transform: translateY(75px);
-    display: inline-block;
-    transition: all 0.5s ease;
-
-    &.space {
-      display: unset;
-    }
-  }
 `;
 
 const ContactSectionTitle = styled(SectionTitle)`
@@ -135,10 +123,12 @@ const ContactSection: React.FC = () => {
       thankyouTextEl,
       {
         opacity: 0,
-        y: 75,
+        y: "0%",
+        x: "-50%",
       },
       {
-        y: 0,
+        y: "-50%",
+        x: "-50%",
         duration: 1,
         opacity: 1,
         ease: "power2.easeIn",
