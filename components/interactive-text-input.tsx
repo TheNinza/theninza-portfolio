@@ -1,9 +1,4 @@
-import {
-  InputHTMLAttributes,
-  TextareaHTMLAttributes,
-  useEffect,
-  useRef,
-} from "react";
+import { InputHTMLAttributes, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 
 interface BasicProps {

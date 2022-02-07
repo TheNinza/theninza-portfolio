@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import InteractiveButton from "./interactive-button";
 import InteractiveTextInput from "./interactive-text-input";
 
 const FormContainer = styled.form`
@@ -41,7 +42,7 @@ const FormContainerComponent: React.FC = () => {
     <FormContainer onSubmit={handleSubmit}>
       <InteractiveTextInput
         name="email"
-        label="email"
+        label="Email"
         type="email"
         value={formInputState.email}
         onChange={handleChange}
@@ -50,13 +51,21 @@ const FormContainerComponent: React.FC = () => {
       />
       <InteractiveTextInput
         name="message"
-        label="message/feedback"
+        label="Message/Feedback"
         type="text"
         value={formInputState.message}
         onChange={handleChange}
         required={true}
         maxLength={250}
       />
+      <InteractiveButton
+        type="submit"
+        isLoading={formState.loading}
+        isError={formState.error}
+        isSuccess={formState.success}
+      >
+        Send
+      </InteractiveButton>
     </FormContainer>
   );
 };
