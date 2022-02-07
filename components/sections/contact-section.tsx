@@ -2,19 +2,13 @@ import gsap from "gsap";
 import { useCallback, useRef } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
+import FormContainerComponent from "../contact-form";
 
 const ContactSectionContainer = styled.div`
   height: 100vh;
   width: 100%;
 
   overflow: hidden;
-
-  /* align items to center of the container */
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  align-items: center;
-  justify-content: center;
 
   border-top: 1px solid grey;
 
@@ -43,6 +37,15 @@ const ThankyouText = styled.div`
   opacity: 0;
   pointer-events: none;
   white-space: nowrap;
+`;
+
+const MainContentContainer = styled.div`
+  margin: auto;
+  margin-top: ${({ theme }) => theme.space.xxl};
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  width: fit-content;
 `;
 
 const ContactSectionTitle = styled(SectionTitle)`
@@ -226,18 +229,21 @@ const ContactSection: React.FC = () => {
       </ThankyouText>
 
       {/* main content */}
-      <ContactSectionTitle ref={contactSectionTitleRef}>
-        <span className="textFragment">Let&apos;s</span>{" "}
-        <span className="textFragment underline lightred">Get</span>{" "}
-        <span className="textFragment underline green">In</span>{" "}
-        <span className="textFragment underline blue">Touch</span>
-      </ContactSectionTitle>
+      <MainContentContainer>
+        <ContactSectionTitle ref={contactSectionTitleRef}>
+          <span className="textFragment">Let&apos;s</span>{" "}
+          <span className="textFragment underline lightred">Get</span>{" "}
+          <span className="textFragment underline green">In</span>{" "}
+          <span className="textFragment underline blue">Touch</span>
+        </ContactSectionTitle>
 
-      {/* FlexContainer */}
-      <FlexContainer>
-        {/* form */}
-        {/* socials */}
-      </FlexContainer>
+        {/* FlexContainer */}
+        <FlexContainer>
+          {/* form */}
+          <FormContainerComponent />
+          {/* socials */}
+        </FlexContainer>
+      </MainContentContainer>
     </ContactSectionContainer>
   );
 };
