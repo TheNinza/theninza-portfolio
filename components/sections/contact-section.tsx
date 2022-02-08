@@ -3,6 +3,7 @@ import { useCallback, useRef } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
 import FormContainerComponent from "../contact-form";
+import SocialsContainerComponent from "../socials-section";
 
 const ContactSectionContainer = styled.div`
   height: 100vh;
@@ -96,7 +97,7 @@ const ContactSectionTitle = styled(SectionTitle)`
 const FlexContainer = styled.div`
   width: 100%;
   display: flex;
-  gap: ${({ theme }) => theme.space.md};
+  gap: ${({ theme }) => theme.space.lg};
   justify-content: space-between;
 `;
 
@@ -242,6 +243,7 @@ const ContactSection: React.FC = () => {
           {/* form */}
           <FormContainerComponent />
           {/* socials */}
+          <SocialsContainerComponent />
         </FlexContainer>
       </MainContentContainer>
     </ContactSectionContainer>
