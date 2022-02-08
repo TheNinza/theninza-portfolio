@@ -8,7 +8,7 @@ const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: ${({ theme }) => theme.space.md};
+  gap: ${({ theme }) => theme.space.xl};
 `;
 
 const FormContainerComponent: React.FC = () => {

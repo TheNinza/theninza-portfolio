@@ -90,8 +90,8 @@ const SuccessCss = css`
 const Button = styled.button`
   position: relative;
 
-  width: 6.5rem;
-  height: 2.5rem;
+  width: 7.5rem;
+  height: 3.5rem;
 
   display: flex;
   align-items: center;
@@ -111,7 +111,7 @@ const Button = styled.button`
 
   &::after {
     content: "Send";
-    font-size: ${({ theme }) => theme.fontSizes.lg};
+    font-size: ${({ theme }) => theme.fontSizes.xxl};
     transition: all 0.3s ease;
     animation: fadeIn 1s ease;
   }
@@ -207,8 +207,8 @@ const InteractiveButton: React.FC<
         duration: 0.3,
         ease: "power3.inOut",
         borderRadius: "0.4rem",
-        width: "6.5rem",
-        height: "2.5rem",
+        width: "8.5rem",
+        height: "3rem",
       });
       return;
     }

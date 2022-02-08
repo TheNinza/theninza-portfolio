@@ -40,9 +40,14 @@ const SocialIconLink = styled.a`
 
   &:hover {
     transform: scale(1.2);
+    margin-right: 1rem;
 
     & path {
       stroke-dashoffset: 0;
+    }
+
+    & .svgIconName {
+      transform: translateY(-50%) scale(10/12); /* resetting font size by scaling down */
     }
   }
 `;

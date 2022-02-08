@@ -13,7 +13,7 @@ type IProps = BasicProps & InputHTMLAttributes<HTMLInputElement>;
 
 const ShrinkLabel = css`
   transform: translate(0, calc(-100% - 5px));
-  font-size: ${({ theme }) => theme.fontSizes.sm};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
@@ -38,7 +38,7 @@ const InputField = styled.input`
   outline: none;
   background: transparent !important;
   color: ${({ theme }) => theme.colors.textPrimary} !important;
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
   padding-bottom: ${({ theme }) => theme.space.sm};
 
   &:active,
@@ -81,7 +81,7 @@ const InputLabel = styled.label`
   left: 0;
   z-index: 10;
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-size: ${({ theme }) => theme.fontSizes.xxl};
   letter-spacing: 0.1rem;
   transition: all 0.5s ease;
 
