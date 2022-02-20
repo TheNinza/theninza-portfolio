@@ -7,10 +7,14 @@ interface IProps {
   isError: boolean;
   isSuccess: boolean;
   buttonText: string;
+  endIconUrl?: string;
+  endIconHoverUrl?: string;
 }
 
 interface IButtonProps {
   buttonText: string;
+  endIconUrl?: string;
+  endIconHoverUrl?: string;
 }
 
 const SuccessAndErrorAfterPsuedo = css`
@@ -61,7 +65,7 @@ const LoadingCss = css`
 const ErrorCss = css`
   cursor: not-allowed;
   pointer-events: none;
-  border-color: ${({ theme }) => theme.colors.lightRed};
+  border-color: transparent;
   animation: bounce 2s ease-in-out;
   animation-delay: 0.7s;
 
@@ -77,7 +81,7 @@ const ErrorCss = css`
 const SuccessCss = css`
   cursor: not-allowed;
   pointer-events: none;
-  border-color: ${({ theme }) => theme.colors.green};
+  border-color: transparent;
   overflow: auto;
   position: relative;
   animation: bounce 2s ease-in-out;
@@ -95,9 +99,6 @@ const SuccessCss = css`
 const Button = styled.button<IButtonProps>`
   position: relative;
 
-  width: 7.5rem;
-  height: 3.5rem;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,6 +114,7 @@ const Button = styled.button<IButtonProps>`
   justify-content: center;
   flex-direction: row-reverse;
   gap: 0.5rem;
+  white-space: nowrap;
 
   &::after {
     content: ${({ buttonText }) => `"${buttonText}"`};
@@ -121,28 +123,40 @@ const Button = styled.button<IButtonProps>`
     animation: fadeIn 1s ease;
   }
 
-  &::before {
-    content: "";
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0Ljg2OCAxOC4wMDAySDZMMy4wMzQ1IDYuMjAyNjlDMy4wMTU1MSA2LjEzNDEzIDMuMDAzOTQgNi4wNjM3MyAzIDUuOTkyNjlDMi45NjcgNC45MTExOSA0LjE1OCA0LjE2MTE5IDUuMTkgNC42NTYxOUwzMyAxOC4wMDAyTDUuMTkgMzEuMzQ0MkM0LjE3IDMxLjgzNDcgMi45OTQgMzEuMTA1NyAzIDMwLjA0MzdDMy4wMDMwNCAyOS45NDg4IDMuMDE5NzEgMjkuODU0OCAzLjA0OTUgMjkuNzY0N0w1LjI1IDIyLjUwMDIiIHN0cm9rZT0iI0I0QjRCNCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 1.25rem;
-    width: 1.25rem;
-    animation: fadeIn 1s ease;
-    transition: all 0.3s ease;
-  }
+  /* Controlling EndIcon */
+  ${({ endIconUrl, endIconHoverUrl }) =>
+    endIconUrl
+      ? css`
+          &::before {
+            content: "";
+            background-image: url("${endIconUrl}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 1.25rem;
+            width: 1.25rem;
+            animation: fadeIn 1s ease;
+            transition: all 0.3s ease;
+          }
 
-  &:hover {
-    transform: scale(1.05);
-    border-color: ${({ theme }) => theme.colors.textPrimary};
-    color: ${({ theme }) => theme.colors.textPrimary};
+          &:hover {
+            transform: scale(1.05);
+            border-color: ${({ theme }) => theme.colors.textPrimary};
+            color: ${({ theme }) => theme.colors.textPrimary};
 
-    &::before {
-      transform: scale(1.2);
-      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHZpZXdCb3g9IjAgMCAzNiAzNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0Ljg2OCAxOC4wMDAySDZMMy4wMzQ1IDYuMjAyNjlDMy4wMTU1MSA2LjEzNDEzIDMuMDAzOTQgNi4wNjM3MyAzIDUuOTkyNjlDMi45NjcgNC45MTExOSA0LjE1OCA0LjE2MTE5IDUuMTkgNC42NTYxOUwzMyAxOC4wMDAyTDUuMTkgMzEuMzQ0MkM0LjE3IDMxLjgzNDcgMi45OTQgMzEuMTA1NyAzIDMwLjA0MzdDMy4wMDMwNCAyOS45NDg4IDMuMDE5NzEgMjkuODU0OCAzLjA0OTUgMjkuNzY0N0w1LjI1IDIyLjUwMDIiIHN0cm9rZT0idXJsKCNwYWludDBfbGluZWFyXzM0OF8yNSkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InBhaW50MF9saW5lYXJfMzQ4XzI1IiB4MT0iMTcuOTk5NyIgeTE9IjQuNTAwNDkiIHgyPSIxNy45OTk3IiB5Mj0iMzEuNTAwMyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjRkU4QzhDIi8+CjxzdG9wIG9mZnNldD0iMC41NDE2NjciIHN0b3AtY29sb3I9IiM2Q0MwNEEiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNjFEQUZCIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==");
-    }
-  }
+            &::before {
+              transform: scale(1.2);
+              background-image: url("${endIconHoverUrl}");
+            }
+          }
+        `
+      : css`
+          &:hover {
+            transform: scale(1.05);
+            border-color: ${({ theme }) => theme.colors.textPrimary};
+            color: ${({ theme }) => theme.colors.textPrimary};
+          }
+        `}
 
   &:active {
     transform: scale(1);
@@ -198,8 +212,19 @@ const Button = styled.button<IButtonProps>`
 
 const InteractiveButton: React.FC<
   IProps & ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ children, isLoading, isError, isSuccess, buttonText, ...props }) => {
+> = ({
+  children,
+  isLoading,
+  isError,
+  isSuccess,
+  buttonText,
+  endIconUrl = "",
+  endIconHoverUrl = "",
+  ...props
+}) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const endIconHoverUrlFinal = endIconHoverUrl ? endIconHoverUrl : endIconUrl;
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -208,12 +233,16 @@ const InteractiveButton: React.FC<
       button.classList.remove("loading");
       button.classList.remove("error");
       button.classList.remove("success");
+
+      const iconWidth = endIconUrl.length ? 2.5 : 0;
+      const width = buttonText.length + iconWidth + 2;
       gsap.to(button, {
         duration: 0.3,
         ease: "power3.inOut",
         borderRadius: "0.4rem",
-        width: "8.5rem",
+        width: `${width}rem`,
         height: "3rem",
+        padding: "0 1rem",
       });
       return;
     }
@@ -228,6 +257,7 @@ const InteractiveButton: React.FC<
         borderRadius: "50%",
         width: "2.5rem",
         height: "2.5rem",
+        padding: "0",
       });
     } else if (isError) {
       button.classList.add("error");
@@ -240,6 +270,7 @@ const InteractiveButton: React.FC<
         borderRadius: "50%",
         width: "3rem",
         height: "3rem",
+        padding: "0",
       });
     } else if (isSuccess) {
       button.classList.add("success");
@@ -251,11 +282,20 @@ const InteractiveButton: React.FC<
         borderRadius: "50%",
         width: "3rem",
         height: "3rem",
+        padding: "0 ",
       });
     }
-  }, [isLoading, isError, isSuccess]);
+  }, [isLoading, isError, isSuccess, endIconUrl.length, buttonText.length]);
 
-  return <Button buttonText={buttonText} ref={buttonRef} {...props} />;
+  return (
+    <Button
+      buttonText={buttonText}
+      endIconUrl={endIconUrl}
+      endIconHoverUrl={endIconHoverUrlFinal}
+      ref={buttonRef}
+      {...props}
+    />
+  );
 };
 
 export default InteractiveButton;
