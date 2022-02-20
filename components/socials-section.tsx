@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import styled from "styled-components";
+import InteractiveButton from "./interactive-button";
 
 const SocialsContainer = styled.div`
   flex: 1;
@@ -78,6 +79,14 @@ const SocialIconSvgName = styled.div`
   transform: translateY(-50%);
 `;
 
+const DownloadResumeSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.space.xxl};
+  width: 100%;
+  align-items: flex-end;
+`;
+
 const SocialsContainerComponent: React.FC = () => {
   useEffect(() => {
     const socialLinks = document.querySelectorAll(".contactSectionSocialLink");
@@ -153,6 +162,16 @@ const SocialsContainerComponent: React.FC = () => {
           ))}
         </SocialIconLinkContainer>
       </SocialIconLinksSection>
+      <DownloadResumeSection>
+        <InteractiveButton
+          buttonText="Download my resume"
+          isError={false}
+          isLoading={false}
+          isSuccess={false}
+          endIconUrl="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iMzQiIHZpZXdCb3g9IjAgMCA0OCAzNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQwLjY2NTYgMTQuODQzNEMzOS42MTY4IDYuNDg0MjkgMzIuNTQ0IDAgMjQgMEMxNy4zODU2IDAgMTEuNjQgMy45MSA5LjAxNjggMTAuMDc2MUMzLjg2MTYgMTEuNjM3NyAwIDE2LjU2MjkgMCAyMS44NTcxQzAgMjguMzA5OSA1LjAxMzYgMzMuNTUwNyAxMS4yOTkyIDMzLjkyOTZWMzRIMzguMzc2VjMzLjk5MjdMMzguNCAzNEM0My42OTQ0IDM0IDQ4IDI5LjY0MzEgNDggMjQuMjg1N0M0Ny45OTcyIDIyLjEwODUgNDcuMjczMSAxOS45OTUyIDQ1Ljk0MzUgMTguMjgzNUM0NC42MTM5IDE2LjU3MTggNDIuNzU1NiAxNS4zNjA2IDQwLjY2NTYgMTQuODQzNFYxNC44NDM0Wk0xNC40IDE3SDIxLjZWOS43MTQyOUgyNi40VjE3SDMzLjZMMjQgMjkuMTQyOUwxNC40IDE3WiIgZmlsbD0iI0I0QjRCNCIvPgo8L3N2Zz4K"
+          iconAspectRatio={48 / 34}
+        />
+      </DownloadResumeSection>
     </SocialsContainer>
   );
 };

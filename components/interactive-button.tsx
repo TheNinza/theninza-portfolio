@@ -9,12 +9,14 @@ interface IProps {
   buttonText: string;
   endIconUrl?: string;
   endIconHoverUrl?: string;
+  iconAspectRatio?: number;
 }
 
 interface IButtonProps {
   buttonText: string;
   endIconUrl?: string;
   endIconHoverUrl?: string;
+  iconAspectRatio?: number;
 }
 
 const SuccessAndErrorAfterPsuedo = css`
@@ -124,7 +126,7 @@ const Button = styled.button<IButtonProps>`
   }
 
   /* Controlling EndIcon */
-  ${({ endIconUrl, endIconHoverUrl }) =>
+  ${({ endIconUrl, endIconHoverUrl, iconAspectRatio }) =>
     endIconUrl
       ? css`
           &::before {
@@ -133,8 +135,8 @@ const Button = styled.button<IButtonProps>`
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            height: 1.25rem;
-            width: 1.25rem;
+            height: 1.5rem;
+            aspect-ratio: ${iconAspectRatio};
             animation: fadeIn 1s ease;
             transition: all 0.3s ease;
           }
@@ -219,12 +221,14 @@ const InteractiveButton: React.FC<
   isSuccess,
   buttonText,
   endIconUrl = "",
-  endIconHoverUrl = "",
+  endIconHoverUrl,
+  iconAspectRatio = 1,
   ...props
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const endIconHoverUrlFinal = endIconHoverUrl ? endIconHoverUrl : endIconUrl;
+  const iconAspectRatioFinal = iconAspectRatio ? iconAspectRatio : 1;
 
   useEffect(() => {
     const button = buttonRef.current;
@@ -293,6 +297,7 @@ const InteractiveButton: React.FC<
       endIconUrl={endIconUrl}
       endIconHoverUrl={endIconHoverUrlFinal}
       ref={buttonRef}
+      iconAspectRatio={iconAspectRatioFinal}
       {...props}
     />
   );
