@@ -6,6 +6,11 @@ interface IProps {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
+  buttonText: string;
+}
+
+interface IButtonProps {
+  buttonText: string;
 }
 
 const SuccessAndErrorAfterPsuedo = css`
@@ -87,7 +92,7 @@ const SuccessCss = css`
   }
 `;
 
-const Button = styled.button`
+const Button = styled.button<IButtonProps>`
   position: relative;
 
   width: 7.5rem;
@@ -110,7 +115,7 @@ const Button = styled.button`
   gap: 0.5rem;
 
   &::after {
-    content: "Send";
+    content: ${({ buttonText }) => `"${buttonText}"`};
     font-size: ${({ theme }) => theme.fontSizes.xxl};
     transition: all 0.3s ease;
     animation: fadeIn 1s ease;
@@ -193,7 +198,7 @@ const Button = styled.button`
 
 const InteractiveButton: React.FC<
   IProps & ButtonHTMLAttributes<HTMLButtonElement>
-> = ({ children, isLoading, isError, isSuccess, ...props }) => {
+> = ({ children, isLoading, isError, isSuccess, buttonText, ...props }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -250,7 +255,7 @@ const InteractiveButton: React.FC<
     }
   }, [isLoading, isError, isSuccess]);
 
-  return <Button ref={buttonRef} {...props} />;
+  return <Button buttonText={buttonText} ref={buttonRef} {...props} />;
 };
 
 export default InteractiveButton;

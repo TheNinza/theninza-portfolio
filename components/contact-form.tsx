@@ -59,6 +59,7 @@ const FormContainerComponent: React.FC = () => {
         maxLength={250}
       />
       <InteractiveButton
+        buttonText="Send"
         type="submit"
         isLoading={formState.loading}
         isError={formState.error}
