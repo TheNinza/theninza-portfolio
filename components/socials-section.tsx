@@ -95,7 +95,7 @@ const SocialsContainerComponent: React.FC = () => {
 
       const svgElWidgh = svgElement.getBoundingClientRect().width;
       socialLink.style.width = `${svgElWidgh}px`;
-      svgIconName.style.right = `-100%`;
+      svgIconName.style.right = `-110%`;
       svgIconName.style.opacity = "0";
 
       const svgIconNameWidth = svgIconName.getBoundingClientRect().width;
