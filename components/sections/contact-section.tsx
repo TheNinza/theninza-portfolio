@@ -45,7 +45,7 @@ const MainContentContainer = styled.div`
   margin-top: ${({ theme }) => theme.space.xxl};
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: 10rem;
   width: fit-content;
 `;
 
