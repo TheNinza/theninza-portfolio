@@ -115,7 +115,7 @@ const Button = styled.button<IButtonProps>`
   align-items: center;
   justify-content: center;
   flex-direction: row-reverse;
-  gap: 0.5rem;
+  gap: 1rem;
   white-space: nowrap;
 
   &::after {
@@ -286,7 +286,7 @@ const InteractiveButton: React.FC<
         borderRadius: "50%",
         width: "3rem",
         height: "3rem",
-        padding: "0 ",
+        padding: "0",
       });
     }
   }, [isLoading, isError, isSuccess, endIconUrl.length, buttonText.length]);
