@@ -9,6 +9,7 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import APeekInLifeSection from "../components/sections/a-peek-in-life-section";
 import ApplicationsSection from "../components/sections/applications-section";
+import ContactSection from "../components/sections/contact-section";
 import HeroSection from "../components/sections/hero-section";
 import TechStackSection from "../components/sections/tech-stack-section";
 import WorksSection from "../components/sections/works-section";
@@ -100,6 +101,7 @@ const Home: NextPage = ({
           volunteers={initialHomePageProps.volunteers}
         />
         <APeekInLifeSection />
+        <ContactSection />
       </Container>
     </>
   );
