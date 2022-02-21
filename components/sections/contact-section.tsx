@@ -130,6 +130,11 @@ const FlexContainer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.space.lg};
   justify-content: space-between;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    flex-direction: column;
+    gap: ${({ theme }) => theme.space.xxl};
+  }
 `;
 
 const ContactSection: React.FC = () => {

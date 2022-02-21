@@ -86,6 +86,10 @@ const InputLabel = styled.label`
   letter-spacing: 0.1rem;
   transition: all 0.5s ease;
 
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+  }
+
   &.shrink {
     ${ShrinkLabel}
   }

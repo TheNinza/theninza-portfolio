@@ -123,6 +123,10 @@ const Button = styled.button<IButtonProps>`
     font-size: ${({ theme }) => theme.fontSizes.xxl};
     transition: all 0.3s ease;
     animation: fadeIn 1s ease;
+    @media only screen and (max-width: ${({ theme }) =>
+        theme.breakpoints.lg}px) {
+      font-size: ${({ theme }) => theme.fontSizes.xl};
+    }
   }
 
   /* Controlling EndIcon */

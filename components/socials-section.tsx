@@ -9,6 +9,9 @@ const SocialsContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   gap: 3rem;
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    gap: 4rem;
+  }
 `;
 
 const SocialIconLinksSection = styled.div`
@@ -17,6 +20,11 @@ const SocialIconLinksSection = styled.div`
   gap: ${({ theme }) => theme.space.xxl};
   width: 100%;
   align-items: flex-end;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    align-items: flex-start;
+    gap: ${({ theme }) => theme.space.lg};
+  }
 `;
 
 const SocialTitle = styled.h3`
@@ -24,6 +32,9 @@ const SocialTitle = styled.h3`
   letter-spacing: 0.1rem;
   font-weight: ${({ theme }) => theme.fontWeights.regular};
   color: ${({ theme }) => theme.colors.textSecondary};
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+  }
 `;
 
 const SocialIconLinkContainer = styled.div`
@@ -77,6 +88,9 @@ const SocialIconSvgName = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+  }
 `;
 
 const DownloadResumeSection = styled.div`
@@ -85,6 +99,9 @@ const DownloadResumeSection = styled.div`
   gap: ${({ theme }) => theme.space.xxl};
   width: 100%;
   align-items: flex-end;
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    align-items: flex-start;
+  }
 `;
 
 const SocialsContainerComponent: React.FC = () => {
