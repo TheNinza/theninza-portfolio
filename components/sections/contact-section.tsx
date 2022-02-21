@@ -274,8 +274,6 @@ const ContactSection: React.FC = () => {
         if (section.isIntersecting) {
           observer.disconnect();
           tl.play();
-        } else {
-          tl.reverse();
         }
       },
       {
