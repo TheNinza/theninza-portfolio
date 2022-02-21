@@ -1,5 +1,6 @@
+import axios from "axios";
 import Link from "next/link";
-import { useEffect } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import styled from "styled-components";
 import InteractiveButton from "./interactive-button";
 
@@ -105,6 +106,11 @@ const DownloadResumeSection = styled.div`
 `;
 
 const SocialsContainerComponent: React.FC = () => {
+  const [downloadState, setDownloadState] = useState({
+    isDownloading: false,
+    isDownloaded: false,
+    isError: false,
+  });
   useEffect(() => {
     const socialLinks = document.querySelectorAll(".contactSectionSocialLink");
 
@@ -158,6 +164,40 @@ const SocialsContainerComponent: React.FC = () => {
     };
   }, []);
 
+  const handleDownloadResume: MouseEventHandler<HTMLAnchorElement> = async (
+    e
+  ) => {
+    e.preventDefault();
+    setDownloadState({
+      ...downloadState,
+      isDownloading: true,
+    });
+
+    setTimeout(async () => {
+      const { data } = await axios.get("/api/resume", {
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "NikhilResume.pdf");
+      link.click();
+
+      setDownloadState({
+        ...downloadState,
+        isDownloading: false,
+        isDownloaded: true,
+      });
+      setTimeout(() => {
+        setDownloadState({
+          ...downloadState,
+          isDownloaded: false,
+        });
+      }, 3000);
+    }, 2000);
+  };
+
   return (
     <SocialsContainer>
       <SocialIconLinksSection>
@@ -185,12 +225,13 @@ const SocialsContainerComponent: React.FC = () => {
             className="contactSectionDownloadResume"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleDownloadResume}
           >
             <InteractiveButton
               buttonText="Download my resume"
-              isError={false}
-              isLoading={false}
-              isSuccess={false}
+              isError={downloadState.isError}
+              isLoading={downloadState.isDownloading}
+              isSuccess={downloadState.isDownloaded}
               endIconUrl="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTIiIGhlaWdodD0iMzgiIHZpZXdCb3g9IjAgMCA1MiAzOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQyLjY2NTYgMTYuODQzNEM0MS42MTY4IDguNDg0MjkgMzQuNTQ0IDIgMjYgMkMxOS4zODU2IDIgMTMuNjQgNS45MSAxMS4wMTY4IDEyLjA3NjFDNS44NjE2IDEzLjYzNzcgMiAxOC41NjI5IDIgMjMuODU3MUMyIDMwLjMwOTkgNy4wMTM2IDM1LjU1MDcgMTMuMjk5MiAzNS45Mjk2VjM2SDQwLjM3NlYzNS45OTI3TDQwLjQgMzZDNDUuNjk0NCAzNiA1MCAzMS42NDMxIDUwIDI2LjI4NTdDNDkuOTk3MiAyNC4xMDg1IDQ5LjI3MzEgMjEuOTk1MiA0Ny45NDM1IDIwLjI4MzVDNDYuNjEzOSAxOC41NzE4IDQ0Ljc1NTYgMTcuMzYwNiA0Mi42NjU2IDE2Ljg0MzRWMTYuODQzNFpNMTYuNCAxOUgyMy42VjExLjcxNDNIMjguNFYxOUgzNS42TDI2IDMxLjE0MjlMMTYuNCAxOVoiIHN0cm9rZT0iI0I0QjRCNCIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg=="
               endIconHoverUrl="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTIiIGhlaWdodD0iMzgiIHZpZXdCb3g9IjAgMCA1MiAzOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQyLjY2NTYgMTYuODQzNEM0MS42MTY4IDguNDg0MjkgMzQuNTQ0IDIgMjYgMkMxOS4zODU2IDIgMTMuNjQgNS45MSAxMS4wMTY4IDEyLjA3NjFDNS44NjE2IDEzLjYzNzcgMiAxOC41NjI5IDIgMjMuODU3MUMyIDMwLjMwOTkgNy4wMTM2IDM1LjU1MDcgMTMuMjk5MiAzNS45Mjk2VjM2SDQwLjM3NlYzNS45OTI3TDQwLjQgMzZDNDUuNjk0NCAzNiA1MCAzMS42NDMxIDUwIDI2LjI4NTdDNDkuOTk3MiAyNC4xMDg1IDQ5LjI3MzEgMjEuOTk1MiA0Ny45NDM1IDIwLjI4MzVDNDYuNjEzOSAxOC41NzE4IDQ0Ljc1NTYgMTcuMzYwNiA0Mi42NjU2IDE2Ljg0MzRWMTYuODQzNFpNMTYuNCAxOUgyMy42VjExLjcxNDNIMjguNFYxOUgzNS42TDI2IDMxLjE0MjlMMTYuNCAxOVoiIHN0cm9rZT0idXJsKCNwYWludDBfbGluZWFyXzM2MV8yKSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8zNjFfMiIgeDE9IjI2IiB5MT0iMiIgeDI9IjI2IiB5Mj0iMzYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iI0ZFOEM4QyIvPgo8c3RvcCBvZmZzZXQ9IjAuNTQxNjY3IiBzdG9wLWNvbG9yPSIjNkNDMDRBIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzYxREFGQiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo="
               iconAspectRatio={48 / 34}
