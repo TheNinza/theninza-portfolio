@@ -146,26 +146,26 @@ const Button = styled.button<IButtonProps>`
           }
 
           &:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) !important;
             border-color: ${({ theme }) => theme.colors.textPrimary};
             color: ${({ theme }) => theme.colors.textPrimary};
 
             &::before {
-              transform: scale(1.2);
+              transform: scale(1.2) !important;
               background-image: url("${endIconHoverUrl}");
             }
           }
         `
       : css`
           &:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) !important;
             border-color: ${({ theme }) => theme.colors.textPrimary};
             color: ${({ theme }) => theme.colors.textPrimary};
           }
         `}
 
   &:active {
-    transform: scale(1);
+    transform: scale(1) !important;
   }
 
   &.loading {
