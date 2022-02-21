@@ -241,7 +241,7 @@ const ContactSection: React.FC = () => {
     const observer = new IntersectionObserver(
       ([section]) => {
         if (section.isIntersecting) {
-          // observer.disconnect();
+          observer.disconnect();
           tl.play();
         } else {
           tl.reverse();

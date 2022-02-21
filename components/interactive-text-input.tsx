@@ -1,5 +1,6 @@
 import { InputHTMLAttributes, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
+import useWindowSize from "../hooks/useWindowSize";
 
 interface BasicProps {
   name: string;
@@ -98,11 +99,15 @@ const InteractiveTextInput: React.FC<IProps> = ({
   onChange,
   ...otherInputProps
 }) => {
+  const { width } = useWindowSize();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
+    if (!width) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -264,7 +269,7 @@ const InteractiveTextInput: React.FC<IProps> = ({
       if (vibrateAnimationFrame) cancelAnimationFrame(vibrateAnimationFrame);
       createNewPath(0);
     };
-  }, []);
+  }, [width]);
 
   return (
     <InputContainer ref={containerRef}>
