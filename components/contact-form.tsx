@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
 import InteractiveButton from "./interactive-button";
@@ -19,10 +20,8 @@ const FormContainerComponent: React.FC = () => {
 
   const [formState, setFormState] = useState({
     error: false,
-    errorMessage: "",
     loading: false,
     success: false,
-    isInialized: false,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,9 +32,45 @@ const FormContainerComponent: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formInputState);
+    setFormState({
+      ...formState,
+      loading: true,
+    });
+
+    const { email, message } = formInputState;
+
+    try {
+      const { data } = await axios.post("/api/sendmessage", {
+        email,
+        message,
+      });
+      if (data.id) {
+        setFormState({
+          ...formState,
+          loading: false,
+          success: true,
+        });
+
+        setTimeout(() => {
+          setFormState({
+            ...formState,
+            success: false,
+          });
+
+          setFormInputState({
+            email: "",
+            message: "",
+          });
+        }, 5000);
+      }
+    } catch (error) {
+      setFormState({
+        ...formState,
+        error: true,
+      });
+    }
   };
 
   return (
