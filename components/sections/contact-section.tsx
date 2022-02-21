@@ -3,6 +3,7 @@ import { useCallback, useRef } from "react";
 import styled from "styled-components";
 import { SectionTitle } from "../../config/styled-components";
 import FormContainerComponent from "../contact-form";
+import Footer from "../footer";
 import SocialsContainerComponent from "../socials-section";
 
 const ContactSectionContainer = styled.div`
@@ -309,6 +310,7 @@ const ContactSection: React.FC = () => {
           <SocialsContainerComponent />
         </FlexContainer>
       </MainContentContainer>
+      <Footer />
     </ContactSectionContainer>
   );
 };
