@@ -24,6 +24,7 @@ const ContactSectionContainer = styled.div`
 
   @media only screen and (max-width: 640px) {
     gap: ${({ theme }) => theme.space.lg};
+    margin: 0;
   }
 `;
 
@@ -38,6 +39,17 @@ const ThankyouText = styled.div`
   opacity: 0;
   pointer-events: none;
   white-space: nowrap;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    font-size: 3rem;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    font-size: 2rem;
+  }
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    white-space: unset;
+  }
 `;
 
 const MainContentContainer = styled.div`
@@ -74,11 +86,12 @@ const ContactSectionTitle = styled(SectionTitle)`
 
     & > span.line {
       position: absolute;
-      top: calc(50% - 5px);
+      bottom: 5px;
       left: 0;
       width: 0;
       height: 5px;
       opacity: 1 !important;
+      transform: translate(0, 0) !important;
     }
 
     &.lightred > span.line {
@@ -91,6 +104,24 @@ const ContactSectionTitle = styled(SectionTitle)`
     &.blue > span.line {
       background: ${({ theme }) => theme.colors.blue};
     }
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
+    width: 90vw;
+    letter-spacing: ${({ theme }) => theme.space.sm};
+    font-size: 7vw;
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    margin: 0;
+    font-size: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: ${({ theme }) => theme.space.lg};
+    row-gap: ${({ theme }) => theme.space.sm};
+  }
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    white-space: unset;
   }
 `;
 
@@ -210,8 +241,10 @@ const ContactSection: React.FC = () => {
     const observer = new IntersectionObserver(
       ([section]) => {
         if (section.isIntersecting) {
-          observer.disconnect();
+          // observer.disconnect();
           tl.play();
+        } else {
+          tl.reverse();
         }
       },
       {
