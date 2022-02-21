@@ -49,6 +49,7 @@ const ThankyouText = styled.div`
   }
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
     white-space: unset;
+    letter-spacing: 1.2rem;
   }
 `;
 
@@ -86,12 +87,17 @@ const ContactSectionTitle = styled(SectionTitle)`
 
     & > span.line {
       position: absolute;
-      bottom: 5px;
+      bottom: 0;
       left: 0;
       width: 0;
       height: 5px;
       opacity: 1 !important;
       transform: translate(0, 0) !important;
+
+      @media only screen and (max-width: ${({ theme }) =>
+          theme.breakpoints.lg}px) {
+        height: 3px;
+      }
     }
 
     &.lightred > span.line {
@@ -134,6 +140,12 @@ const FlexContainer = styled.div`
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
     flex-direction: column;
     gap: ${({ theme }) => theme.space.xxl};
+  }
+
+  & > div > div,
+  & button,
+  & form > * {
+    opacity: 0;
   }
 `;
 
@@ -241,6 +253,19 @@ const ContactSection: React.FC = () => {
         ease: "power2.easeIn",
         stagger: 0.4,
       }
+    ).fromTo(
+      ".contactsFlexSection >div > div, .contactsFlexSection button, .contactsFlexSection form > *",
+      {
+        y: 50,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.4,
+        ease: "power2.easeIn",
+        stagger: 0.1,
+      }
     );
 
     const observer = new IntersectionObserver(
@@ -277,7 +302,7 @@ const ContactSection: React.FC = () => {
         </ContactSectionTitle>
 
         {/* FlexContainer */}
-        <FlexContainer>
+        <FlexContainer className="contactsFlexSection">
           {/* form */}
           <FormContainerComponent />
           {/* socials */}
