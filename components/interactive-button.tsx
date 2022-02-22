@@ -100,7 +100,7 @@ const SuccessCss = css`
 
 const Button = styled.button<IButtonProps>`
   position: relative;
-
+  max-width: 85vw;
   display: flex;
   align-items: center;
   justify-content: center;

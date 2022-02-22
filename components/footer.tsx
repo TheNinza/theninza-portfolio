@@ -11,6 +11,15 @@ const FooterComponent = styled.footer`
     color: ${({ theme }) => theme.colors.textSecondary};
     letter-spacing: 0.1rem;
   }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    position: relative;
+    bottom: unset;
+    left: unset;
+    transform: unset;
+    text-align: center;
+    margin-top: ${({ theme }) => theme.space.xl};
+  }
 `;
 
 const Footer: React.FC = () => {

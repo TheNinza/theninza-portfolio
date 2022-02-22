@@ -7,7 +7,7 @@ import Footer from "../footer";
 import SocialsContainerComponent from "../socials-section";
 
 const ContactSectionContainer = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
 
   overflow: hidden;

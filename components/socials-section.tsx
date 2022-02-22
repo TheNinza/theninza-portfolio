@@ -2,6 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import { MouseEventHandler, useEffect, useState } from "react";
 import styled from "styled-components";
+import useWindowSize from "../hooks/useWindowSize";
 import InteractiveButton from "./interactive-button";
 
 const SocialsContainer = styled.div`
@@ -43,6 +44,9 @@ const SocialIconLinkContainer = styled.div`
   gap: ${({ theme }) => theme.space.lg};
   align-items: center;
   justify-content: center;
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    gap: ${({ theme }) => theme.space.sm};
+  }
 `;
 
 const SocialIconLink = styled.a`
@@ -62,6 +66,10 @@ const SocialIconLink = styled.a`
     & .svgIconName {
       transform: translateY(-50%) scale(10/12); /* resetting font size by scaling down */
     }
+  }
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
+    height: 2rem;
   }
 `;
 
@@ -111,7 +119,11 @@ const SocialsContainerComponent: React.FC = () => {
     isDownloaded: false,
     isError: false,
   });
+  const { width } = useWindowSize();
+
   useEffect(() => {
+    if (width && width < 450) return;
+
     const socialLinks = document.querySelectorAll(".contactSectionSocialLink");
 
     if (!socialLinks.length) return;
@@ -162,7 +174,7 @@ const SocialsContainerComponent: React.FC = () => {
         socialLink.removeEventListener("mouseleave", () => {});
       });
     };
-  }, []);
+  }, [width]);
 
   const handleDownloadResume: MouseEventHandler<HTMLAnchorElement> = async (
     e
@@ -212,7 +224,7 @@ const SocialsContainerComponent: React.FC = () => {
               >
                 <SvgEl />
                 <SocialIconSvgName className="svgIconName">
-                  {name}
+                  {width && width > 400 && name}
                 </SocialIconSvgName>
               </SocialIconLink>
             </Link>
