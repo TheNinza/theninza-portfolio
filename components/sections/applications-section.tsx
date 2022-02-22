@@ -18,7 +18,7 @@ const ApplicationsSectionContainer = styled.div`
   height: 100vh;
   width: 100%;
 
-  overflow-y: hidden;
+  overflow: hidden;
 
   /* align items to center of the container */
   display: flex;
