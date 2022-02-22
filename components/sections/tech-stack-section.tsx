@@ -92,25 +92,27 @@ const TechImageContainer = styled.div<IStyledTechImageContainer>`
     height: 7vh;
   }
 
-  &::after {
-    content: ${({ name }) => `"${name}"`};
-    position: absolute;
-    bottom: -2rem;
-    left: 0;
-    padding: 0.5rem 1rem;
-    background-color: ${({ theme }) => theme.colors.lightRed};
-    border-radius: 5px;
-    opacity: 0;
-    transition: all 0.3s ease-out;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  &:hover {
-    transform: scale(0.9) translateY(-10px) rotate(5deg) !important;
-
+  &.animationCompletedStack {
     &::after {
-      opacity: 1;
-      transform: translate(0, -10px) scale(1.2);
+      content: ${({ name }) => `"${name}"`};
+      position: absolute;
+      bottom: -2rem;
+      left: 0;
+      padding: 0.5rem 1rem;
+      background-color: ${({ theme }) => theme.colors.lightRed};
+      border-radius: 5px;
+      opacity: 0;
+      transition: all 0.3s ease-out;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    &:hover {
+      transform: scale(0.9) translateY(-10px) rotate(5deg) !important;
+
+      &::after {
+        opacity: 1;
+        transform: translate(0, -10px) scale(1.2);
+      }
     }
   }
 
@@ -201,6 +203,9 @@ const TechStackSection: FC<IProps> = ({ stacks }) => {
                 duration: 0.5,
                 ease: "power3.inOut",
                 delay: Math.random() * 0.5,
+                onComplete: () => {
+                  techImage.classList.add("animationCompletedStack");
+                },
               });
           });
 
