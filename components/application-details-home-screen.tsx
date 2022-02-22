@@ -197,29 +197,8 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
     }
   }, [isSectionVisible, application]);
 
-  // manually handling height of description container
-  useIsomorphicLayoutEffect(() => {
-    if (appDescRef.current && width && height) {
-      if (width < theme.breakpoints.xl) {
-        // set overflow y of appDescRef to scroll
-        appDescRef.current.style.overflowY = "scroll";
-        const appDescHeight =
-          height - appDescRef.current.getBoundingClientRect().top;
-
-        if (appDescHeight < appDescRef.current.getBoundingClientRect().height) {
-          appDescRef.current.style.height = `${appDescHeight - 10}px`;
-          appDescRef.current.style.boxShadow =
-            "inset 0px 0px 10px 10px rgba(0, 0, 0, 0.1)";
-        } else {
-          appDescRef.current.style.height = "auto";
-          appDescRef.current.style.boxShadow = "none";
-        }
-      } else {
-        appDescRef.current.style.height = "auto";
-        appDescRef.current.style.overflowY = "hidden";
-      }
-    }
-  }, [width, height]);
+  // // manually handling height of description container
+  // useIsomorphicLayoutEffect(() => {}, [width, height]);
 
   return (
     <ApplicationDetailsContainer className="applicationDetailsHomeScreen">

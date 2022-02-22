@@ -97,6 +97,18 @@ export const GlobalStyles = createGlobalStyle`
     box-shadow: 0 0 0px 1000px transparent inset;
     transition: background-color 5000s ease-in-out 0s;
   }
+
+  /* Hide ScrollBars */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hiddenScrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .hiddenScrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 `;
 
 // common styles
