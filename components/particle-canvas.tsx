@@ -85,10 +85,6 @@ const ParticleCanvas: FC<IProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    console.log(isImageLoaded, new Date().toISOString());
-  }, [isImageLoaded, sameOriginImageUrl]);
-
   // set the same origin image url to avoid canvas cors error
   useEffect(() => {
     setIsImageLoaded(false);
