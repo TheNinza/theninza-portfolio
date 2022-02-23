@@ -336,12 +336,10 @@ const WorksSection: React.FC<IProps> = ({
                       🏆{achievement.name}
                     </SpacedSubSectionTitle>
                     <span className="link">
-                      <Link
-                        href={achievement.relevantLink}
-                        as={achievement.relevantLink}
-                        passHref
-                      >
-                        <a>🔗</a>
+                      <Link href={achievement.relevantLink} passHref>
+                        <a target="_blank" rel="noopener noreferrer">
+                          🔗
+                        </a>
                       </Link>
                     </span>
                   </div>
@@ -366,12 +364,10 @@ const WorksSection: React.FC<IProps> = ({
                       ☮️{volunteer.name}
                     </SpacedSubSectionTitle>
                     <span className="link">
-                      <Link
-                        href={volunteer.relevantLink}
-                        as={volunteer.relevantLink}
-                        passHref
-                      >
-                        <a>🔗</a>
+                      <Link href={volunteer.relevantLink} passHref>
+                        <a target="_blank" rel="noopener noreferrer">
+                          🔗
+                        </a>
                       </Link>
                     </span>
                   </div>
