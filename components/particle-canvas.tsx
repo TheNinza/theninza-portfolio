@@ -412,7 +412,7 @@ const ParticleCanvas: FC<IProps> = ({
     <CanvasContainer ref={containerRef}>
       <canvas ref={canvasRef} id="particle-canvas" />
       <NextImage height={270} width={480} src={image} alt="app-image-preview" />
-      <SmallLoader isLoading={isImageLoaded} />
+      <SmallLoader isTransparent={false} isLoading={!isImageLoaded} />
     </CanvasContainer>
   );
 };

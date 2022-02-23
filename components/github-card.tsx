@@ -268,39 +268,32 @@ const GithubCardComponent: React.FC = () => {
             <div className="title">My Github Stats</div>
             {/* chart */}
             <div ref={chartContainerRef} className="chart-container">
-              {loading ? (
-                <SmallLoader isLoading={loading} />
+              <SmallLoader isLoading={loading} />
+
+              <div className="github-logo-absolute-wrapper">
+                <div className="github-logo-container">
+                  <Image
+                    src="/github-icon.svg"
+                    alt="Github logo"
+                    layout="fill"
+                    objectFit="contain"
+                  />
+                </div>
+              </div>
+              {!isSmallScreen ? (
+                <div className="chart">
+                  <canvas ref={chartRef} id="git-chart"></canvas>
+                </div>
               ) : (
-                <>
-                  <div className="github-logo-absolute-wrapper">
-                    <div className="github-logo-container">
-                      <Image
-                        src="/github-icon.svg"
-                        alt="Github logo"
-                        layout="fill"
-                        objectFit="contain"
-                      />
-                    </div>
+                <div className="secondaryContainer">
+                  <div className="text">In Last 10 Days:</div>
+                  <div className="text">Github Events:</div>
+                  <div>
+                    {githubData?.reduce((acc, curr) => acc + curr.numEvents, 0)}
                   </div>
-                  {!isSmallScreen ? (
-                    <div className="chart">
-                      <canvas ref={chartRef} id="git-chart"></canvas>
-                    </div>
-                  ) : (
-                    <div className="secondaryContainer">
-                      <div className="text">In Last 10 Days:</div>
-                      <div className="text">Github Events:</div>
-                      <div>
-                        {githubData?.reduce(
-                          (acc, curr) => acc + curr.numEvents,
-                          0
-                        )}
-                      </div>
-                      <div className="text">Longest Streak:</div>
-                      <div>{getLongestStreak(githubData)} days</div>
-                    </div>
-                  )}
-                </>
+                  <div className="text">Longest Streak:</div>
+                  <div>{getLongestStreak(githubData)} days</div>
+                </div>
               )}
             </div>
           </GithubCard>

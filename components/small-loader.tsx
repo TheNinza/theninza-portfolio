@@ -6,6 +6,7 @@ interface Iprops {
   imageWidth?: number;
   imageHeight?: number;
   isLoading: boolean;
+  isTransparent?: boolean;
 }
 
 const SmallLoaderContainer = styled.div`
@@ -32,6 +33,10 @@ const SmallLoaderContainer = styled.div`
     pointer-events: none;
   }
 
+  &.transparent {
+    background-color: transparent;
+  }
+
   & > * {
     animation: turn-turn 2s infinite;
   }
@@ -51,6 +56,7 @@ const SmallLoader: React.FC<Iprops> = ({
   imageWidth = 100,
   imageHeight = 100,
   isLoading,
+  isTransparent = true,
 }) => {
   const loaderRef = useRef<HTMLDivElement>(null);
 
@@ -59,9 +65,9 @@ const SmallLoader: React.FC<Iprops> = ({
     if (!loaderEl) return;
 
     if (isLoading) {
-      loaderEl.classList.add("loaded");
-    } else {
       loaderEl.classList.remove("loaded");
+    } else {
+      loaderEl.classList.add("loaded");
     }
 
     return () => {
@@ -70,7 +76,10 @@ const SmallLoader: React.FC<Iprops> = ({
   }, [isLoading]);
 
   return (
-    <SmallLoaderContainer ref={loaderRef} className="smallContainer">
+    <SmallLoaderContainer
+      ref={loaderRef}
+      className={`${isTransparent ? "transparent" : ""}`}
+    >
       <Image
         className="smallloaderLogo"
         src="/logo.svg"
