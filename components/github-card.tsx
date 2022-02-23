@@ -7,6 +7,7 @@ import { IGithubData } from "../config/types/dataTypes";
 import Chart, { ChartType } from "chart.js/auto";
 import Link from "next/link";
 import useWindowSize from "../hooks/useWindowSize";
+import SmallLoader from "./small-loader";
 
 type IGithubState = IGithubData[] | null;
 
@@ -268,7 +269,7 @@ const GithubCardComponent: React.FC = () => {
             {/* chart */}
             <div ref={chartContainerRef} className="chart-container">
               {loading ? (
-                <div>Loading...</div>
+                <SmallLoader isLoading={loading} />
               ) : (
                 <>
                   <div className="github-logo-absolute-wrapper">

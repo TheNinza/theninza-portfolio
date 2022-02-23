@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Blob, CardContainer, GlassBox } from "../config/styled-components";
 import { ISpotifyData } from "../config/types/dataTypes";
+import SmallLoader from "./small-loader";
 
 type ISpotifyState = ISpotifyData | null;
 interface IStyledSpotifyCard {
@@ -303,7 +304,7 @@ const SpotifyCardComponent: React.FC = () => {
         ref={spotifyCardRef}
       >
         {loading && !spotifyState ? (
-          <div>Loading...</div>
+          <SmallLoader isLoading={loading} />
         ) : (
           spotifyState && (
             <>
