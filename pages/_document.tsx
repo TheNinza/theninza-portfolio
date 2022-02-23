@@ -45,6 +45,18 @@ export default class MyDocument extends Document {
           />
         </Head>
         <body>
+          <link
+            itemProp="thumbnailUrl"
+            href="https://theninza.me/metaImg.png"
+          />
+
+          <span
+            itemProp="thumbnail"
+            itemScope
+            itemType="http://schema.org/ImageObject"
+          >
+            <link itemProp="url" href="https://theninza.me/metaImg.png" />
+          </span>
           <Main />
           <NextScript />
         </body>
