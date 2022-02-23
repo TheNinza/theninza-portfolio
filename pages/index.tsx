@@ -89,7 +89,48 @@ const Home: NextPage = ({
   return (
     <>
       <Head>
+        {/* <!-- Primary Meta Tags --> */}
         <title>🙋🏻‍♂️ Nikhil Gupta</title>
+        <meta name="title" content="🙋🏻‍♂️ Nikhil Gupta" />
+        <meta
+          name="keywords"
+          content="Nikhil, FrontEnd, Developer, TheNinza, Ninza, Ninja, ninza, theninza, web, web developer, iiit"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="language" content="English" />
+        <meta name="author" content="Nikhil Gupta" />
+
+        <meta
+          name="description"
+          content="Hey There! I am Nikhil. Meet me on the other side of this page to know more."
+        />
+
+        {/* <!-- Open Graph / Facebook --> */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://theninza.me/" />
+        <meta property="og:title" content="🙋🏻‍♂️ Nikhil Gupta" />
+        <meta
+          property="og:description"
+          content="Hey There! I am Nikhil. Meet me on the other side of this page to know more."
+        />
+        <meta
+          property="og:image"
+          content="https://theninza-portfolio-mklhavd0c-theninza.vercel.app/metaImg.png"
+        />
+
+        {/* <!-- Twitter --> */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://theninza.me/" />
+        <meta property="twitter:title" content="🙋🏻‍♂️ Nikhil Gupta" />
+        <meta
+          property="twitter:description"
+          content="Hey There! I am Nikhil. Meet me on the other side of this page to know more."
+        />
+        <meta
+          property="twitter:image"
+          content="https://theninza-portfolio-mklhavd0c-theninza.vercel.app/metaImg.png"
+        />
       </Head>
       <Container ref={containerRef}>
         <HeroSection />

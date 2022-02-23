@@ -79,6 +79,35 @@ const ApplicationLinksContainer = styled.div`
       height: ${({ theme }) => theme.space.xl} !important;
     }
   }
+
+  & .link-icon-a {
+    position: relative;
+
+    &:first-child::after {
+      content: "Live";
+    }
+    &:last-child::after {
+      content: "Source";
+    }
+
+    &::after {
+      display: block;
+
+      opacity: 0;
+      transform-origin: center;
+      transition: all 0.2s ease-in;
+
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: scaleY(0) translate(-50%, 80%);
+    }
+
+    &:hover::after {
+      transform: scaleY(1) translate(-50%, 80%);
+      opacity: 1;
+    }
+  }
 `;
 
 const ApplicationTechStackContainer = styled.div`
