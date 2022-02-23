@@ -114,7 +114,10 @@ const Home: NextPage = ({
           property="og:description"
           content="Hey There! I am Nikhil. Meet me on the other side of this page to know more."
         />
-        <meta property="og:image" content="/metaImg.png" />
+        <meta
+          property="og:image"
+          content="https://theninza-portfolio-mklhavd0c-theninza.vercel.app/metaImg.png"
+        />
 
         {/* <!-- Twitter --> */}
         <meta property="twitter:card" content="summary_large_image" />
@@ -124,7 +127,10 @@ const Home: NextPage = ({
           property="twitter:description"
           content="Hey There! I am Nikhil. Meet me on the other side of this page to know more."
         />
-        <meta property="twitter:image" content="/metaImg.png" />
+        <meta
+          property="twitter:image"
+          content="https://theninza-portfolio-mklhavd0c-theninza.vercel.app/metaImg.png"
+        />
       </Head>
       <Container ref={containerRef}>
         <HeroSection />
