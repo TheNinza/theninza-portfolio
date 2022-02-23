@@ -1,17 +1,17 @@
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useRef } from "react";
-import styled, { useTheme } from "styled-components";
-import { theme } from "../config/styled-components";
+import { Dispatch, FC, SetStateAction, useRef } from "react";
+import styled from "styled-components";
 import { IApplication } from "../config/types/dataTypes";
 import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
-import useWindowSize from "../hooks/useWindowSize";
 import ParticleCanvas from "./particle-canvas";
 
 interface IProps {
   application: IApplication;
   isSectionVisible: boolean;
+  isImageLoaded: boolean;
+  setIsImageLoaded: Dispatch<SetStateAction<boolean>>;
 }
 
 const ApplicationDetailsContainer = styled.div`
@@ -139,9 +139,9 @@ const ApplicationDescriptionContainer = styled.div`
 const ApplicationDetailsHomeScreen: FC<IProps> = ({
   application,
   isSectionVisible,
+  isImageLoaded,
+  setIsImageLoaded,
 }) => {
-  const { width, height } = useWindowSize();
-  const theme = useTheme();
   const appDescRef = useRef<HTMLDivElement>(null);
 
   const paragraphs = application.description.split("\n");
@@ -204,7 +204,11 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
     <ApplicationDetailsContainer className="applicationDetailsHomeScreen">
       <ApplicationImageAndLinksContainer className="appDetailSection">
         <ApplicationImageContainer>
-          <ParticleCanvas image={application.image.url} />
+          <ParticleCanvas
+            isImageLoaded={isImageLoaded}
+            setIsImageLoaded={setIsImageLoaded}
+            image={application.image.url}
+          />
         </ApplicationImageContainer>
 
         <ApplicationLinksContainer>
