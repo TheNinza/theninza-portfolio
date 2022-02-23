@@ -232,12 +232,7 @@ const TechStackSection: FC<IProps> = ({ stacks }) => {
             key={stack.id}
             name={stack.name}
           >
-            <Image
-              src={stack.image.url}
-              alt={stack.name}
-              layout="fill"
-              priority={true}
-            />
+            <Image src={stack.image.url} alt={stack.name} layout="fill" />
           </TechImageContainer>
         ))}
       </AllTechContainer>
