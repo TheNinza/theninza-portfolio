@@ -152,6 +152,8 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
 
   const [isSectionVisible, setIsSectionVisible] = useState<boolean>(false);
 
+  const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
+
   const applicationsSectionRef = useCallback((el: HTMLDivElement) => {
     if (!el) return;
 
@@ -237,7 +239,7 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
             <ApplicationName
               isSelected={selectedApplication === idx}
               key={application.id}
-              onClick={() => handleApplicationNameClick(idx)}
+              onClick={() => isImageLoaded && handleApplicationNameClick(idx)}
               className="applicationName"
             >
               {application.name}
@@ -248,6 +250,8 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
           <ApplicationDetailsHomeScreen
             application={applications[selectedApplication]}
             isSectionVisible={isSectionVisible}
+            isImageLoaded={isImageLoaded}
+            setIsImageLoaded={setIsImageLoaded}
           />
         </ApplicationPreviewContainer>
       </AllApplicationsContainer>

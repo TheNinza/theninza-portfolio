@@ -1,9 +1,19 @@
 import NextImage from "next/image";
-import { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
+import SmallLoader from "./small-loader";
 
 interface IProps {
   image: string;
+  isImageLoaded: boolean;
+  setIsImageLoaded: Dispatch<SetStateAction<boolean>>;
 }
 
 interface IParticle {
@@ -60,26 +70,28 @@ const CanvasContainer = styled.div`
   }
 `;
 
-const ParticleCanvas: FC<IProps> = ({ image }) => {
-  // const [isImageLoaded, setIsImageLoaded] = useState<boolean>(false);
+const ParticleCanvas: FC<IProps> = ({
+  image,
+  isImageLoaded,
+  setIsImageLoaded,
+}) => {
   const [sameOriginImageUrl, setSameOriginImageUrl] = useState<string>("");
-
   const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
 
   const memoisedSameOriginImageUrlMap = useRef<Map<string, string>>(new Map());
   const memoisedParticlesMap = useRef<Map<string, IParticle[]>>(new Map());
   const memoisedPixelsMap = useRef<Map<string, Uint8ClampedArray>>(new Map());
 
-  // const [mousePosition, setMousePosition] = useState<{
-  //   x: number | null;
-  //   y: number | null;
-  // }>({ x: null, y: null });
-
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  useEffect(() => {
+    console.log(isImageLoaded, new Date().toISOString());
+  }, [isImageLoaded, sameOriginImageUrl]);
+
   // set the same origin image url to avoid canvas cors error
   useEffect(() => {
+    setIsImageLoaded(false);
     const getSameOriginUrl = async (image: string) => {
       let url: string;
       // check if the image is already in the map
@@ -95,13 +107,19 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
       }
       setSameOriginImageUrl(url);
     };
-
     getSameOriginUrl(image);
-  }, [image]);
+  }, [image, setIsImageLoaded]);
 
   useEffect(() => {
     const containerRefCurrent = containerRef.current;
     let canvasRefCurrent = canvasRef.current;
+    const imageObj = new Image();
+
+    let mouseMoveFunction: (this: HTMLDivElement, ev: MouseEvent) => any,
+      mouseEnterFunction: (this: HTMLDivElement, ev: MouseEvent) => any,
+      mouseLeaveFunction: (this: HTMLDivElement, ev: MouseEvent) => any,
+      imageLoadFunction: (this: HTMLImageElement, ev: Event) => any;
+
     if (containerRefCurrent && canvasRefCurrent && shouldAnimate) {
       let ctx: CanvasRenderingContext2D | null = null;
 
@@ -128,12 +146,14 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
         containerRefCurrent.getBoundingClientRect().height;
 
       // track mouse position
-      containerRefCurrent.addEventListener("mousemove", (e) => {
+      mouseMoveFunction = (e: MouseEvent) => {
         mouse.x = e.offsetX;
         mouse.y = e.offsetY;
-      });
+      };
+      containerRefCurrent.addEventListener("mousemove", mouseMoveFunction);
 
-      containerRefCurrent.addEventListener("mouseenter", (e) => {
+      // track mouse enter and leave
+      mouseEnterFunction = (e: MouseEvent) => {
         mouse.show = true;
         // cancel any existing animation
         animationRequest && cancelAnimationFrame(animationRequest);
@@ -143,9 +163,10 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
 
         // start new animation
         animate && requestAnimationFrame(animate);
-      });
+      };
+      containerRefCurrent.addEventListener("mouseenter", mouseEnterFunction);
 
-      containerRefCurrent.addEventListener("mouseleave", (e) => {
+      mouseLeaveFunction = (e: MouseEvent) => {
         mouse.show = false;
         timeout = setTimeout(() => {
           if (animationRequest) {
@@ -153,16 +174,14 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
             animationRequest = null;
           }
         }, 1000);
-      });
+      };
+      containerRefCurrent.addEventListener("mouseleave", mouseLeaveFunction);
 
       // load image
-      const imageObj = new Image();
+
       imageObj.src = sameOriginImageUrl;
 
-      imageObj.addEventListener("load", () => {
-        // stop loading
-        // setIsImageLoaded(true);
-
+      imageLoadFunction = () => {
         if (!canvasRefCurrent) return;
 
         ctx = canvasRefCurrent.getContext("2d");
@@ -328,7 +347,11 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
 
           animationRequest = requestAnimationFrame(animate);
         };
-      });
+
+        setIsImageLoaded(true);
+      };
+
+      imageObj.addEventListener("load", imageLoadFunction);
 
       return () => {
         if (ctx && canvasRefCurrent) {
@@ -341,13 +364,27 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
           cancelAnimationFrame(animationRequest);
         }
         if (containerRefCurrent) {
-          containerRefCurrent.removeEventListener("mousemove", () => {});
-          containerRefCurrent.removeEventListener("mouseenter", () => {});
-          containerRefCurrent.removeEventListener("mouseleave", () => {});
+          mouseMoveFunction &&
+            containerRefCurrent.removeEventListener(
+              "mousemove",
+              mouseMoveFunction
+            );
+          mouseEnterFunction &&
+            containerRefCurrent.removeEventListener(
+              "mouseenter",
+              mouseEnterFunction
+            );
+          mouseLeaveFunction &&
+            containerRefCurrent.removeEventListener(
+              "mouseleave",
+              mouseLeaveFunction
+            );
+          imageLoadFunction &&
+            imageObj.removeEventListener("load", imageLoadFunction);
         }
       };
     }
-  }, [sameOriginImageUrl, shouldAnimate]);
+  }, [sameOriginImageUrl, setIsImageLoaded, shouldAnimate]);
 
   // observe if the container is on the screen
   useEffect(() => {
@@ -375,6 +412,7 @@ const ParticleCanvas: FC<IProps> = ({ image }) => {
     <CanvasContainer ref={containerRef}>
       <canvas ref={canvasRef} id="particle-canvas" />
       <NextImage height={270} width={480} src={image} alt="app-image-preview" />
+      <SmallLoader isTransparent={false} isLoading={!isImageLoaded} />
     </CanvasContainer>
   );
 };

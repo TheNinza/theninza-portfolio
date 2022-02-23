@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Blob, CardContainer, GlassBox } from "../config/styled-components";
 import { ISpotifyData } from "../config/types/dataTypes";
+import SmallLoader from "./small-loader";
 
 type ISpotifyState = ISpotifyData | null;
 interface IStyledSpotifyCard {
@@ -302,50 +303,47 @@ const SpotifyCardComponent: React.FC = () => {
         shouldScrollSongName={shouldScrollSongName}
         ref={spotifyCardRef}
       >
-        {loading && !spotifyState ? (
-          <div>Loading...</div>
-        ) : (
-          spotifyState && (
-            <>
-              <audio
-                className="audio-player"
-                ref={audioRef}
-                src={spotifyState.spotifyData.previewUrl}
-                loop
+        <SmallLoader isLoading={loading} />
+        {spotifyState && (
+          <>
+            <audio
+              className="audio-player"
+              ref={audioRef}
+              src={spotifyState.spotifyData.previewUrl}
+              loop
+            />
+            <div className="title">
+              {spotifyState.currentlyPlaying
+                ? "Currently Vibing On"
+                : "Last Vibed On"}
+            </div>
+            <div className="album-cover-container">
+              <Image
+                src={spotifyState.spotifyData.albumImage}
+                alt="album cover"
+                layout="fill"
+                objectFit="contain"
               />
-              <div className="title">
-                {spotifyState.currentlyPlaying
-                  ? "Currently Vibing On"
-                  : "Last Vibed On"}
+            </div>
+            <div className="description-container-box">
+              <div className="description">
+                <div className="song-name">
+                  {spotifyState.spotifyData.songName}
+                </div>
+                <div className="artist-name">
+                  {spotifyState.spotifyData.artistsNames.join(", ")}
+                </div>
               </div>
-              <div className="album-cover-container">
+              <div className="logo-container">
                 <Image
-                  src={spotifyState.spotifyData.albumImage}
-                  alt="album cover"
-                  layout="fill"
-                  objectFit="contain"
+                  src="/spotify-logo.svg"
+                  width={75}
+                  height={75}
+                  alt="spotify logo"
                 />
               </div>
-              <div className="description-container-box">
-                <div className="description">
-                  <div className="song-name">
-                    {spotifyState.spotifyData.songName}
-                  </div>
-                  <div className="artist-name">
-                    {spotifyState.spotifyData.artistsNames.join(", ")}
-                  </div>
-                </div>
-                <div className="logo-container">
-                  <Image
-                    src="/spotify-logo.svg"
-                    width={75}
-                    height={75}
-                    alt="spotify logo"
-                  />
-                </div>
-              </div>
-            </>
-          )
+            </div>
+          </>
         )}
       </SpotifyCard>
     </SpotifyCardContainer>
