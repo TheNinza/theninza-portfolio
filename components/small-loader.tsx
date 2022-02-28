@@ -56,7 +56,7 @@ const SmallLoader: React.FC<Iprops> = ({
   imageWidth = 100,
   imageHeight = 100,
   isLoading,
-  isTransparent = true,
+  isTransparent = false,
 }) => {
   const loaderRef = useRef<HTMLDivElement>(null);
 
