@@ -85,6 +85,15 @@ const ParticleCanvas: FC<IProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // okay so mouse object must be outside of useEffect,
+  // because it has reference in memoisedParticlesMap
+  const mouseRef = useRef({
+    x: 0,
+    y: 0,
+    radius: 80,
+    show: false,
+  });
+
   // set the same origin image url to avoid canvas cors error
   useEffect(() => {
     setIsImageLoaded(false);
@@ -119,12 +128,9 @@ const ParticleCanvas: FC<IProps> = ({
     if (containerRefCurrent && canvasRefCurrent && shouldAnimate) {
       let ctx: CanvasRenderingContext2D | null = null;
 
-      const mouse = {
-        x: 0,
-        y: 0,
-        radius: 80,
-        show: false,
-      };
+      const mouse = mouseRef.current;
+
+      if (!mouse) return;
 
       // keeping track of last animation frame
       var animationRequest: number | null = null;
@@ -177,6 +183,84 @@ const ParticleCanvas: FC<IProps> = ({
 
       imageObj.src = sameOriginImageUrl;
 
+      // setting size for particles
+      const SIZE_PIXELS = 5; // in px
+
+      // implementing particles class for better control over the particles
+      class Particle implements IParticle {
+        x: number;
+        y: number;
+        imageDataFragment: ImageData;
+        baseX: number;
+        baseY: number;
+        density: number;
+
+        constructor(x: number, y: number, imageDataFragment: ImageData) {
+          this.x = x;
+          this.y = y;
+          this.imageDataFragment = imageDataFragment;
+          this.baseX = this.x;
+          this.baseY = this.y;
+          this.density = Math.random() * 15 + 5;
+        }
+
+        draw() {
+          if (!ctx) return;
+
+          // draw the imageData
+
+          // check if x and y are within the canvas
+          if (
+            canvasRefCurrent &&
+            (this.x < 0 ||
+              this.x > canvasRefCurrent.width - SIZE_PIXELS ||
+              this.y < 0 ||
+              this.y > canvasRefCurrent.height - SIZE_PIXELS)
+          ) {
+            return;
+          }
+
+          ctx.putImageData(
+            this.imageDataFragment,
+            this.x,
+            this.y,
+            0,
+            0,
+            SIZE_PIXELS,
+            SIZE_PIXELS
+          );
+        }
+
+        update() {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          let forceDirectionX = dx / distance;
+          let forceDirectionY = dy / distance;
+          let maxDistance = mouse.radius;
+
+          let force = (maxDistance - distance) / maxDistance;
+
+          let directionX = forceDirectionX * force * this.density;
+          let directionY = forceDirectionY * force * this.density;
+
+          if (distance < maxDistance && mouse.show) {
+            this.x -= directionX;
+            this.y -= directionY;
+          } else {
+            if (this.x !== this.baseX) {
+              let dx = this.x - this.baseX;
+              this.x -= dx / 10;
+            }
+            if (this.y !== this.baseY) {
+              let dy = this.y - this.baseY;
+              this.y -= dy / 10;
+            }
+          }
+        }
+      }
+
       imageLoadFunction = () => {
         if (!canvasRefCurrent) return;
 
@@ -184,6 +268,8 @@ const ParticleCanvas: FC<IProps> = ({
         if (!ctx) return;
 
         let pixels: Uint8ClampedArray | null = null;
+
+        ctx.clearRect(0, 0, canvasRefCurrent.width, canvasRefCurrent.height);
 
         // get memoise pixels
         const memoisedPixels =
@@ -193,7 +279,6 @@ const ParticleCanvas: FC<IProps> = ({
           pixels = memoisedPixels;
         } else {
           // clear the canvas and draw image
-          ctx.clearRect(0, 0, canvasRefCurrent.width, canvasRefCurrent.height);
           ctx.drawImage(
             imageObj,
             0,
@@ -216,84 +301,6 @@ const ParticleCanvas: FC<IProps> = ({
           memoisedPixelsMap.current.set(sameOriginImageUrl, pixels);
         }
 
-        // setting size for particles
-        const SIZE_PIXELS = 5; // in px
-
-        // implementing particles class for better control over the particles
-        class Particle implements IParticle {
-          x: number;
-          y: number;
-          imageDataFragment: ImageData;
-          baseX: number;
-          baseY: number;
-          density: number;
-
-          constructor(x: number, y: number, imageDataFragment: ImageData) {
-            this.x = x;
-            this.y = y;
-            this.imageDataFragment = imageDataFragment;
-            this.baseX = this.x;
-            this.baseY = this.y;
-            this.density = Math.random() * 15 + 5;
-          }
-
-          draw() {
-            if (!ctx) return;
-
-            // draw the imageData
-
-            // check if x and y are within the canvas
-            if (
-              canvasRefCurrent &&
-              (this.x < 0 ||
-                this.x > canvasRefCurrent.width ||
-                this.y < 0 ||
-                this.y > canvasRefCurrent.height)
-            ) {
-              return;
-            }
-
-            ctx.putImageData(
-              this.imageDataFragment,
-              this.x,
-              this.y,
-              0,
-              0,
-              SIZE_PIXELS,
-              SIZE_PIXELS
-            );
-          }
-
-          update() {
-            let dx = mouse.x - this.x;
-            let dy = mouse.y - this.y;
-
-            let distance = Math.sqrt(dx * dx + dy * dy);
-            let forceDirectionX = dx / distance;
-            let forceDirectionY = dy / distance;
-            let maxDistance = mouse.radius;
-
-            let force = (maxDistance - distance) / maxDistance;
-
-            let directionX = forceDirectionX * force * this.density;
-            let directionY = forceDirectionY * force * this.density;
-
-            if (distance < maxDistance && mouse.show) {
-              this.x -= directionX;
-              this.y -= directionY;
-            } else {
-              if (this.x !== this.baseX) {
-                let dx = this.x - this.baseX;
-                this.x -= dx / 10;
-              }
-              if (this.y !== this.baseY) {
-                let dy = this.y - this.baseY;
-                this.y -= dy / 10;
-              }
-            }
-          }
-        }
-
         // an array to store particles
         let particlesArray: IParticle[] = [];
 
@@ -307,8 +314,12 @@ const ParticleCanvas: FC<IProps> = ({
           const numOfParticlesX = canvasRefCurrent.width;
           const numOfParticlesY = canvasRefCurrent.height;
 
-          for (let y = 0; y < numOfParticlesY; y += SIZE_PIXELS) {
-            for (let x = 0; x < numOfParticlesX; x += SIZE_PIXELS) {
+          for (let y = 0; y < numOfParticlesY - SIZE_PIXELS; y += SIZE_PIXELS) {
+            for (
+              let x = 0;
+              x < numOfParticlesX - SIZE_PIXELS;
+              x += SIZE_PIXELS
+            ) {
               // pixels have rgba values in a uIntClampedArray.. [r, g, b, a, r, g, b, a, ....]
 
               let imageDataFragment = ctx.getImageData(
@@ -352,12 +363,15 @@ const ParticleCanvas: FC<IProps> = ({
       return () => {
         if (ctx && canvasRefCurrent) {
           ctx.clearRect(0, 0, canvasRefCurrent.width, canvasRefCurrent.height);
+          canvasRefCurrent = null;
         }
         if (timeout) {
           clearTimeout(timeout);
+          timeout = null;
         }
         if (animationRequest) {
           cancelAnimationFrame(animationRequest);
+          animationRequest = null;
         }
         if (containerRefCurrent) {
           mouseMoveFunction &&
