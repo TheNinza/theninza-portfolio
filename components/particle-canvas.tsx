@@ -37,7 +37,7 @@ const CanvasContainer = styled.div`
       opacity: 1;
     }
 
-    & img {
+    & .app-image {
       opacity: 0;
     }
   }
@@ -421,7 +421,13 @@ const ParticleCanvas: FC<IProps> = ({
   return (
     <CanvasContainer ref={containerRef}>
       <canvas ref={canvasRef} id="particle-canvas" />
-      <NextImage height={270} width={480} src={image} alt="app-image-preview" />
+      <NextImage
+        className="app-image"
+        height={270}
+        width={480}
+        src={image}
+        alt="app-image-preview"
+      />
       <SmallLoader isTransparent={false} isLoading={!isImageLoaded} />
     </CanvasContainer>
   );
