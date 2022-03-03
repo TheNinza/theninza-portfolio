@@ -303,7 +303,7 @@ const SpotifyCardComponent: React.FC = () => {
         shouldScrollSongName={shouldScrollSongName}
         ref={spotifyCardRef}
       >
-        <SmallLoader isLoading={loading} />
+        <SmallLoader isLoading={loading} isTransparent={true} />
         {spotifyState && (
           <>
             <audio

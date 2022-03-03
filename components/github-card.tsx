@@ -268,7 +268,7 @@ const GithubCardComponent: React.FC = () => {
             <div className="title">My Github Stats</div>
             {/* chart */}
             <div ref={chartContainerRef} className="chart-container">
-              <SmallLoader isLoading={loading} />
+              <SmallLoader isLoading={loading} isTransparent={true} />
 
               <div className="github-logo-absolute-wrapper">
                 <div className="github-logo-container">
