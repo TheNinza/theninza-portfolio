@@ -74,9 +74,11 @@ const WorksColumns = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space.xxl};
+  width: calc(50% - (${({ theme }) => theme.space.xxl} / 2));
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
     gap: ${({ theme }) => theme.space.lg};
+    width: unset;
   }
 `;
 
