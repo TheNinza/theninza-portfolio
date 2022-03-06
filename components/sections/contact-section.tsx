@@ -41,11 +41,13 @@ const ThankyouText = styled.div`
   pointer-events: none;
   white-space: nowrap;
 
-  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.xl}px) {
-    font-size: 3rem;
+  @media only screen and (max-width: 1280px) {
+    white-space: nowrap;
+    font-size: 2.2rem;
   }
 
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    white-space: unset;
     font-size: 2rem;
   }
   @media only screen and (max-width: ${({ theme }) => theme.breakpoints.md}px) {
@@ -61,6 +63,11 @@ const MainContentContainer = styled.div`
   flex-direction: column;
   gap: 10rem;
   width: fit-content;
+
+  @media only screen and (max-width: ${({ theme }) => theme.breakpoints.lg}px) {
+    margin-top: ${({ theme }) => theme.space.xl};
+    gap: ${({ theme }) => theme.space.xxl};
+  }
 `;
 
 const ContactSectionTitle = styled(SectionTitle)`

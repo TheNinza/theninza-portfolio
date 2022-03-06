@@ -153,6 +153,9 @@ const ApplicationDescriptionContainer = styled.div`
   & p {
     color: ${({ theme }) => theme.colors.textSecondary};
     transition: all 0.3s ease-in;
+    &:last-child {
+      margin-bottom: 2rem;
+    }
     &:hover {
       color: ${({ theme }) => theme.colors.textPrimary};
     }
