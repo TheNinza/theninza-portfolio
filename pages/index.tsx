@@ -4,8 +4,7 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
-import Head from "next/head";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import styled from "styled-components";
 import MetaTags from "../components/metatags";
 import APeekInLifeSection from "../components/sections/a-peek-in-life-section";
@@ -22,6 +21,7 @@ import type {
   IStack,
   IVolunteer,
 } from "../config/types/dataTypes";
+import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
 
 // types
 type IInitialHomePageProps = {
@@ -55,7 +55,7 @@ const Home: NextPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const windowWidth = window.innerWidth;
 
     const skewConfigs = {
