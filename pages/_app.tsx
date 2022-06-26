@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         async
         defer
         data-website-id="5ee58554-0585-4346-8dbc-1cbda88d65df"
-        src="https://umami-theninza.up.railway.app/umami.js"
+        src="https://umami.theninza.me/umami.js"
       ></Script>
     </>
   );
