@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import Script from "next/script";
 import { ThemeProvider } from "styled-components";
 import CustomCursor from "../components/custom-cursor";
 import HeroLoader from "../components/hero-loader";
@@ -17,6 +18,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </ThemeProvider>
       </RootContextProvider>
+
+      {/* analytics */}
+      <Script
+        async
+        defer
+        data-website-id="5ee58554-0585-4346-8dbc-1cbda88d65df"
+        src="https://umami.theninza.me/umami.js"
+      ></Script>
     </>
   );
 }
