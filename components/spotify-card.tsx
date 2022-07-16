@@ -170,6 +170,8 @@ const SpotifyCardComponent: React.FC = () => {
 
   const [loading, setLoading] = useState(true);
 
+  const [hasAudioPlayed, setHasAudioPlayed] = useState(false);
+
   const [shouldScrollSongName, setShouldScrollSongName] = useState(false);
   const [shouldScrollArtistName, setShouldScrollArtistName] = useState(false);
 
@@ -224,6 +226,10 @@ const SpotifyCardComponent: React.FC = () => {
     }
   }, [spotifyState]);
 
+  useEffect(() => {
+    hasAudioPlayed && window.umami("spotify-audio-play");
+  }, [hasAudioPlayed]);
+
   // play audio on hover
   useEffect(() => {
     if (!spotifyState) return;
@@ -237,6 +243,9 @@ const SpotifyCardComponent: React.FC = () => {
 
     const playAudio = () => {
       audio.play();
+      if (!hasAudioPlayed) {
+        setHasAudioPlayed(true);
+      }
     };
 
     const pauseAudio = () => {
@@ -279,7 +288,7 @@ const SpotifyCardComponent: React.FC = () => {
       spotifyCard.removeEventListener("click", onClick);
       if (intervalIncreaseVol) clearInterval(intervalIncreaseVol);
     };
-  }, [spotifyState]);
+  }, [hasAudioPlayed, spotifyState]);
 
   const fetchSpotifyData = async () => {
     setLoading(true);

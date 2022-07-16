@@ -150,6 +150,9 @@ const SocialsContainerComponent: React.FC = () => {
         socialLink.style.width = `${newWidth}px`;
         svgIconName.style.right = `0`;
         svgIconName.style.opacity = "1";
+        window.umami(
+          `social-link-hover-${socialLink.textContent?.toLowerCase()}`
+        );
       });
 
       socialLink.addEventListener("mouseleave", () => {
@@ -218,7 +221,7 @@ const SocialsContainerComponent: React.FC = () => {
           {socials.map(({ SvgEl, name, url }) => (
             <Link href={url} passHref key={name}>
               <SocialIconLink
-                className="contactSectionSocialLink"
+                className={`contactSectionSocialLink umami--click--external-${name.toLowerCase()}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
