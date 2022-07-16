@@ -150,9 +150,6 @@ const SocialsContainerComponent: React.FC = () => {
         socialLink.style.width = `${newWidth}px`;
         svgIconName.style.right = `0`;
         svgIconName.style.opacity = "1";
-        window.umami(
-          `social-link-hover-${socialLink.textContent?.toLowerCase()}`
-        );
       });
 
       socialLink.addEventListener("mouseleave", () => {
