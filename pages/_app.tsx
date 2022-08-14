@@ -23,8 +23,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Script
         async
         defer
-        data-website-id="5ee58554-0585-4346-8dbc-1cbda88d65df"
-        src="https://umami-theninza.up.railway.app/umami.js"
+        data-website-id="94b02f9a-ba9d-4854-b180-e5f1e1bdc9b1"
+        src="https://umami-analytics-beige.vercel.app/umami.js"
       ></Script>
     </>
   );
