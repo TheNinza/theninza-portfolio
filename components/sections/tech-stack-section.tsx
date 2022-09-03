@@ -208,8 +208,6 @@ const TechStackSection: FC<IProps> = ({ stacks }) => {
                 },
               });
           });
-          // analytics
-          window.umami("section-visit-tech-stack");
 
           observer.disconnect();
         }

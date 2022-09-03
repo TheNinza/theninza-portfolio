@@ -175,10 +175,7 @@ const HeroSection: FC = () => {
             ease: "power4.out",
           },
           "-=1"
-        )
-        .then(() => {
-          window.umami("section-visit-hero");
-        });
+        );
     }
   }, [isLoading]);
 
@@ -195,7 +192,6 @@ const HeroSection: FC = () => {
       heroImageContainerRef.current
     ) {
       heroImageContainerRef.current.style.opacity = "1";
-      window.umami("cat-banner-hover");
     }
   };
 

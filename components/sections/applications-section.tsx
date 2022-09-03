@@ -190,10 +190,6 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
                   ease: "power3.out",
                 }
               );
-            })
-            .then(() => {
-              // analytics
-              window.umami("section-visit-applications");
             });
 
           observer.disconnect();

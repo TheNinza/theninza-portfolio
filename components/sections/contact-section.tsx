@@ -280,10 +280,7 @@ const ContactSection: React.FC = () => {
       ([section]) => {
         if (section.isIntersecting) {
           observer.disconnect();
-          tl.play().then(() => {
-            // analytics
-            window.umami("section-visit-contact");
-          });
+          tl.play();
         }
       },
       {
