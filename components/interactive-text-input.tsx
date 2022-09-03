@@ -145,7 +145,6 @@ const InteractiveTextInput: React.FC<IProps> = ({
     // focus the input when the container is clicked and vice versa
     window.addEventListener("click", (e) => {
       if (e.target === container || e.target === svg || e.target === input) {
-        window.umami("interactive-text-input-focus");
         input.focus();
         if (vibrateAnimationFrame) {
           cancelAnimationFrame(vibrateAnimationFrame);

@@ -263,11 +263,7 @@ const GithubCardComponent: React.FC = () => {
   return (
     <GithubCardContainer className="glassContainer">
       <Link href="https://github.com/theninza" passHref>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          className="umami--click--external-github"
-        >
+        <a target="_blank" rel="noopener noreferrer">
           <GithubCard className="glassCard">
             <div className="title">My Github Stats</div>
             {/* chart */}

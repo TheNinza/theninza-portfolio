@@ -154,9 +154,6 @@ const APeekInLifeSection: React.FC = () => {
 
             glassContainerObserver.observe(glassContainer);
           });
-
-          // analytics
-          window.umami("section-visit-peek-in-life");
         }
       },
       {

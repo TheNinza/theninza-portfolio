@@ -225,15 +225,7 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
             ease: "power3.inOut",
           },
           "-=1"
-        )
-        .then(() => {
-          // analytics
-          window.umami(
-            `view-application-${application.name
-              .toLowerCase()
-              .replace(/ /g, "-")}`
-          );
-        });
+        );
     }
   }, [isSectionVisible, application]);
 
