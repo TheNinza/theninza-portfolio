@@ -218,7 +218,7 @@ const SocialsContainerComponent: React.FC = () => {
           {socials.map(({ SvgEl, name, url }) => (
             <Link href={url} passHref key={name}>
               <SocialIconLink
-                className={`contactSectionSocialLink`}
+                className={`contactSectionSocialLink umami--click--external-${name.toLowerCase()}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

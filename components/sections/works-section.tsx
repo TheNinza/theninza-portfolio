@@ -311,6 +311,9 @@ const WorksSection: React.FC<IProps> = ({
               });
           });
 
+          // analytics
+          window.umami("section-visit-works");
+
           observer.disconnect();
         }
       },
@@ -339,7 +342,13 @@ const WorksSection: React.FC<IProps> = ({
                     </SpacedSubSectionTitle>
                     <span className="link">
                       <Link href={achievement.relevantLink} passHref>
-                        <a target="_blank" rel="noopener noreferrer">
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`umami--click--external_${achievement.name
+                            .toLowerCase()
+                            .replace(/ /g, "-")}`}
+                        >
                           🔗
                         </a>
                       </Link>
@@ -367,7 +376,13 @@ const WorksSection: React.FC<IProps> = ({
                     </SpacedSubSectionTitle>
                     <span className="link">
                       <Link href={volunteer.relevantLink} passHref>
-                        <a target="_blank" rel="noopener noreferrer">
+                        <a
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`umami--click--external_${volunteer.name
+                            .toLowerCase()
+                            .replace(/ /g, "-")}`}
+                        >
                           🔗
                         </a>
                       </Link>

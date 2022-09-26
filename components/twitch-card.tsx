@@ -90,7 +90,11 @@ const TwitchCardComponent: React.FC<{}> = () => {
     <TwitchCardContainer className="glassContainer">
       <TwitchBlob />
       <Link href="https://twitch.tv/theninza" passHref>
-        <a target="_blank" rel="noopener noreferrer">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          className="umami--click--external-twitch"
+        >
           <TwitchCard className="glassCard">
             <div className="twitch-logo-absolute-wrapper">
               <div className="twitch-logo-container">
