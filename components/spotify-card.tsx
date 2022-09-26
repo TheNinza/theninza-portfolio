@@ -226,6 +226,10 @@ const SpotifyCardComponent: React.FC = () => {
     }
   }, [spotifyState]);
 
+  useEffect(() => {
+    hasAudioPlayed && window.umami("spotify-audio-play");
+  }, [hasAudioPlayed]);
+
   // play audio on hover
   useEffect(() => {
     if (!spotifyState) return;
