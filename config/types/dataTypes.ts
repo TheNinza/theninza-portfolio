@@ -58,3 +58,20 @@ export interface IGithubData {
   numEvents: number;
   date: string;
 }
+
+export interface IGithubGraphqlResponse {
+  data: {
+    user: {
+      contributionsCollection: {
+        contributionCalendar: {
+          weeks: {
+            contributionDays: {
+              contributionCount: number;
+              date: string;
+            }[];
+          }[];
+        };
+      };
+    };
+  };
+}
