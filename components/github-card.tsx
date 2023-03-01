@@ -229,7 +229,7 @@ const GithubCardComponent: React.FC = () => {
       setLoading(true);
       try {
         const { data } = await axios.get<IGithubData[]>("/api/getgithubstatus");
-        setGithubData(data.reverse());
+        setGithubData(data);
       } catch (error) {
         console.log(error);
       }
