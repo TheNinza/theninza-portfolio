@@ -139,6 +139,10 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
 
     // getting currently playing song
 
+    if (!access_token) {
+      throw new Error("Could not get access token.");
+    }
+
     let spotifyData;
 
     const { data, status } = await getCurrentSongDataAndStatus(access_token);
@@ -158,6 +162,10 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
       console.log("New access token:", access_token);
 
       // try again
+
+      if (!access_token) {
+        throw new Error("Could not get access token.");
+      }
 
       const { data, status } = await getCurrentSongDataAndStatus(access_token);
 
@@ -194,6 +202,10 @@ const getSpotifyCurrentSong: IGetSpotifyCurrentSong = async (req, res) => {
       console.log("New access token:", access_token);
 
       // try again
+
+      if (!access_token) {
+        throw new Error("Could not get access token.");
+      }
 
       const { data: data2, status: status2 } =
         await getLastPlayingSongAndStatus(access_token);
