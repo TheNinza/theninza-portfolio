@@ -2,6 +2,6 @@ export {};
 
 declare global {
   interface Window {
-    umami: (eventName: string) => void;
+    // umami: (eventName: string) => void;
   }
 }

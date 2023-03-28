@@ -228,11 +228,11 @@ const ApplicationDetailsHomeScreen: FC<IProps> = ({
         )
         .then(() => {
           // analytics
-          window.umami(
-            `view-application-${application.name
-              .toLowerCase()
-              .replace(/ /g, "-")}`
-          );
+          // window.umami(
+          //   `view-application-${application.name
+          //     .toLowerCase()
+          //     .replace(/ /g, "-")}`
+          // );
         });
     }
   }, [isSectionVisible, application]);

@@ -156,7 +156,7 @@ const APeekInLifeSection: React.FC = () => {
           });
 
           // analytics
-          window.umami("section-visit-peek-in-life");
+          // window.umami("section-visit-peek-in-life");
         }
       },
       {

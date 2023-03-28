@@ -177,7 +177,7 @@ const HeroSection: FC = () => {
           "-=1"
         )
         .then(() => {
-          window.umami("section-visit-hero");
+          // window.umami("section-visit-hero");
         });
     }
   }, [isLoading]);
@@ -195,7 +195,7 @@ const HeroSection: FC = () => {
       heroImageContainerRef.current
     ) {
       heroImageContainerRef.current.style.opacity = "1";
-      window.umami("cat-banner-hover");
+      // window.umami("cat-banner-hover");
     }
   };
 

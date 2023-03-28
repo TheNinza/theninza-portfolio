@@ -312,7 +312,7 @@ const WorksSection: React.FC<IProps> = ({
           });
 
           // analytics
-          window.umami("section-visit-works");
+          // window.umami("section-visit-works");
 
           observer.disconnect();
         }

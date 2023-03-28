@@ -282,7 +282,7 @@ const ContactSection: React.FC = () => {
           observer.disconnect();
           tl.play().then(() => {
             // analytics
-            window.umami("section-visit-contact");
+            // window.umami("section-visit-contact");
           });
         }
       },

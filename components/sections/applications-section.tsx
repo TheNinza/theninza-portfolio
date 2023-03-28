@@ -193,7 +193,7 @@ const ApplicationsSection: FC<IProps> = ({ applications }) => {
             })
             .then(() => {
               // analytics
-              window.umami("section-visit-applications");
+              // window.umami("section-visit-applications");
             });
 
           observer.disconnect();
