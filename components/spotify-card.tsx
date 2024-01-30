@@ -182,7 +182,7 @@ const SpotifyCardComponent: React.FC = () => {
     fetchSpotifyData();
     let interval = setInterval(() => {
       fetchSpotifyData();
-    }, 60000);
+    }, 10000);
 
     return () => {
       clearInterval(interval);
