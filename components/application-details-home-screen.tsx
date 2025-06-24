@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction, useRef } from "react";
+import React, { Dispatch, FC, SetStateAction, useRef } from "react";
 import styled from "styled-components";
 import { IApplication } from "../config/types/dataTypes";
 import useIsomorphicLayoutEffect from "../hooks/use-isomorphic-layout-effect";
@@ -14,7 +14,12 @@ interface IProps {
   setIsImageLoaded: Dispatch<SetStateAction<boolean>>;
 }
 
-const ApplicationDetailsContainer = styled.div`
+interface ApplicationDetailsContainerProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const ApplicationDetailsContainer = styled.div<ApplicationDetailsContainerProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
