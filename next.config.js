@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["media.graphcms.com", "i.scdn.co", "media.graphassets.com"],
+    domains: [
+      "media.graphcms.com",
+      "i.scdn.co",
+      "media.graphassets.com",
+      "ap-south-1.graphassets.com",
+    ],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
